@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>trazaNet. | +CríaUY</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Space Grotesk', 'sans-serif'],
+                    },
+                    colors: {
+                        brand: {
+                            50: '#f8fafc',
+                            100: '#f1f5f9',
+                            200: '#e2e8f0',
+                            300: '#cbd5e1',
+                            400: '#94a3b8',
+                            500: '#64748b',
+                            600: '#475569',
+                            700: '#334155',
+                            800: '#1e293b',
+                            900: '#0f172a',
+                        },
+                        traza: {
+                            50: '#f0fdf4',
+                            100: '#dcfce7',
+                            400: '#4ade80',
+                            500: '#22c55e',
+                            600: '#16a34a',
+                            700: '#15803d',
+                        }
+                    },
+                    letterSpacing: {
+                        'extra-wide': '0.2em',
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+
+<body class="bg-brand-50 text-brand-800 antialiased selection:bg-brand-200 selection:text-brand-900">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-40 bg-white/80 backdrop-blur-md shadow-sm">
+        <div class="w-full px-6 lg:px-12 py-6 flex justify-between items-center">
+            <a href="index.html"
+                class="font-display font-bold text-xl tracking-tight text-brand-900 transition-opacity duration-300 hover:text-brand-600">
+                +CríaUY
+            </a>
+
+            <div class="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide text-brand-800">
+                <a href="index.html" class="relative group transition-colors hover:text-brand-900">
+                    Inicio
+                    <span
+                        class="absolute -bottom-0.5 left-0 w-0 h-[1.5px] bg-brand-900 transition-all duration-300 ease-out group-hover:w-full"></span>
+                </a>
+                <a href="propuestas.html" class="relative group transition-colors hover:text-brand-900">
+                    Tecnologías
+                    <span
+                        class="absolute -bottom-0.5 left-0 w-0 h-[1.5px] bg-brand-900 transition-all duration-300 ease-out group-hover:w-full"></span>
+                </a>
+                <a href="index.html#contacto" class="relative transition-colors text-brand-900 font-semibold">
+                    Contacto
+                    <span class="absolute -bottom-0.5 left-0 w-full h-[1.5px] bg-brand-900"></span>
+                </a>
+            </div>
+
+            <button class="md:hidden text-brand-900">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <section class="pt-32 pb-24 min-h-screen flex items-center justify-center overflow-x-hidden">
+        <div class="w-full px-6 lg:px-12">
+            <div class="max-w-7xl mx-auto">
+
+                <div class="grid lg:grid-cols-2 gap-16 items-center mb-24">
+                    <!-- Left Column: Content -->
+                    <div>
+                        <div class="mb-12">
+                            <a href="propuestas.html"
+                                class="inline-flex items-center gap-2 text-brand-500 hover:text-brand-900 transition-colors mb-6 text-sm font-medium">
+                                <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                                Volver a Tecnologías
+                            </a>
+                            <h1 class="font-display text-5xl md:text-6xl font-bold text-brand-900 mb-6">trazaNet.</h1>
+                            <div class="h-1 w-24 bg-brand-300"></div>
+                        </div>
+
+                        <div class="prose prose-lg prose-slate text-brand-600 font-light leading-relaxed space-y-6">
+                            <p>
+                                <strong class="font-medium text-brand-900">trazaNet</strong> es una plataforma de
+                                gestión
+                                ganadera diseñada para centralizar y ordenar la información del rodeo.
+                                El sistema comienza en la lectura en campo, permitiendo registrar eventos y datos de
+                                manera
+                                simple, y los organiza en una estructura clara que facilita el control de la
+                                trazabilidad, el
+                                stock y la sanidad.
+                            </p>
+                            <p>
+                                Toda la información se concentra en un único entorno, lo que permite reducir errores,
+                                evitar
+                                registros dispersos y mantener una visión actualizada del establecimiento, tanto en el
+                                trabajo
+                                diario como en la planificación.
+                            </p>
+                            <p>
+                                La forma en que los datos son capturados y organizados prepara la base necesaria para su
+                                análisis, habilitando el uso de herramientas de inteligencia artificial orientadas a
+                                detectar
+                                patrones, generar alertas y apoyar la toma de decisiones.
+                            </p>
+                            <p class="font-medium text-brand-800">
+                                De esta manera, trazaNet no solo ordena la información operativa, sino que crea las
+                                condiciones
+                                para un análisis más profundo y automatizado de la gestión ganadera.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Right Column: Login Component -->
+                    <!-- Right Column: Empty for now (Mockup later) -->
+                    <div class="relative hidden lg:block">
+                        <!-- Placeholder for future mockup -->
+                    </div>
+                </div>
+
+                <!-- Infinite Features Carousel -->
+                <div class="mt-24 w-full overflow-hidden mask-gradient">
+                    <div class="flex animate-scroll hover:pause gap-8 w-max">
+                        <!-- Duplicate the list twice for seamless looping -->
+
+                        <!-- Set 1 -->
+                        <div class="flex gap-8 items-center">
+                            <!-- Feature 1 -->
+                            <div
+                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
+                                <i data-lucide="scan-line" class="w-5 h-5 text-brand-500"></i>
+                                <span class="font-display font-medium text-brand-900">Lectura en tiempo real</span>
+                            </div>
+                            <!-- Feature 2 -->
+                            <div
+                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
+                                <i data-lucide="cloud" class="w-5 h-5 text-brand-500"></i>
+                                <span class="font-display font-medium text-brand-900">Datos centralizados</span>
+                            </div>
+                            <!-- Feature 3 -->
+                            <div
+                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
+                                <i data-lucide="wifi-off" class="w-5 h-5 text-brand-500"></i>
+                                <span class="font-display font-medium text-brand-900">Funcionamiento Offline</span>
+                            </div>
+                            <!-- Feature 4 -->
+                            <div
+                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
+                                <i data-lucide="bar-chart-2" class="w-5 h-5 text-brand-500"></i>
+                                <span class="font-display font-medium text-brand-900">Métricas detalladas</span>
+                            </div>
+                            <!-- Feature 5 -->
+                            <div
+                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
+                                <i data-lucide="bell" class="w-5 h-5 text-brand-500"></i>
+                                <span class="font-display font-medium text-brand-900">Alertas inteligentes</span>
+                            </div>
+                            <!-- Feature 6 -->
+                            <div
+                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
+                                <i data-lucide="git-fork" class="w-5 h-5 text-brand-500"></i>
+                                <span class="font-display font-medium text-brand-900">Gestión de genealogía</span>
+                            </div>
+                            <!-- Feature 7 -->
+                            <div
+                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
+                                <i data-lucide="sparkles" class="w-5 h-5 text-brand-500"></i>
+                                <span class="font-display font-medium text-brand-900">Inteligencia Artificial</span>
+                            </div>
+                            <!-- Feature 8 -->
+                            <div
+                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
+                                <i data-lucide="file-output" class="w-5 h-5 text-brand-500"></i>
+                                <span class="font-display font-medium text-brand-900">Exportación directa</span>
+                            </div>
+                            <!-- Feature 9 -->
+                            <div
+                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
+                                <i data-lucide="headphones" class="w-5 h-5 text-brand-500"></i>
+                                <span class="font-display font-medium text-brand-900">Soporte Especializado</span>
+                            </div>
+                        </div>
+
+                        <!-- Set 2 (Duplicate for loop) -->
+                        <div class="flex gap-8 items-center" aria-hidden="true">
+                            <div
+                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
+                                <i data-lucide="scan-line" class="w-5 h-5 text-brand-500"></i>
+                                <span class="font-display font-medium text-brand-900">Lectura en tiempo real</span>
+                            </div>
+                            <div
+                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
+                                <i data-lucide="cloud" class="w-5 h-5 text-brand-500"></i>
+                                <span class="font-display font-medium text-brand-900">Datos centralizados</span>
+                            </div>
+                            <div
+                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
+                                <i data-lucide="wifi-off" class="w-5 h-5 text-brand-500"></i>
+                                <span class="font-display font-medium text-brand-900">Funcionamiento Offline</span>
+                            </div>
+                            <div
+                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
+                                <i data-lucide="bar-chart-2" class="w-5 h-5 text-brand-500"></i>
+                                <span class="font-display font-medium text-brand-900">Métricas detalladas</span>
+                            </div>
+                            <div
+                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
+                                <i data-lucide="bell" class="w-5 h-5 text-brand-500"></i>
+                                <span class="font-display font-medium text-brand-900">Alertas inteligentes</span>
+                            </div>
+                            <div
+                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
+                                <i data-lucide="git-fork" class="w-5 h-5 text-brand-500"></i>
+                                <span class="font-display font-medium text-brand-900">Gestión de genealogía</span>
+                            </div>
+                            <div
+                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
+                                <i data-lucide="sparkles" class="w-5 h-5 text-brand-500"></i>
+                                <span class="font-display font-medium text-brand-900">Inteligencia Artificial</span>
+                            </div>
+                            <div
+                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
+                                <i data-lucide="file-output" class="w-5 h-5 text-brand-500"></i>
+                                <span class="font-display font-medium text-brand-900">Exportación directa</span>
+                            </div>
+                            <div
+                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
+                                <i data-lucide="headphones" class="w-5 h-5 text-brand-500"></i>
+                                <span class="font-display font-medium text-brand-900">Soporte Especializado</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <style>
+                    .animate-scroll {
+                        animation: scroll 40s linear infinite;
+                    }
+
+                    .pause:hover {
+                        animation-play-state: paused;
+                    }
+
+                    @keyframes scroll {
+                        from {
+                            transform: translateX(0);
+                        }
+
+                        to {
+                            transform: translateX(-50%);
+                        }
+                    }
+
+                    .mask-gradient {
+                        mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+                        -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+                    }
+                </style>
+
+                <div class="mt-16 flex flex-wrap gap-4 justify-center">
+                    <button
+                        class="px-8 py-4 bg-brand-900 text-white rounded-full font-medium hover:bg-brand-800 transition-colors shadow-lg shadow-brand-900/20">
+                        Ver trazaNet.
+                    </button>
+                    <a href="propuestas.html"
+                        class="px-8 py-4 bg-white text-brand-900 border border-brand-200 rounded-full font-medium hover:bg-brand-50 transition-colors shadow-sm text-center">
+                        Volver
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 bg-white border-t border-brand-100">
+        <div class="w-full px-6 lg:px-12 text-center text-sm text-brand-400">
+            <div>© 2026 +CríaUY. Montevideo, Uruguay.</div>
+        </div>
+    </footer>
+
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+
+</html>

@@ -39,7 +39,6 @@ Thumbs.db
 npm-debug.log*
 
 # Temp folders
-temp-vite/
 video-processor/
 
 # Environment

@@ -1,0 +1,48 @@
+# Dependencies
+node_modules/
+.pnp/
+.pnp.js
+
+# Build outputs
+dist/
+build/
+out/
+.next/
+.vercel/
+
+# Large video files
+*.mp4
+*.mov
+*.avi
+*.mkv
+
+# Large images (optional, comment if needed)
+# *.psd
+# *.ai
+
+# Cache
+.cache/
+*.cache
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Temp folders
+temp-vite/
+video-processor/
+
+# Environment
+.env
+.env.local
+.env*.local

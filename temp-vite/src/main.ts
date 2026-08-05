@@ -1,162 +1,118 @@
+/**
+ * CARTA DE RODEO — arranque de la landing.
+ *
+ * Este archivo sólo conecta el markup con las primitivas de motion.ts.
+ * Si hay que inventar un movimiento nuevo, va en motion.ts, no acá.
+ */
+
 import './style.css'
+import gsap from 'gsap'
+import { ScrollTrigger } from 'gsap/ScrollTrigger'
+import {
+  armarEscena,
+  dibujarReglas,
+  initCrosshair,
+  initSmoothScroll,
+  odometro,
+  parallax,
+  refrescar,
+  reduceMotion,
+  revealImagen,
+  revealLineas,
+} from './motion'
 
-// Initialize Lucide icons
-document.addEventListener('DOMContentLoaded', () => {
-  // @ts-ignore
-  if (window.lucide) {
-    // @ts-ignore
-    window.lucide.createIcons();
+/* ==========================================================================
+   NAVEGACIÓN — gana su filo al despegarse del hero
+   ========================================================================== */
+
+function initNav(): void {
+  const nav = document.querySelector<HTMLElement>('[data-nav]')
+  const hero = document.getElementById('hero')
+  if (!nav || !hero) return
+
+  const observador = new IntersectionObserver(
+    ([entrada]) => {
+      nav.dataset.fija = entrada.isIntersecting ? 'no' : 'si'
+    },
+    { threshold: 0, rootMargin: '-80px 0px 0px 0px' },
+  )
+  observador.observe(hero)
+}
+
+/* ==========================================================================
+   EJE DEL AÑO — la línea se traza con el scroll y va prendiendo las etapas
+   ========================================================================== */
+
+function initEjeAnio(): void {
+  const pista = document.querySelector<HTMLElement>('[data-anio]')
+  const trazo = document.querySelector<HTMLElement>('[data-anio-trazo]')
+  const etapas = Array.from(document.querySelectorAll<HTMLElement>('[data-etapa]'))
+  if (!pista || !trazo || !etapas.length) return
+
+  // Sin movimiento, o en pantalla angosta: el eje está entero y todas las
+  // etapas legibles desde el arranque.
+  if (reduceMotion() || window.matchMedia('(max-width: 900px)').matches) {
+    trazo.style.transform = 'scaleX(1)'
+    etapas.forEach((e) => (e.dataset.activa = 'si'))
+    return
   }
 
-  // Initialize animations
-  initScrollAnimations();
-  initSmoothScroll();
-  initContactForm();
-  initNavbarScroll();
-});
+  gsap.set(trazo, { scaleX: 0 })
 
-// Intersection Observer for fade-in animations
-function initScrollAnimations() {
-  const observerOptions = {
-    root: null,
-    rootMargin: '0px',
-    threshold: 0.1
-  };
-
-  const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('visible');
-        observer.unobserve(entry.target);
-      }
-    });
-  }, observerOptions);
-
-  // Observe all fade-in-up elements
-  document.querySelectorAll('.fade-in-up').forEach(el => {
-    observer.observe(el);
-  });
+  ScrollTrigger.create({
+    trigger: pista,
+    start: 'top 72%',
+    end: 'bottom 55%',
+    scrub: 0.5,
+    onUpdate: ({ progress }) => {
+      gsap.set(trazo, { scaleX: progress })
+      // Cada etapa se prende cuando el trazo la alcanza.
+      const alcanzadas = Math.floor(progress * etapas.length + 0.35)
+      etapas.forEach((etapa, i) => {
+        etapa.dataset.activa = i < alcanzadas ? 'si' : 'no'
+      })
+    },
+  })
 }
 
-// Smooth scroll for navigation links
-function initSmoothScroll() {
-  document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-    anchor.addEventListener('click', (e) => {
-      e.preventDefault();
-      const href = anchor.getAttribute('href');
-      if (href) {
-        const target = document.querySelector(href);
-        if (target) {
-          target.scrollIntoView({
-            behavior: 'smooth',
-            block: 'start'
-          });
-        }
-      }
-    });
-  });
+/* ==========================================================================
+   ARRANQUE
+   ========================================================================== */
+
+function arrancar(): void {
+  armarEscena()
+  initSmoothScroll()
+  initCrosshair()
+  initNav()
+
+  // Texto por líneas. El hero entra solo; el resto espera al scroll.
+  document.querySelectorAll('[data-reveal-lineas]').forEach((el) => {
+    const inmediato = el.hasAttribute('data-reveal-inmediato')
+    revealLineas(el, { alScrollear: !inmediato, delay: inmediato ? 0.25 : 0 })
+  })
+
+  document.querySelectorAll('[data-reveal-imagen]').forEach(revealImagen)
+  document.querySelectorAll('[data-odometro]').forEach(odometro)
+
+  // Magnitudes del sistema: fotos 12%, rótulo de margen 18% en contramovimiento.
+  document.querySelectorAll('[data-parallax-foto]').forEach((el) => parallax(el, 12))
+  parallax(document.querySelector('[data-rotulo]'), 18)
+
+  document.querySelectorAll('.seccion, .hero').forEach(dibujarReglas)
+
+  initEjeAnio()
 }
 
-// Contact form handling
-function initContactForm() {
-  const form = document.getElementById('contactForm') as HTMLFormElement;
-
-  if (form) {
-    form.addEventListener('submit', async (e) => {
-      e.preventDefault();
-
-      const formData = new FormData(form);
-      const data = {
-        nombre: formData.get('nombre'),
-        telefono: formData.get('telefono'),
-        email: formData.get('email'),
-        mensaje: formData.get('mensaje')
-      };
-
-      // Get submit button
-      const submitBtn = form.querySelector('button[type="submit"]') as HTMLButtonElement;
-      const originalContent = submitBtn.innerHTML;
-
-      // Show loading state
-      submitBtn.innerHTML = `
-        <svg class="animate-spin w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24">
-          <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
-          <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
-        </svg>
-        Enviando...
-      `;
-      submitBtn.disabled = true;
-
-      // Simulate form submission (replace with actual API call)
-      try {
-        await new Promise(resolve => setTimeout(resolve, 1500));
-
-        // Success state
-        submitBtn.innerHTML = `
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"></path>
-          </svg>
-          ¡Mensaje Enviado!
-        `;
-        submitBtn.classList.remove('bg-brand-500', 'hover:bg-brand-400');
-        submitBtn.classList.add('bg-green-500');
-
-        // Reset form
-        form.reset();
-
-        // Reset button after 3 seconds
-        setTimeout(() => {
-          submitBtn.innerHTML = originalContent;
-          submitBtn.disabled = false;
-          submitBtn.classList.remove('bg-green-500');
-          submitBtn.classList.add('bg-brand-500', 'hover:bg-brand-400');
-        }, 3000);
-
-        console.log('Form submitted:', data);
-      } catch (error) {
-        // Error state
-        submitBtn.innerHTML = `
-          <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
-          </svg>
-          Error al enviar
-        `;
-        submitBtn.classList.remove('bg-brand-500', 'hover:bg-brand-400');
-        submitBtn.classList.add('bg-red-500');
-
-        setTimeout(() => {
-          submitBtn.innerHTML = originalContent;
-          submitBtn.disabled = false;
-          submitBtn.classList.remove('bg-red-500');
-          submitBtn.classList.add('bg-brand-500', 'hover:bg-brand-400');
-        }, 3000);
-      }
-    });
-  }
+/* SplitType mide líneas: si arranca antes de que las fuentes estén listas,
+   los cortes caen donde no van. */
+if (document.fonts?.ready) {
+  document.fonts.ready.then(() => {
+    arrancar()
+    refrescar()
+  })
+} else {
+  window.addEventListener('DOMContentLoaded', arrancar)
 }
 
-// Navbar scroll effect
-function initNavbarScroll() {
-  const navbar = document.querySelector('nav');
-
-  if (navbar) {
-    window.addEventListener('scroll', () => {
-      if (window.scrollY > 50) {
-        navbar.classList.add('bg-brand-950/95', 'shadow-lg');
-      } else {
-        navbar.classList.remove('bg-brand-950/95', 'shadow-lg');
-      }
-    });
-  }
-}
-
-// Add parallax effect to hero blobs
-window.addEventListener('scroll', () => {
-  const scrollY = window.scrollY;
-  const blobs = document.querySelectorAll('.blob');
-
-  blobs.forEach((blob, index) => {
-    const speed = (index + 1) * 0.1;
-    (blob as HTMLElement).style.transform = `translateY(${scrollY * speed}px)`;
-  });
-});
+// Las alturas cambian al rotar el teléfono o al cargar imágenes tardías.
+window.addEventListener('load', refrescar)

@@ -1,157 +1,1085 @@
+/* ==========================================================================
+   CARTA DE RODEO — sistema de diseño de +CríaUY
+   Un plano catastral que se volvió software.
+
+   Fuentes: pegar este <link> en el <head> de la página.
+   <link rel="preconnect" href="https://fonts.googleapis.com">
+   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+   <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Chivo+Mono:wght@300..700&family=Newsreader:opsz,wght@6..72,300..600&display=swap" rel="stylesheet">
+   ========================================================================== */
+
 @import "tailwindcss";
 
-/* Custom Theme Colors */
 @theme {
-  --color-brand-50: #f0fdf4;
-  --color-brand-100: #dcfce7;
-  --color-brand-200: #bbf7d0;
-  --color-brand-300: #86efac;
-  --color-brand-400: #4ade80;
-  --color-brand-500: #22c55e;
-  --color-brand-600: #16a34a;
-  --color-brand-700: #15803d;
-  --color-brand-800: #166534;
-  --color-brand-900: #14532d;
-  --color-brand-950: #052e16;
-  
-  --font-display: 'Inter', system-ui, sans-serif;
+  /* --- Paleta. El campo es ocre y seco nueve meses al año. --- */
+  --color-tinta: #0F1310;        /* texto principal, fondos invertidos. Negro verdoso, no slate */
+  --color-papel: #F4F0E6;        /* fondo base */
+  --color-papel-sombra: #E4DDCC; /* bandas alternadas, superficies de datos */
+  --color-cota: #B04A2E;         /* acento único: cifras críticas, subrayados, estado activo */
+  --color-caravana: #E0A93B;     /* marcador de posición, highlight de dato vivo */
+  --color-verde-ajado: #5C6B58;  /* capa secundaria de datos, pasto seco */
+  --color-hidrografia: #2E5A6B;  /* enlaces, estados de sistema */
+  --color-grafito: #6F6A5E;      /* labels, metadatos, líneas de grilla.
+                                    Oscurecido desde #8A8578: sobre papel ese
+                                    daba 3.2:1 y los labels son de 12-13px. */
+
+  /* --- Tres voces --- */
+  --font-display: 'Archivo', system-ui, sans-serif;   /* eje wdth: de rótulo de chapa a señalética */
+  --font-text: 'Newsreader', Georgia, serif;          /* eje óptico: calidez editorial sin rusticidad */
+  --font-mono: 'Chivo Mono', ui-monospace, monospace; /* voz del instrumento, no del IDE */
+
+  /* --- Easings. Nombrados porque cada uno tiene un trabajo distinto. --- */
+  --ease-instrumento: cubic-bezier(.16, 1, .3, 1);  /* entradas — 700ms */
+  --ease-contrapeso: cubic-bezier(.65, 0, .35, 1);  /* hover y estados — 420ms */
+  --ease-deriva: cubic-bezier(.22, .61, .36, 1);    /* capas de scroll — 1200ms */
+
+  /* Se anulan los radios y sombras del preset: nada flota, nada se redondea. */
+  --radius-sm: 0px;
+  --radius-md: 0px;
+  --radius-lg: 0px;
+  --radius-xl: 0px;
+  --radius-2xl: 0px;
+  --radius-3xl: 0px;
 }
 
-/* Scroll Smooth */
+:root {
+  /* --- Escala tipográfica fluida --- */
+  --t-display: clamp(3rem, 9.4vw, 9.5rem);
+  --t-section: clamp(2rem, 4.2vw, 4rem);
+  --t-body: clamp(1.0625rem, .9rem + .45vw, 1.3125rem);
+  --t-label: clamp(.6875rem, .62rem + .2vw, .8125rem);
+
+  /* --- Grilla: 12 columnas con canaletas asimétricas.
+         El margen ancho es el izquierdo: ahí vive el rótulo vertical y ahí
+         cuelgan los números de sección. El derecho es angosto para que los
+         titulares tengan poco donde frenar antes de irse del papel. --- */
+  --g-cols: 12;
+  --g-margin-l: 72px;
+  --g-margin-r: 32px;
+  --g-col: calc((100vw - var(--g-margin-l) - var(--g-margin-r)) / var(--g-cols));
+
+  /* --- Hairline: una sola definición para todo el sitio --- */
+  --hairline: color-mix(in oklab, var(--color-tinta) 22%, transparent);
+
+  /* --- Duraciones --- */
+  --d-entrada: 700ms;
+  --d-estado: 420ms;
+  --d-capa: 1200ms;
+}
+
+@media (max-width: 768px) {
+  :root {
+    --g-margin-l: 16px;
+    --g-margin-r: 16px;
+  }
+}
+
+/* ==========================================================================
+   BASE
+   ========================================================================== */
+
 html {
-  scroll-behavior: smooth;
+  background: var(--color-papel);
+  /* Sin scroll-behavior: smooth — el scroll suave lo maneja Lenis */
 }
 
-/* Base Styles */
+/* Lenis. Inlineado en vez de importar lenis/dist/lenis.css para no sumar
+   una dependencia de ruta interna del paquete. */
+html.lenis,
+html.lenis body { height: auto; }
+.lenis.lenis-smooth { scroll-behavior: auto !important; }
+.lenis.lenis-smooth [data-lenis-prevent] { overscroll-behavior: contain; }
+.lenis.lenis-stopped { overflow: hidden; }
+.lenis.lenis-smooth iframe { pointer-events: none; }
+
 body {
-  font-family: 'Inter', system-ui, sans-serif;
+  background: var(--color-papel);
+  color: var(--color-tinta);
+  font-family: var(--font-text);
+  font-size: var(--t-body);
+  line-height: 1.55;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
 }
 
-/* Animations */
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-10px); }
+/* Numerales tabulares en todo lo que sea dato: las cifras tienen que alinearse
+   en columna como en una planilla de campo. */
+.font-mono,
+[class*="font-mono"],
+.dato {
+  font-family: var(--font-mono);
+  font-feature-settings: "tnum" 1, "zero" 1;
+  font-variant-numeric: tabular-nums slashed-zero;
 }
 
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
+::selection {
+  background: var(--color-cota);
+  color: var(--color-papel);
+}
+
+/* ==========================================================================
+   TIPOGRAFÍA — el dato es la ilustración
+   ========================================================================== */
+
+/* El eje wdth comprimido a 70 es lo que permite tamaños de rótulo de chapa sin
+   que el titular tenga que romperse en cinco líneas. La compresión es la que
+   hace el trabajo, no el cuerpo. */
+.t-display {
+  font-family: var(--font-display);
+  font-size: var(--t-display);
+  font-variation-settings: "wdth" 70, "wght" 500;
+  line-height: .88;
+  letter-spacing: -.018em;
+  text-wrap: balance;
+}
+
+.t-section {
+  font-family: var(--font-display);
+  font-size: var(--t-section);
+  font-variation-settings: "wdth" 85, "wght" 450;
+  line-height: .95;
+  letter-spacing: -.015em;
+}
+
+.t-body {
+  font-family: var(--font-text);
+  font-size: var(--t-body);
+  font-variation-settings: "opsz" 20;
+  line-height: 1.55;
+}
+
+.t-label {
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  font-weight: 400;
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  font-feature-settings: "tnum" 1, "zero" 1;
+}
+
+/* Rótulo de chapa: el eje wdth comprimido al máximo. */
+.t-rotulo {
+  font-family: var(--font-display);
+  font-variation-settings: "wdth" 62, "wght" 700;
+  text-transform: uppercase;
+  letter-spacing: .01em;
+}
+
+/* Señalética: el mismo archivo, expandido. */
+.t-senal {
+  font-family: var(--font-display);
+  font-variation-settings: "wdth" 115, "wght" 400;
+}
+
+/* ==========================================================================
+   GRILLA — todo bloque se alinea al filo de una columna rotulada
+   ========================================================================== */
+
+.carta {
+  display: grid;
+  grid-template-columns: repeat(var(--g-cols), 1fr);
+  padding-left: var(--g-margin-l);
+  padding-right: var(--g-margin-r);
+  column-gap: 0;
+}
+
+/* Filos de columna: c-2-8 arranca en C2 y termina antes de C8. */
+.c-1-5  { grid-column: 1 / 5; }
+.c-1-7  { grid-column: 1 / 7; }
+.c-1-10 { grid-column: 1 / 10; }
+.c-1-13 { grid-column: 1 / 13; }
+.c-2-7  { grid-column: 2 / 7; }
+.c-2-8  { grid-column: 2 / 8; }
+.c-2-9  { grid-column: 2 / 9; }
+.c-2-11 { grid-column: 2 / 11; }
+.c-2-13 { grid-column: 2 / 13; }
+.c-3-8  { grid-column: 3 / 8; }
+.c-5-13 { grid-column: 5 / 13; }
+.c-7-13 { grid-column: 7 / 13; }
+.c-8-13 { grid-column: 8 / 13; }
+.c-9-13 { grid-column: 9 / 13; }
+
+@media (max-width: 900px) {
+  .c-1-5, .c-1-7, .c-1-10, .c-2-7, .c-2-8, .c-2-9, .c-2-11, .c-2-13,
+  .c-3-8, .c-5-13, .c-7-13, .c-8-13, .c-9-13 {
+    grid-column: 1 / 13;
   }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
 }
 
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 20px rgba(34, 197, 94, 0.3); }
-  50% { box-shadow: 0 0 40px rgba(34, 197, 94, 0.5); }
+/* Sangrado: la imagen se va al borde del viewport, el texto no. */
+.sangra-der { margin-right: calc(var(--g-margin-r) * -1); }
+.sangra-izq { margin-left: calc(var(--g-margin-l) * -1); }
+
+/* ==========================================================================
+   REGLAS Y TICKS — la línea es estructura, no decoración
+   ========================================================================== */
+
+.regla {
+  position: relative;
+  height: 1px;
+  background: var(--hairline);
+  transform-origin: left center;
 }
 
-@keyframes gradient-shift {
-  0% { background-position: 0% 50%; }
-  50% { background-position: 100% 50%; }
-  100% { background-position: 0% 50%; }
+/* Ticks cada 1/12 del ancho, uno por filo de columna. El gradiente se resuelve
+   contra el ancho del propio ::after, así que no lleva background-size: si lo
+   llevara, el paso se dividiría dos veces y saldría un rayado. */
+.regla--ticks::after {
+  content: "";
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  height: 7px;
+  background-image: repeating-linear-gradient(
+    to right,
+    var(--hairline) 0 1px,
+    transparent 1px calc(100% / 12)
+  );
 }
 
-.animate-float {
-  animation: float 3s ease-in-out infinite;
+.regla--ticks-abajo::after { top: auto; bottom: 0; }
+
+/* Hairlines direccionales. */
+.filo-t { border-top: 1px solid var(--hairline); }
+.filo-b { border-bottom: 1px solid var(--hairline); }
+.filo-l { border-left: 1px solid var(--hairline); }
+.filo-r { border-right: 1px solid var(--hairline); }
+
+/* Marcas de columna C1…C12 en el margen. */
+.marca-col {
+  font-family: var(--font-mono);
+  font-size: .625rem;
+  letter-spacing: .1em;
+  color: var(--color-grafito);
+  opacity: .4;
 }
 
-.animate-fade-in-up {
-  animation: fadeInUp 0.6s ease-out forwards;
+/* Rótulo vertical de margen. */
+.rotulo-vertical {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
 }
 
-.animate-pulse-glow {
-  animation: pulse-glow 2s ease-in-out infinite;
+/* ==========================================================================
+   MATERIALIDAD
+   ========================================================================== */
+
+/* Grano. SVG estático en data-URI, tileado. Nunca un filtro vivo: repintaría
+   cada frame y comería el presupuesto de scroll. */
+.grano {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  mix-blend-mode: multiply;
+  opacity: .07;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
 }
 
-.gradient-animated {
-  background-size: 200% 200%;
-  animation: gradient-shift 8s ease infinite;
+/* Duotono tinta→papel. Requiere el <svg> de filtros inyectado por motion.ts. */
+.duotono {
+  filter: url(#duotono-carta);
 }
 
-/* Staggered animations */
-.stagger-1 { animation-delay: 0.1s; }
-.stagger-2 { animation-delay: 0.2s; }
-.stagger-3 { animation-delay: 0.3s; }
-.stagger-4 { animation-delay: 0.4s; }
-.stagger-5 { animation-delay: 0.5s; }
+/* Trama de semitono encima de las fotos: le da la textura de impresión. */
+.semitono {
+  position: relative;
+}
 
-/* Initially hidden for animation */
-.fade-in-up {
+.semitono::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: repeating-linear-gradient(
+    45deg,
+    var(--color-tinta) 0 1px,
+    transparent 1px 6px
+  );
+  opacity: .04;
+}
+
+/* Bandas de papel sombra para superficies de datos. */
+.papel-sombra { background: var(--color-papel-sombra); }
+
+/* ==========================================================================
+   ANOTACIONES — la mano encima del instrumento
+   ========================================================================== */
+
+.anotacion {
+  font-family: var(--font-mono);
+  font-size: .6875rem;
+  letter-spacing: .06em;
+  color: var(--color-papel);
+  text-shadow: 0 0 1px rgba(15, 19, 16, .8);
+  font-feature-settings: "tnum" 1, "zero" 1;
+}
+
+/* Línea guía que va del texto de la anotación al punto que señala. */
+.anotacion__guia {
+  display: block;
+  height: 1px;
+  background: currentColor;
+  opacity: .6;
+}
+
+/* ==========================================================================
+   ENLACES Y ESTADOS — se separan con una línea, nunca con una sombra
+   ========================================================================== */
+
+.enlace {
+  position: relative;
+  display: inline-block;
+  color: inherit;
+  text-decoration: none;
+}
+
+.enlace::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform var(--d-estado) var(--ease-contrapeso);
+}
+
+.enlace:hover::after,
+.enlace:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+/* Acción primaria: un rótulo con filo, no un botón con radio. */
+.accion {
+  display: inline-flex;
+  align-items: center;
+  gap: .75rem;
+  padding: .875rem 1.25rem;
+  border: 1px solid var(--color-tinta);
+  background: transparent;
+  color: var(--color-tinta);
+  font-family: var(--font-mono);
+  font-size: var(--t-label);
+  text-transform: uppercase;
+  letter-spacing: .14em;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background var(--d-estado) var(--ease-contrapeso),
+              color var(--d-estado) var(--ease-contrapeso);
+}
+
+.accion:hover,
+.accion:focus-visible {
+  background: var(--color-tinta);
+  color: var(--color-papel);
+}
+
+.accion--cota {
+  border-color: var(--color-cota);
+  color: var(--color-cota);
+}
+
+.accion--cota:hover,
+.accion--cota:focus-visible {
+  background: var(--color-cota);
+  color: var(--color-papel);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-cota);
+  outline-offset: 3px;
+}
+
+/* ==========================================================================
+   CROSSHAIR — el cursor como instrumento de medición
+   ========================================================================== */
+
+.crosshair {
+  position: fixed;
+  inset: 0;
+  z-index: 55;
+  pointer-events: none;
+}
+
+.crosshair__x,
+.crosshair__y {
+  position: absolute;
+  background: var(--color-tinta);
+  opacity: .12;
+}
+
+.crosshair__x { left: 0; width: 100%; height: 1px; }
+.crosshair__y { top: 0; height: 100%; width: 1px; }
+
+/* La lectura de coordenadas se compone en difference: sale oscura sobre papel
+   y clara sobre tinta, sin tener que saber qué sección tiene debajo. */
+.crosshair__coords {
+  position: fixed;
+  right: var(--g-margin-r);
+  bottom: .75rem;
+  z-index: 56;
+  font-family: var(--font-mono);
+  font-size: .625rem;
+  letter-spacing: .1em;
+  color: #6b6b6b;
+  mix-blend-mode: difference;
+  pointer-events: none;
+  font-feature-settings: "tnum" 1, "zero" 1;
+}
+
+@media (max-width: 900px) {
+  .crosshair__coords { display: none; }
+}
+
+/* ==========================================================================
+   ESTADOS DE ENTRADA — el estado final es el que se ve sin JS
+   ========================================================================== */
+
+/* Sólo se ocultan si JS marcó el documento como capaz de animar. Sin JS, o con
+   reduced-motion, todo se ve entero desde el arranque. */
+.js-motion .reveal-lineas .line {
+  clip-path: inset(100% 0 0 0);
+  transform: translateY(.14em);
+}
+
+.js-motion .reveal-imagen {
+  clip-path: inset(0 0 100% 0);
+}
+
+.js-motion .dibujar-regla {
+  transform: scaleX(0);
+}
+
+/* ==========================================================================
+   MARGEN Y NAVEGACIÓN
+   ========================================================================== */
+
+.margen-izq {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--g-margin-l);
+  height: 100vh;
+  z-index: 40;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: 2rem;
+  pointer-events: none;
+  /* Difference: legible tanto sobre papel como sobre la sección en tinta. */
+  color: #58564f;
+  mix-blend-mode: difference;
+}
+
+.nav {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem var(--g-margin-r) 1.25rem var(--g-margin-l);
+  border-bottom: 1px solid transparent;
+  transition: background var(--d-estado) var(--ease-contrapeso),
+              border-color var(--d-estado) var(--ease-contrapeso);
+}
+
+/* Al despegarse del hero la nav gana su filo. Nada de blur ni de sombra. */
+.nav[data-fija="si"] {
+  background: var(--color-papel);
+  border-bottom-color: var(--hairline);
+}
+
+.nav__marca {
+  font-size: 1.0625rem;
+  color: var(--color-tinta);
+  text-decoration: none;
   opacity: 0;
+  transition: opacity var(--d-estado) var(--ease-contrapeso);
 }
 
-.fade-in-up.visible {
-  animation: fadeInUp 0.6s ease-out forwards;
+.nav[data-fija="si"] .nav__marca { opacity: 1; }
+
+.nav__links {
+  display: flex;
+  gap: 2rem;
+  align-items: center;
 }
 
-/* Glass Effect */
-.glass {
-  background: rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
+.nav__links a { color: var(--color-tinta); }
+
+@media (max-width: 900px) {
+  /* Sin rótulo de margen la marca es lo único que identifica el sitio en el
+     hero, así que deja de esconderse. */
+  .margen-izq { display: none; }
+  .nav__marca { opacity: 1; }
 }
 
-/* Card Hover Effects */
-.feature-card {
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+@media (max-width: 640px) {
+  .nav { padding-inline: 16px; }
+  .nav__links { gap: 1.25rem; }
 }
 
-.feature-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+/* ==========================================================================
+   01 · HERO
+   ========================================================================== */
+
+.hero {
+  position: relative;
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-top: 7rem;
+  padding-bottom: 3rem;
+  overflow: clip;
 }
 
-/* Button hover glow */
-.btn-glow:hover {
-  box-shadow: 0 0 30px rgba(34, 197, 94, 0.4);
+.hero__grid { row-gap: clamp(2rem, 5vw, 4rem); }
+
+/* El título arranca en C2 y se va del margen derecho. Se lee entero, pero
+   avisa que hay más afuera del papel. */
+.hero__titulo {
+  margin-right: calc(var(--g-margin-r) * -1.6);
+  align-self: end;
 }
 
-/* Navbar blur */
-.navbar-blur {
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+.hero__bajada { align-self: start; }
+
+.hero__parrafo {
+  margin-top: 1.5rem;
+  max-width: 42ch;
+  color: color-mix(in oklab, var(--color-tinta) 82%, transparent);
 }
 
-/* Hero gradient overlay */
-.hero-gradient {
-  background: linear-gradient(135deg, #052e16 0%, #14532d 50%, #166534 100%);
+.hero__acciones {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .75rem;
+  margin-top: 2rem;
 }
 
-/* Text gradient */
-.text-gradient {
-  background: linear-gradient(135deg, #22c55e 0%, #4ade80 50%, #86efac 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+/* El testigo ocupa las tres últimas columnas y baja hasta el pie del hero,
+   sangrando fuera del papel por abajo y por la derecha. Arranca debajo de la
+   nav para no dejar los links contra una foto oscura. */
+.hero__figura {
+  position: absolute;
+  top: 4.75rem;
+  right: 0;
+  bottom: 0;
+  width: calc(var(--g-col) * 3 + var(--g-margin-r));
+  margin: 0;
+  border-left: 1px solid var(--hairline);
 }
 
-/* Decorative elements */
-.blob {
-  border-radius: 30% 70% 70% 30% / 30% 30% 70% 70%;
-  filter: blur(40px);
+.hero__figura .reveal-imagen { height: 100%; }
+
+.hero__figura img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 50% 40%;
 }
 
-/* Custom scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
+.medida__figura img {
+  display: block;
+  width: 100%;
+  height: clamp(280px, 48vh, 520px);
+  object-fit: cover;
+  object-position: 50% 45%;
 }
 
-::-webkit-scrollbar-track {
-  background: #052e16;
+.figura__grano {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: .08;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-::-webkit-scrollbar-thumb {
-  background: #22c55e;
-  border-radius: 4px;
+.hero__figura .reveal-imagen,
+.medida__figura .reveal-imagen {
+  position: relative;
+  overflow: clip;
 }
 
-::-webkit-scrollbar-thumb:hover {
-  background: #16a34a;
+/* La anotación se para encima de la foto, como una nota de cuaderno. En el
+   testigo corre en vertical por el filo izquierdo: es una franja angosta y una
+   línea horizontal no entraría. */
+.hero__anotacion {
+  position: absolute;
+  left: .875rem;
+  bottom: 1.25rem;
+  display: flex;
+  align-items: center;
+  gap: .625rem;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+}
+
+.hero__anotacion .anotacion__guia {
+  width: 1px;
+  height: 32px;
+  flex: none;
+}
+
+.medida__anotacion {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+
+.medida__anotacion .anotacion__guia {
+  width: 28px;
+  flex: none;
+}
+
+.hero__pie {
+  margin-top: auto;
+  padding-top: 3rem;
+  align-items: end;
+}
+
+.hero__scroll {
+  grid-column: 1 / 5;
+  color: var(--color-grafito);
+}
+
+@media (max-width: 900px) {
+  .hero__titulo { margin-right: 0; }
+  .hero { padding-top: 6rem; }
+
+  /* En angosto el testigo vuelve al flujo, debajo de las acciones. */
+  .hero__figura {
+    position: static;
+    width: auto;
+    grid-column: 1 / 13;
+    margin-right: calc(var(--g-margin-r) * -1);
+  }
+  .hero__figura .reveal-imagen { height: auto; }
+  .hero__figura img { height: clamp(300px, 46vh, 420px); }
+  .hero__anotacion {
+    writing-mode: horizontal-tb;
+    transform: none;
+    left: 1rem;
+  }
+  .hero__anotacion .anotacion__guia { width: 28px; height: 1px; }
+  .hero__pie { display: none; }
+}
+
+/* ==========================================================================
+   SECCIONES — el título cuelga debajo de su regla
+   ========================================================================== */
+
+.seccion {
+  padding-block: clamp(5rem, 12vh, 9rem);
+}
+
+.seccion__cabecera {
+  margin-top: 1.75rem;
+  row-gap: 1.5rem;
+  align-items: start;
+}
+
+.seccion__num {
+  color: var(--color-cota);
+  align-self: start;
+}
+
+.seccion__nota {
+  color: var(--color-grafito);
+  justify-self: end;
+  align-self: start;
+  text-align: right;
+}
+
+@media (max-width: 900px) {
+  .seccion__nota { justify-self: start; text-align: left; }
+}
+
+/* ==========================================================================
+   02 · EL ORIGEN
+   ========================================================================== */
+
+.origen__cuerpo {
+  margin-top: clamp(3rem, 7vw, 5rem);
+  row-gap: 3rem;
+  align-items: start;
+}
+
+.origen__texto p + p { margin-top: 1.25rem; }
+
+.origen__cierre {
+  margin-top: 2rem !important;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--hairline);
+  font-size: calc(var(--t-body) * 1.15);
+}
+
+.origen__cierre em {
+  font-style: italic;
+  color: var(--color-cota);
+}
+
+/* Ficha: superficie de datos, se separa por papel sombra y no por sombra. */
+.ficha {
+  padding: 1.75rem;
+  align-self: start;
+}
+
+.ficha__fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1.5rem;
+  padding-block: .875rem;
+  border-bottom: 1px solid var(--hairline);
+}
+
+.ficha__fila:last-child { border-bottom: 0; }
+
+/* La ficha se apoya en papel-sombra, que es más oscuro que el papel: el
+   grafito de los labels no alcanza AA ahí y hay que bajarlo. */
+.ficha__clave {
+  color: color-mix(in oklab, var(--color-tinta) 68%, transparent);
+  line-height: 1.4;
+}
+
+.ficha__valor {
+  font-size: .9375rem;
+  text-align: right;
+  flex: none;
+}
+
+.ficha__valor--cota { color: var(--color-cota); }
+
+/* ==========================================================================
+   03 · EL SISTEMA — despiece
+   ========================================================================== */
+
+.despiece {
+  margin-top: clamp(3rem, 7vw, 5rem);
+  list-style: none;
+  padding: 0;
+  row-gap: 0;
+}
+
+.despiece__fila {
+  display: grid;
+  grid-template-columns: 4rem 3rem minmax(0, 15rem) minmax(0, 1fr) auto;
+  gap: 1.5rem;
+  align-items: baseline;
+  padding-block: 1.75rem;
+  padding-inline: .75rem;
+  border-top: 1px solid var(--hairline);
+  transition: background var(--d-estado) var(--ease-contrapeso),
+              color var(--d-estado) var(--ease-contrapeso);
+}
+
+.despiece__fila:last-child { border-bottom: 1px solid var(--hairline); }
+
+/* La fila entera se invierte: es la única "tarjeta" que hay, y sólo existe
+   mientras el cursor está encima. */
+.despiece__fila:hover,
+.despiece__fila:focus-within {
+  background: var(--color-tinta);
+  color: var(--color-papel);
+}
+
+.despiece__num { color: var(--color-cota); font-size: .875rem; }
+
+.despiece__fila:hover .despiece__num { color: var(--color-caravana); }
+
+.despiece__icono {
+  display: block;
+  width: 32px;
+  height: 32px;
+  align-self: center;
+  color: currentColor;
+}
+
+.despiece__icono svg { width: 100%; height: 100%; }
+
+.despiece__nombre {
+  font-size: 1.25rem;
+  line-height: 1.15;
+}
+
+.despiece__desc {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: color-mix(in oklab, currentColor 78%, transparent);
+}
+
+.despiece__dato {
+  font-size: .75rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: color-mix(in oklab, currentColor 60%, transparent);
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .despiece__fila {
+    grid-template-columns: 3rem 1fr;
+    gap: .5rem 1rem;
+    align-items: start;
+  }
+  .despiece__icono { grid-row: 1; grid-column: 1; }
+  .despiece__num { grid-row: 1; grid-column: 2; }
+  .despiece__nombre { grid-column: 1 / 3; margin-top: .5rem; }
+  .despiece__desc { grid-column: 1 / 3; }
+  .despiece__dato { grid-column: 1 / 3; }
+}
+
+/* ==========================================================================
+   04 · UN AÑO DE RODEO — eje temporal
+   ========================================================================== */
+
+.anio__pista {
+  margin-top: clamp(3rem, 7vw, 5rem);
+  padding-left: var(--g-margin-l);
+  padding-right: var(--g-margin-r);
+}
+
+.anio__eje {
+  position: relative;
+  height: 1px;
+  background: color-mix(in oklab, var(--color-tinta) 12%, transparent);
+  margin-bottom: 2.5rem;
+}
+
+.anio__eje-trazo {
+  position: absolute;
+  inset: 0;
+  background: var(--color-cota);
+  transform-origin: left center;
+}
+
+.anio__etapas {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 2rem;
+}
+
+.anio__etapa {
+  position: relative;
+  padding-right: 1.5rem;
+  opacity: .35;
+  transition: opacity var(--d-estado) var(--ease-contrapeso);
+}
+
+.anio__etapa[data-activa="si"] { opacity: 1; }
+
+.anio__nodo {
+  position: absolute;
+  top: calc(-2.5rem - 4px);
+  left: 0;
+  width: 9px;
+  height: 9px;
+  border: 1px solid var(--color-tinta);
+  background: var(--color-papel);
+  transition: background var(--d-estado) var(--ease-contrapeso),
+              border-color var(--d-estado) var(--ease-contrapeso);
+}
+
+.anio__etapa[data-activa="si"] .anio__nodo {
+  background: var(--color-cota);
+  border-color: var(--color-cota);
+}
+
+.anio__mes {
+  display: block;
+  font-size: .75rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--color-grafito);
+  margin-bottom: .625rem;
+}
+
+.anio__nombre {
+  font-size: clamp(1.25rem, 2.2vw, 1.875rem);
+  margin-bottom: .75rem;
+}
+
+.anio__desc {
+  font-size: 1rem;
+  line-height: 1.5;
+  color: color-mix(in oklab, var(--color-tinta) 75%, transparent);
+}
+
+@media (max-width: 900px) {
+  .anio__etapas { grid-template-columns: 1fr; gap: 0; }
+  .anio__eje { display: none; }
+  .anio__etapa {
+    opacity: 1;
+    padding-block: 1.5rem;
+    border-top: 1px solid var(--hairline);
+  }
+  .anio__nodo { position: static; display: inline-block; margin-bottom: .75rem; }
+}
+
+/* ==========================================================================
+   05 · A MEDIDA
+   ========================================================================== */
+
+.medida__cuerpo {
+  margin-top: clamp(3rem, 7vw, 5rem);
+  row-gap: 3rem;
+  align-items: center;
+}
+
+.medida__figura {
+  position: relative;
+  margin: 0;
+}
+
+.medida__texto p + p { margin-top: 1.25rem; }
+
+.medida__accion { margin-top: 2rem; }
+
+/* ==========================================================================
+   06 · CONTACTO — el papel se da vuelta
+   ========================================================================== */
+
+.contacto {
+  background: var(--color-tinta);
+  color: var(--color-papel);
+  padding-bottom: clamp(4rem, 9vh, 7rem);
+}
+
+.contacto .regla--clara,
+.regla--clara {
+  background: color-mix(in oklab, var(--color-papel) 24%, transparent);
+}
+
+.contacto .regla--ticks::after {
+  background-image: repeating-linear-gradient(
+    to right,
+    color-mix(in oklab, var(--color-papel) 24%, transparent) 0 1px,
+    transparent 1px calc(100% / 12)
+  );
+}
+
+.contacto__titulo { margin-top: .5rem; }
+
+.contacto .seccion__num { color: var(--color-caravana); }
+
+.contacto__cuerpo {
+  margin-top: clamp(3rem, 7vw, 5rem);
+  row-gap: 3rem;
+  align-items: end;
+}
+
+.contacto__parrafo { color: color-mix(in oklab, var(--color-papel) 80%, transparent); }
+
+.contacto__mail {
+  display: block;
+  font-size: clamp(1.25rem, 3vw, 2.25rem);
+  color: var(--color-papel);
+  text-decoration: none;
+  margin-bottom: 1.25rem;
+  transition: color var(--d-estado) var(--ease-contrapeso);
+}
+
+.contacto__mail:hover,
+.contacto__mail:focus-visible { color: var(--color-caravana); }
+
+.contacto__ubic {
+  margin-top: 1.25rem;
+  color: color-mix(in oklab, var(--color-papel) 68%, transparent);
+}
+
+.contacto :focus-visible { outline-color: var(--color-caravana); }
+
+/* ==========================================================================
+   PIE
+   ========================================================================== */
+
+.pie {
+  background: var(--color-tinta);
+  color: var(--color-papel);
+  padding-bottom: 2.5rem;
+}
+
+.pie__grid {
+  row-gap: 1.5rem;
+  align-items: center;
+  padding-top: 2rem;
+  border-top: 1px solid color-mix(in oklab, var(--color-papel) 18%, transparent);
+}
+
+.pie__marca { font-size: 1.0625rem; }
+
+.pie__links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-self: end;
+}
+
+.pie__links a { color: color-mix(in oklab, var(--color-papel) 78%, transparent); }
+.pie__links a:hover { color: var(--color-papel); }
+
+.pie__copy {
+  color: color-mix(in oklab, var(--color-papel) 66%, transparent);
+  margin-top: 1rem;
+}
+
+@media (max-width: 900px) {
+  .pie__links { justify-self: start; }
+}
+
+/* En superficie oscura el crosshair se dibuja en papel, no en tinta. */
+.contacto,
+.pie { --hairline: color-mix(in oklab, var(--color-papel) 22%, transparent); }
+
+/* ==========================================================================
+   PROHIBICIONES DE LA DIRECCIÓN
+   1. border-radius > 2px y box-shadow con blur. Los bordes son cortes de
+      guillotina, no objetos flotando.
+   2. Íconos de librería (Lucide/Feather) y cards con círculo-ícono arriba.
+      Todo pictograma se dibuja a mano en SVG de 1px stroke.
+   3. Gradientes de marca, glassmorphism, backdrop-filter. Si algo necesita
+      separarse del fondo, se separa con una línea o con papel sombra.
+   ========================================================================== */
+
+/* ==========================================================================
+   REDUCED MOTION — el estado final, sin recorrido
+   ========================================================================== */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: .01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .js-motion .reveal-lineas .line,
+  .js-motion .reveal-imagen,
+  .js-motion .dibujar-regla {
+    clip-path: none;
+    transform: none;
+  }
+
+  .crosshair { display: none; }
 }

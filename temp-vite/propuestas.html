@@ -4,42 +4,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Soluciones | +CríaUY</title>
+    <title>Soluciones | +CríaUY</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Space Grotesk', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['IBM Plex Mono', 'monospace'],
                     },
                     colors: {
-                        brand: {
-                            50: '#f8fafc',
-                            100: '#f1f5f9',
-                            200: '#e2e8f0',
-                            300: '#cbd5e1',
-                            400: '#94a3b8',
-                            500: '#64748b',
-                            600: '#475569',
-                            700: '#334155',
-                            800: '#1e293b',
-                            900: '#0f172a',
-                        },
-                        traza: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            400: '#4ade80',
-                            500: '#22c55e',
-                            600: '#16a34a',
-                            700: '#15803d',
-                        }
+                        bg: '#0E1116',
+                        fg: '#F3F0E8',
+                        muted: '#858581',
+                        secondary: '#C4C1BA',
+                        surface: '#121923',
+                        'surface-muted': '#162230',
+                        border: '#25303D',
+                        accent: '#4A7FB5',
+                        'accent-hover': '#5B8FC4',
+                        'accent-dark': '#3A6B99',
+                        primary: '#153A6B',
+                        'primary-hover': '#1C4A85',
+                        sky: '#8EC9F1',
+                        'sky-soft': '#C4E5F8',
+                        deep: '#080C12',
                     },
                     letterSpacing: {
                         'extra-wide': '0.2em',
@@ -66,21 +61,9 @@
             transform: translateY(0);
         }
 
-        .stagger-1 {
-            transition-delay: 0.1s;
-        }
-
-        .stagger-2 {
-            transition-delay: 0.2s;
-        }
-
-        .stagger-3 {
-            transition-delay: 0.3s;
-        }
-
-        .hero-gradient {
-            background: radial-gradient(circle at 70% 30%, rgba(59, 130, 246, 0.03) 0%, transparent 50%);
-        }
+        .stagger-1 { transition-delay: 0.1s; }
+        .stagger-2 { transition-delay: 0.2s; }
+        .stagger-3 { transition-delay: 0.3s; }
 
         .grain {
             position: fixed;
@@ -90,259 +73,195 @@
             height: 100%;
             pointer-events: none;
             z-index: 50;
-            opacity: 0.02;
+            opacity: 0.035;
             background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .hero-gradient-blob {
+            position: absolute;
+            border-radius: 9999px;
+            filter: blur(120px);
+            opacity: 0.55;
+            animation: blobMove 12s ease-in-out infinite alternate;
+        }
+
+        .hero-gradient-blob:nth-child(1) {
+            top: -20%;
+            left: -10%;
+            width: 60%;
+            height: 60%;
+            background: radial-gradient(circle, rgba(21, 58, 107, 0.9) 0%, transparent 70%);
+            animation-duration: 14s;
+        }
+
+        .hero-gradient-blob:nth-child(2) {
+            top: 10%;
+            right: -15%;
+            width: 55%;
+            height: 55%;
+            background: radial-gradient(circle, rgba(74, 127, 181, 0.7) 0%, transparent 70%);
+            animation-duration: 16s;
+            animation-delay: -4s;
+        }
+
+        .hero-gradient-blob:nth-child(3) {
+            bottom: -25%;
+            left: 15%;
+            width: 55%;
+            height: 55%;
+            background: radial-gradient(circle, rgba(142, 201, 241, 0.5) 0%, transparent 70%);
+            animation-duration: 18s;
+            animation-delay: -8s;
+        }
+
+        @keyframes blobMove {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(5%, -5%) scale(1.08); }
+        }
+
+        .project-title {
+            background: linear-gradient(135deg, #F3F0E8 0%, #8EC9F1 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
     </style>
 </head>
 
-<body class="bg-brand-50 text-brand-800 antialiased selection:bg-brand-200 selection:text-brand-900">
+<body class="bg-bg text-fg antialiased selection:bg-accent/30 selection:text-bg">
 
     <div class="grain"></div>
 
     <!-- Navigation -->
-    <!-- Navigation -->
     <nav id="navbar" class="fixed top-0 w-full z-40 bg-transparent transition-colors duration-300">
         <div class="w-full px-6 lg:px-12 py-6 flex justify-between items-center">
-            <a href="index.html"
-                class="font-display font-bold text-xl tracking-tight text-white transition-opacity duration-300 hover:text-brand-200">
-                +CríaUY
+            <a href="index.html" class="font-sans font-bold text-xl tracking-tight transition-opacity duration-300 hover:opacity-80">
+                <span class="text-accent">+</span>
+                <span class="text-fg">Cría</span>
+                <span class="text-sky">UY</span>
             </a>
 
-            <div class="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide text-white/90">
-                <a href="index.html" class="relative group transition-colors hover:text-white">
+            <div class="hidden md:flex items-center gap-8 text-sm font-semibold tracking-wide text-fg/80">
+                <a href="index.html" class="relative group transition-colors hover:text-fg">
                     Inicio
-                    <span
-                        class="absolute -bottom-0.5 left-0 w-0 h-[1.5px] bg-white transition-all duration-300 ease-out group-hover:w-full"></span>
+                    <span class="absolute -bottom-0.5 left-0 w-0 h-[1.5px] bg-accent transition-all duration-300 ease-out group-hover:w-full"></span>
                 </a>
-                <a href="#" class="relative group transition-colors hover:text-white">
+                <a href="#" class="relative group transition-colors text-fg">
                     Tecnologías
-                    <span
-                        class="absolute -bottom-0.5 left-0 w-full h-[1.5px] bg-white transition-all duration-300 ease-out"></span>
+                    <span class="absolute -bottom-0.5 left-0 w-full h-[1.5px] bg-accent transition-all duration-300 ease-out"></span>
                 </a>
-                <a href="#contacto" class="relative transition-colors text-white font-semibold hover:text-white/90">
+                <a href="index.html#contacto" class="relative transition-colors text-fg font-semibold hover:text-fg/80">
                     Contacto
-                    <span class="absolute -bottom-0.5 left-0 w-full h-[1.5px] bg-white"></span>
+                    <span class="absolute -bottom-0.5 left-0 w-full h-[1.5px] bg-accent"></span>
                 </a>
             </div>
 
-            <button class="md:hidden text-white">
+            <button id="menuBtn" class="md:hidden text-fg">
                 <i data-lucide="menu" class="w-6 h-6"></i>
             </button>
         </div>
+
+        <!-- Mobile menu -->
+        <div id="mobileMenu" class="hidden md:hidden bg-surface border-b border-border px-6 py-6">
+            <ul class="flex flex-col gap-4 text-lg font-semibold text-fg">
+                <li><a href="index.html" class="block py-2">Inicio</a></li>
+                <li><a href="#" class="block py-2 text-accent">Tecnologías</a></li>
+                <li><a href="index.html#contacto" class="block py-2">Contacto</a></li>
+            </ul>
+        </div>
     </nav>
 
-    <!-- Page Header -->
-    <section class="relative pt-48 pb-24 flex items-center bg-brand-900 overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-t from-brand-900 via-brand-800 to-brand-900"></div>
-        <div class="absolute inset-0 opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
+    <!-- Hero Technologies -->
+    <section class="relative min-h-[88vh] flex items-center justify-center bg-bg overflow-hidden">
+        <div class="absolute inset-0 pointer-events-none">
+            <div class="hero-gradient-blob"></div>
+            <div class="hero-gradient-blob"></div>
+            <div class="hero-gradient-blob"></div>
+            <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(14,17,22,0.6)_100%)]"></div>
+        </div>
 
-        <div class="w-full px-6 lg:px-12 pt-10 relative z-10">
-            <div class="max-w-7xl mx-auto text-center fade-in-up">
-                <p class="text-brand-300 font-mono text-sm mb-6 tracking-extra-wide uppercase">
+        <div class="relative z-10 w-full px-6 lg:px-12 pt-32 pb-24 text-center">
+            <div class="max-w-4xl mx-auto fade-in-up">
+                <span class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-surface/80 border border-border text-accent text-xs font-mono tracking-wider uppercase mb-8">
+                    <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
                     Ecosistema Digital
-                </p>
-                <h1 id="typewriter-title"
-                    class="font-display text-5xl md:text-7xl lg:text-8xl font-light leading-tight tracking-tight text-white mb-4 min-h-[1.2em]">
-                    <!-- Content controlled by JS -->
+                </span>
+
+                <h1 class="font-sans text-5xl md:text-7xl lg:text-8xl font-bold text-fg mb-6 tracking-tight text-balance leading-[1.05]">
+                    Tecnologías
                 </h1>
-                <p class="text-brand-300 text-xl md:text-2xl font-light fade-in-up stagger-1">
-                    nuestras soluciones a distintos problemas
+
+                <p class="text-muted text-lg md:text-xl max-w-2xl mx-auto mb-10 text-balance leading-relaxed">
+                    Nuestras soluciones a distintos problemas del campo. Software, robótica y geolocalización pensados para el ganadero uruguayo.
                 </p>
+
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <a href="#proyectos" class="group inline-flex items-center gap-2 px-8 py-4 bg-primary text-fg rounded-full font-semibold hover:bg-primary-hover transition-all active:scale-[0.97]">
+                        Ver soluciones
+                        <i data-lucide="arrow-down" class="w-4 h-4 transition-transform group-hover:translate-y-0.5"></i>
+                    </a>
+                    <a href="index.html#contacto" class="px-8 py-4 border border-border text-fg rounded-full font-semibold hover:bg-fg/5 transition-colors">
+                        Contactar
+                    </a>
+                </div>
             </div>
         </div>
     </section>
 
-    <!-- Tree Map Layout -->
-    <section class="min-h-screen bg-brand-50 py-12 md:py-24 relative overflow-hidden">
+    <!-- Projects Grid -->
+    <section id="proyectos" class="min-h-screen bg-bg py-12 md:py-24 relative overflow-hidden">
         <div class="w-full px-4 md:px-6 lg:px-12 relative z-10">
-            <div class="max-w-7xl mx-auto">
+            <div class="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
 
-                <!-- Main Tree Container -->
-                <div class="relative border-l-2 border-brand-200 ml-2 md:ml-12 pl-6 md:pl-16 space-y-12 md:space-y-24">
-
-                    <!-- Branch: Software -->
-                    <div class="relative fade-in-up">
-                        <!-- Connector Dot & Line -->
-                        <div class="absolute -left-8 md:-left-16 top-[33px] w-8 md:w-16 h-0.5 bg-brand-200"></div>
-                        <div
-                            class="absolute -left-[41px] md:-left-[73px] top-6 w-5 h-5 rounded-full border-4 border-brand-50 bg-brand-600 z-10">
+                <!-- trazaNet -->
+                <a href="trazanet.html" class="group block fade-in-up stagger-1">
+                    <div class="h-full bg-surface border border-border rounded-2xl p-8 transition-all duration-300 hover:border-sky/50 hover:bg-surface-muted/50">
+                        <div class="w-12 h-12 rounded-full bg-surface-muted border border-border flex items-center justify-center mb-8">
+                            <i data-lucide="scan-line" class="w-5 h-5 text-accent"></i>
                         </div>
-
-                        <!-- Branch Title -->
-                        <div class="mb-12">
-                            <span
-                                class="inline-block px-3 py-1 bg-brand-100 text-brand-700 text-xs font-mono rounded-full mb-4">
-                                01
-                            </span>
-                            <h2 class="font-display text-4xl font-light text-brand-900">Software</h2>
-                        </div>
-
-                        <!-- Sub-branch: trazaNet -->
-                        <div class="relative border-l-2 border-brand-200 ml-4 pl-8 md:pl-12 space-y-12">
-                            <!-- Connector Dot & Line -->
-                            <div class="absolute -left-4 top-[39px] w-4 h-0.5 bg-brand-200"></div>
-
-
-                            <!-- Content Wrapper -->
-                            <div
-                                class="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-brand-100 overflow-hidden transform hover:-translate-y-1">
-                                <div class="grid lg:grid-cols-2">
-                                    <!-- Left: Product Info -->
-                                    <div class="p-6 md:p-12 order-2 lg:order-1 flex flex-col justify-center">
-
-
-                                        <h3
-                                            class="font-display text-4xl md:text-5xl font-bold text-brand-900 mb-6 tracking-tight">
-                                            trazaNet.
-                                        </h3>
-
-                                        <p class="text-brand-600 text-lg leading-relaxed mb-8 font-light">
-                                            Sistema integral que centraliza la lectura y la gestión ganadera en un solo
-                                            lugar.
-                                        </p>
-
-                                        <ul class="space-y-4 mb-10">
-                                            <li class="flex items-start gap-3 text-brand-700">
-                                                <i data-lucide="check-circle-2"
-                                                    class="w-5 h-5 mt-0.5 text-brand-500"></i>
-                                                <span>Gestión completa de stock</span>
-                                            </li>
-                                            <li class="flex items-start gap-3 text-brand-700">
-                                                <i data-lucide="check-circle-2"
-                                                    class="w-5 h-5 mt-0.5 text-brand-500"></i>
-                                                <span>Calendario Sanitario</span>
-                                            </li>
-                                            <li class="flex items-start gap-3 text-brand-700">
-                                                <i data-lucide="check-circle-2"
-                                                    class="w-5 h-5 mt-0.5 text-brand-500"></i>
-                                                <span>Modo Offline para campo</span>
-                                            </li>
-                                        </ul>
-
-                                        <div class="flex flex-wrap gap-4">
-                                            <button
-                                                class="px-8 py-4 bg-brand-900 text-white rounded-full font-medium hover:bg-brand-800 transition-colors shadow-lg shadow-brand-900/20">
-                                                Acceder web
-                                            </button>
-                                            <a href="trazanet.html"
-                                                class="px-8 py-4 bg-white text-brand-900 border border-brand-200 rounded-full font-medium hover:bg-brand-50 transition-colors shadow-sm text-center">
-                                                Conocer más
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                    <!-- Right: Image Cover -->
-                                    <div
-                                        class="relative order-1 lg:order-2 min-h-[250px] md:min-h-[400px] lg:min-h-full h-full w-full">
-                                        <img src="/istockphoto-1486961453-640x640.avif" alt="Ganado vacuno"
-                                            class="absolute inset-0 w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <span class="inline-block px-3 py-1 bg-surface-muted border border-border text-muted text-xs font-mono rounded-full mb-4">Software</span>
+                        <h2 class="project-title font-sans text-3xl md:text-4xl font-bold mb-4 tracking-tight">trazaNet.</h2>
+                        <p class="text-muted text-base leading-relaxed font-light mb-8">
+                            Sistema integral que centraliza la lectura y la gestión ganadera en un solo lugar.
+                        </p>
+                        <span class="inline-flex items-center gap-2 text-sm font-semibold text-sky group-hover:gap-3 transition-all">
+                            Conocer más <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                        </span>
                     </div>
+                </a>
 
-                    <!-- Branch: Hardware -->
-                    <div class="relative fade-in-up stagger-1">
-                        <!-- Connector Dot & Line -->
-                        <div class="absolute -left-8 md:-left-16 top-[33px] w-8 md:w-16 h-0.5 bg-brand-200"></div>
-                        <div
-                            class="absolute -left-[41px] md:-left-[73px] top-6 w-5 h-5 rounded-full border-4 border-brand-50 bg-brand-400 z-10">
+                <!-- Proboscis -->
+                <div class="group block fade-in-up stagger-2">
+                    <div class="h-full bg-surface border border-border rounded-2xl p-8 transition-all duration-300 hover:border-sky/50 hover:bg-surface-muted/50">
+                        <div class="w-12 h-12 rounded-full bg-surface-muted border border-border flex items-center justify-center mb-8">
+                            <i data-lucide="bot" class="w-5 h-5 text-accent"></i>
                         </div>
-
-                        <!-- Branch Title -->
-                        <div class="mb-12">
-                            <span
-                                class="inline-block px-3 py-1 bg-brand-100 text-brand-700 text-xs font-mono rounded-full mb-4">
-                                02
-                            </span>
-                            <h2 class="font-display text-4xl font-light text-brand-900">Hardware</h2>
-                        </div>
-
-                        <!-- Sub-branch: Proboscis -->
-                        <div class="relative border-l-2 border-brand-200 ml-4 pl-8 md:pl-12 space-y-12 pb-12">
-                            <!-- Connector Dot & Line -->
-                            <div class="absolute -left-4 top-[39px] w-4 h-0.5 bg-brand-200"></div>
-
-                            <!-- Content Wrapper -->
-                            <div
-                                class="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-brand-100 overflow-hidden transform hover:-translate-y-1">
-                                <div class="grid lg:grid-cols-2">
-                                    <!-- Left: Product Info -->
-                                    <div class="p-6 md:p-12 order-2 lg:order-1 flex flex-col justify-center">
-
-                                        <h3
-                                            class="font-display text-3xl md:text-4xl font-bold text-brand-900 mb-6 tracking-tight">
-                                            Proboscis.
-                                        </h3>
-
-                                        <p class="text-brand-600 text-lg leading-relaxed mb-8 font-light">
-                                            Robot autónomo para el combate de la cardilla. Innovación en desarrollo para
-                                            la limpieza eficiente de campos.
-                                        </p>
-
-                                        <div
-                                            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-mono mb-6">
-                                            <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-                                            En Desarrollo
-                                        </div>
-                                    </div>
-
-                                    <!-- Right: Image Cover (Placeholder) -->
-                                    <div
-                                        class="relative order-1 lg:order-2 min-h-[200px] md:min-h-[300px] lg:min-h-full h-full w-full bg-brand-900 p-8 flex items-center justify-center">
-                                        <i data-lucide="bot" class="w-24 h-24 text-white/20"></i>
-                                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Sub-branch: GeoMu -->
-                        <div class="relative border-l-2 border-brand-200 ml-4 pl-8 md:pl-12 space-y-12">
-                            <!-- Connector Dot & Line -->
-                            <div class="absolute -left-4 top-[39px] w-4 h-0.5 bg-brand-200"></div>
-
-                            <!-- Content Wrapper -->
-                            <div
-                                class="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-brand-100 overflow-hidden transform hover:-translate-y-1">
-                                <div class="grid lg:grid-cols-2">
-                                    <!-- Left: Product Info -->
-                                    <div class="p-6 md:p-12 order-2 lg:order-1 flex flex-col justify-center">
-
-                                        <h3
-                                            class="font-display text-3xl md:text-4xl font-bold text-brand-900 mb-6 tracking-tight">
-                                            GeoMu.
-                                        </h3>
-
-                                        <p class="text-brand-600 text-lg leading-relaxed mb-8 font-light">
-                                            Sistema avanzado para la geolocalización del ganado. Monitoreo en tiempo
-                                            real de la ubicación de tus animales.
-                                        </p>
-
-                                        <div
-                                            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-mono mb-6">
-                                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-                                            Próximamente
-                                        </div>
-                                    </div>
-
-                                    <!-- Right: Image Cover (Placeholder) -->
-                                    <div
-                                        class="relative order-1 lg:order-2 min-h-[200px] md:min-h-[300px] lg:min-h-full h-full w-full bg-brand-800 p-8 flex items-center justify-center">
-                                        <i data-lucide="map-pin" class="w-24 h-24 text-white/20"></i>
-                                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <span class="inline-flex items-center gap-2 px-3 py-1 bg-accent-dark/20 border border-accent/20 text-accent text-xs font-mono rounded-full mb-4">
+                            <span class="w-2 h-2 rounded-full bg-accent animate-pulse"></span>
+                            En desarrollo
+                        </span>
+                        <h2 class="project-title font-sans text-3xl md:text-4xl font-bold mb-4 tracking-tight">Proboscis.</h2>
+                        <p class="text-muted text-base leading-relaxed font-light mb-8">
+                            Robot autónomo para el combate de la cardilla. Innovación en desarrollo para la limpieza eficiente de campos.
+                        </p>
                     </div>
+                </div>
 
+                <!-- GeoMu -->
+                <div class="group block fade-in-up stagger-3">
+                    <div class="h-full bg-surface border border-border rounded-2xl p-8 transition-all duration-300 hover:border-sky/50 hover:bg-surface-muted/50">
+                        <div class="w-12 h-12 rounded-full bg-surface-muted border border-border flex items-center justify-center mb-8">
+                            <i data-lucide="map-pin" class="w-5 h-5 text-accent"></i>
+                        </div>
+                        <span class="inline-flex items-center gap-2 px-3 py-1 bg-sky/10 border border-sky/30 text-sky text-xs font-mono rounded-full mb-4">
+                            <span class="w-2 h-2 rounded-full bg-sky"></span>
+                            Próximamente
+                        </span>
+                        <h2 class="project-title font-sans text-3xl md:text-4xl font-bold mb-4 tracking-tight">GeoMu.</h2>
+                        <p class="text-muted text-base leading-relaxed font-light mb-8">
+                            Sistema avanzado para la geolocalización del ganado. Monitoreo en tiempo real de la ubicación de tus animales.
+                        </p>
+                    </div>
                 </div>
 
             </div>
@@ -350,33 +269,38 @@
     </section>
 
     <!-- Contact Section -->
-    <section id="contacto" class="py-32 bg-brand-900 text-white">
-        <div class="w-full px-6 lg:px-12">
+    <section id="contacto" class="py-32 bg-bg text-fg relative overflow-hidden">
+        <div class="absolute inset-0 pointer-events-none">
+            <div class="absolute top-1/4 left-1/4 w-[500px] h-[500px] rounded-full bg-primary/10 blur-[140px]"></div>
+            <div class="absolute bottom-1/4 right-1/4 w-[450px] h-[450px] rounded-full bg-sky/10 blur-[120px]"></div>
+        </div>
+        <div class="w-full px-6 lg:px-12 relative z-10">
             <div class="max-w-4xl mx-auto text-center fade-in-up">
-                <h2 class="font-display text-4xl md:text-6xl font-light mb-6">Hablemos</h2>
-                <p class="text-brand-300 text-lg mb-12 max-w-2xl mx-auto">
+                <h2 class="font-sans text-4xl md:text-6xl font-light mb-6">Hablemos</h2>
+                <p class="text-muted text-lg mb-12 max-w-2xl mx-auto">
                     ¿Listo para digitalizar tu establecimiento? Estamos aquí para ayudarte en la implementación.
                 </p>
 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-                    <a href="mailto:hola@mascriauy.com"
-                        class="px-8 py-4 bg-white text-brand-900 rounded-full font-medium hover:bg-brand-100 transition-colors flex items-center gap-2">
+                    <a href="mailto:hola@mascriauy.com" class="px-8 py-4 bg-primary text-fg rounded-full font-semibold hover:bg-primary-hover transition-colors flex items-center gap-2">
                         <i data-lucide="mail" class="w-4 h-4"></i>
                         hola@mascriauy.com
                     </a>
-                    <a href="#"
-                        class="px-8 py-4 border border-brand-700 text-white rounded-full font-medium hover:bg-brand-800 transition-colors">
+                    <a href="#" class="px-8 py-4 border border-border text-fg rounded-full font-semibold hover:bg-fg/5 transition-colors">
                         Agenda una demo
                     </a>
                 </div>
 
-                <div
-                    class="pt-8 border-t border-brand-800 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-brand-400">
-                    <div class="font-display text-lg text-white">+CríaUY</div>
+                <div class="pt-8 border-t border-border flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-muted">
+                    <div class="font-sans text-lg font-bold tracking-tight">
+                        <span class="text-accent">+</span>
+                        <span class="text-fg">Cría</span>
+                        <span class="text-sky">UY</span>
+                    </div>
                     <div class="flex gap-6">
-                        <a href="#" class="hover:text-white transition-colors">Instagram</a>
-                        <a href="#" class="hover:text-white transition-colors">LinkedIn</a>
-                        <a href="#" class="hover:text-white transition-colors">Twitter</a>
+                        <a href="#" class="hover:text-fg transition-colors">Instagram</a>
+                        <a href="#" class="hover:text-fg transition-colors">LinkedIn</a>
+                        <a href="#" class="hover:text-fg transition-colors">Twitter</a>
                     </div>
                     <div>© 2026 +CríaUY. Montevideo, Uruguay.</div>
                 </div>
@@ -384,24 +308,9 @@
         </div>
     </section>
 
-    <style>
-        /* Typewriter Cursor */
-        .cursor::after {
-            content: '|';
-            animation: blink 1s step-start infinite;
-        }
-
-        @keyframes blink {
-            50% {
-                opacity: 0;
-            }
-        }
-    </style>
     <script>
-        // Initialize Lucide icons
         lucide.createIcons();
 
-        // Intersection Observer for fade-in animations
         const observerOptions = {
             root: null,
             rootMargin: '0px',
@@ -419,115 +328,32 @@
 
         document.querySelectorAll('.fade-in-up').forEach((el) => observer.observe(el));
 
-        // Smooth scroll for anchor links
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
+                    target.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
             });
         });
 
-        // Typewriter Effect
-        document.addEventListener('DOMContentLoaded', () => {
-            const titleElement = document.getElementById('typewriter-title');
-            if (!titleElement) return;
-
-            const text1 = "Tecnologías";
-            const text2 = "";
-
-            // Clear initial content
-            titleElement.innerHTML = '<span class="text-white"></span><span class="text-brand-400"></span>';
-
-            const span1 = titleElement.querySelectorAll('span')[0];
-            const span2 = titleElement.querySelectorAll('span')[1];
-
-            let i = 0;
-            let j = 0;
-
-            function typeLine1() {
-                if (i < text1.length) {
-                    span1.textContent += text1.charAt(i);
-                    span1.classList.add('cursor');
-                    i++;
-                    setTimeout(typeLine1, 80); // Typing speed
-                } else {
-                    // Keep cursor blinking at the end if desired
-                    // span1.classList.remove('cursor'); 
-                }
-            }
-
-
-
-            function typeLine2() {
-                if (j < text2.length) {
-                    span2.textContent += text2.charAt(j);
-                    span2.classList.add('cursor');
-                    j++;
-                    setTimeout(typeLine2, 80);
-                } else {
-                    // Keep cursor blinking at the end if desired, or remove
-                    // span2.classList.remove('cursor'); 
-                }
-            }
-
-            // Start typing
-            setTimeout(typeLine1, 500); // Initial delay
-        });
-
-        // Navbar Scroll Effect
         const navbar = document.getElementById('navbar');
-        const navbarLinks = navbar.querySelectorAll('a');
-        const menuButton = navbar.querySelector('button');
-        const headerSection = document.querySelector('section'); // The first section (header)
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
 
         window.addEventListener('scroll', () => {
-            if (window.scrollY > headerSection.offsetHeight - 100) {
-                navbar.classList.add('bg-white/80', 'backdrop-blur-md', 'shadow-sm');
+            if (window.scrollY > 80) {
+                navbar.classList.add('bg-bg/80', 'backdrop-blur-md', 'border-b', 'border-border');
                 navbar.classList.remove('bg-transparent');
-
-                navbarLinks.forEach(link => {
-                    link.classList.remove('text-white', 'text-white/90');
-                    link.classList.add('text-brand-900');
-
-                    // Update spans (underline effect)
-                    const span = link.querySelector('span');
-                    if (span) {
-                        span.classList.remove('bg-white');
-                        span.classList.add('bg-brand-900');
-                    }
-                });
-
-                if (menuButton) {
-                    menuButton.classList.remove('text-white');
-                    menuButton.classList.add('text-brand-900');
-                }
-
             } else {
-                navbar.classList.remove('bg-white/80', 'backdrop-blur-md', 'shadow-sm');
+                navbar.classList.remove('bg-bg/80', 'backdrop-blur-md', 'border-b', 'border-border');
                 navbar.classList.add('bg-transparent');
-
-                navbarLinks.forEach(link => {
-                    link.classList.add('text-white');
-                    link.classList.remove('text-brand-900');
-
-                    const span = link.querySelector('span');
-                    if (span) {
-                        span.classList.add('bg-white');
-                        span.classList.remove('bg-brand-900');
-                    }
-                });
-
-                if (menuButton) {
-                    menuButton.classList.add('text-white');
-                    menuButton.classList.remove('text-brand-900');
-                }
             }
+        });
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
         });
     </script>
 </body>

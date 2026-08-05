@@ -1,0 +1,99 @@
+@import "tailwindcss";
+
+@theme {
+  --color-tinta: #0e1116;
+  --color-superficie: #121923;
+  --color-profundo: #153a6b;
+  --color-celeste: #8ec9f1;
+  --color-sol: #f0c542;
+  --color-marfil: #f3f0e8;
+  --color-verde: #3fb97f;
+
+  --font-editorial: "Fraunces", Georgia, serif;
+  --font-grotesca: "Archivo", system-ui, sans-serif;
+  --font-tecnica: "IBM Plex Mono", ui-monospace, monospace;
+}
+
+@layer base {
+  html {
+    background: var(--color-tinta);
+  }
+  body {
+    background: var(--color-tinta);
+    color: var(--color-marfil);
+    font-family: var(--font-grotesca);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  ::selection {
+    background: var(--color-sol);
+    color: var(--color-tinta);
+  }
+}
+
+/* ——— Tratamiento fotográfico: duotono tinta/marfil ——— */
+.duotono {
+  filter: grayscale(1) contrast(1.18) brightness(0.92);
+}
+.duotono-tinte {
+  background: linear-gradient(160deg, rgba(21, 58, 107, 0.55), rgba(14, 17, 22, 0.7));
+  mix-blend-mode: multiply;
+}
+.duotono-luz {
+  background: rgba(142, 201, 241, 0.1);
+  mix-blend-mode: screen;
+}
+
+/* ——— Marca de la caravana ——— */
+@keyframes ping-soft {
+  0% {
+    transform: scale(1);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(3);
+    opacity: 0;
+  }
+}
+.animate-ping-soft {
+  animation: ping-soft 2.6s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+/* ——— Slider de instrumento ——— */
+input[type="range"].instrumento {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+  height: 22px;
+  width: 100%;
+  cursor: ew-resize;
+}
+input[type="range"].instrumento::-webkit-slider-runnable-track {
+  height: 2px;
+  background: rgba(243, 240, 232, 0.22);
+}
+input[type="range"].instrumento::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 14px;
+  height: 14px;
+  margin-top: -6px;
+  background: var(--color-tinta);
+  border: 2px solid var(--color-sol);
+  border-radius: 9999px;
+}
+input[type="range"].instrumento::-moz-range-track {
+  height: 2px;
+  background: rgba(243, 240, 232, 0.22);
+}
+input[type="range"].instrumento::-moz-range-thumb {
+  width: 10px;
+  height: 10px;
+  background: var(--color-tinta);
+  border: 2px solid var(--color-sol);
+  border-radius: 9999px;
+}
+input[type="range"].instrumento:focus-visible {
+  outline: 1px solid var(--color-sol);
+  outline-offset: 4px;
+}

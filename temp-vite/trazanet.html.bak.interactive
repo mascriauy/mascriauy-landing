@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>trazaNet. | +CríaUY</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['IBM Plex Mono', 'monospace'],
+                    },
+                    colors: {
+                        bg: '#0E1116',
+                        fg: '#F3F0E8',
+                        muted: '#858581',
+                        secondary: '#C4C1BA',
+                        surface: '#121923',
+                        'surface-muted': '#162230',
+                        border: '#25303D',
+                        accent: '#4A7FB5',
+                        'accent-hover': '#5B8FC4',
+                        'accent-dark': '#3A6B99',
+                        primary: '#153A6B',
+                        'primary-hover': '#1C4A85',
+                        sky: '#8EC9F1',
+                        'sky-soft': '#C4E5F8',
+                        deep: '#080C12',
+                    },
+                    letterSpacing: {
+                        'extra-wide': '0.2em',
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .text-balance { text-wrap: balance; }
+
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fade-in-up.visible { opacity: 1; transform: translateY(0); }
+
+        .grain {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .data-node {
+            filter: drop-shadow(0 0 12px rgba(240, 197, 66, 0.9));
+        }
+
+        .cloud-glow {
+            filter: drop-shadow(0 0 28px rgba(142, 201, 241, 0.3));
+        }
+
+        .phone-shadow {
+            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.6));
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .data-node { transition: none; }
+        }
+    </style>
+</head>
+
+<body class="bg-bg text-fg antialiased selection:bg-accent/30 selection:text-bg">
+
+    <div class="grain"></div>
+
+    <!-- Navigation -->
+    <nav id="navbar" class="fixed top-0 w-full z-40 bg-bg/80 backdrop-blur-md border-b border-border transition-colors duration-300">
+        <div class="w-full px-6 lg:px-12 py-6 flex justify-between items-center">
+            <a href="index.html" class="font-sans font-bold text-xl tracking-tight hover:opacity-80 transition-opacity">
+                <span class="text-accent">+</span>
+                <span class="text-fg">Cría</span>
+                <span class="text-sky">UY</span>
+            </a>
+
+            <div class="hidden md:flex items-center gap-8 text-sm font-semibold tracking-wide text-fg/80">
+                <a href="index.html" class="relative group transition-colors hover:text-fg">
+                    Inicio
+                    <span class="absolute -bottom-0.5 left-0 w-0 h-[1.5px] bg-accent transition-all duration-300 ease-out group-hover:w-full"></span>
+                </a>
+                <a href="propuestas.html" class="relative group transition-colors hover:text-fg">
+                    Tecnologías
+                    <span class="absolute -bottom-0.5 left-0 w-0 h-[1.5px] bg-accent transition-all duration-300 ease-out group-hover:w-full"></span>
+                </a>
+                <a href="index.html#contacto" class="relative transition-colors text-fg font-semibold">
+                    Contacto
+                    <span class="absolute -bottom-0.5 left-0 w-full h-[1.5px] bg-accent"></span>
+                </a>
+            </div>
+
+            <button id="menuBtn" class="md:hidden text-fg">
+                <i data-lucide="menu" class="w-6 h-6"></i>
+            </button>
+        </div>
+
+        <div id="mobileMenu" class="hidden md:hidden bg-surface border-b border-border px-6 py-6">
+            <ul class="flex flex-col gap-4 text-lg font-semibold text-fg">
+                <li><a href="index.html" class="block py-2">Inicio</a></li>
+                <li><a href="propuestas.html" class="block py-2">Tecnologías</a></li>
+                <li><a href="index.html#contacto" class="block py-2">Contacto</a></li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Header -->
+    <section class="relative pt-40 pb-20 md:pt-48 md:pb-32 bg-bg overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(21,58,107,0.25)_0%,transparent_50%)]"></div>
+        <div class="w-full px-6 lg:px-12 relative z-10">
+            <div class="max-w-4xl mx-auto text-center fade-in-up">
+                <a href="propuestas.html" class="inline-flex items-center gap-2 text-muted hover:text-fg transition-colors mb-8 text-sm font-semibold">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    Volver a Tecnologías
+                </a>
+                <p class="text-sky font-mono text-sm mb-6 tracking-extra-wide uppercase">Software</p>
+                <h1 class="font-sans text-6xl md:text-8xl font-semibold text-fg mb-6 tracking-tight">trazaNet.</h1>
+                <p class="text-muted text-xl md:text-2xl font-light max-w-2xl mx-auto mb-10">
+                    Del animal a tu decisión. Una sola línea de datos que organiza tu establecimiento.
+                </p>
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <button class="px-8 py-4 bg-primary text-fg rounded-full font-semibold hover:bg-primary-hover transition-colors">
+                        Acceder web
+                    </button>
+                    <a href="#narrativa" class="px-8 py-4 border border-border text-fg rounded-full font-semibold hover:bg-fg/5 transition-colors">
+                        Ver cómo funciona
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Vertical Narrative -->
+    <section id="narrativa" class="relative bg-bg">
+        <div class="narrative-container relative" style="height: 350vh;">
+            <div class="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden px-6 lg:px-12">
+                <div class="w-full max-w-6xl mx-auto h-full flex flex-col lg:grid lg:grid-cols-12 lg:gap-12 items-center">
+
+                    <!-- Left text (desktop) -->
+                    <div class="hidden lg:flex lg:col-span-3 flex-col justify-center h-full relative">
+                        <div class="narrative-step step-1 absolute inset-0 flex flex-col justify-center transition-opacity duration-500" data-step="1">
+                            <span class="text-sky font-mono text-xs tracking-extra-wide uppercase mb-3">01 / Campo</span>
+                            <h3 class="font-sans text-2xl font-semibold text-fg mb-3">Todo empieza en el campo.</h3>
+                            <p class="text-muted text-base leading-relaxed">La información nace junto al animal.</p>
+                        </div>
+                        <div class="narrative-step step-2 absolute inset-0 flex flex-col justify-center transition-opacity duration-500 opacity-0" data-step="2">
+                            <span class="text-sky font-mono text-xs tracking-extra-wide uppercase mb-3">02 / Dato</span>
+                            <h3 class="font-sans text-2xl font-semibold text-fg mb-3">Capturamos el dato.</h3>
+                            <p class="text-muted text-base leading-relaxed">Peso, condición corporal, edad, sexo y más.</p>
+                        </div>
+                        <div class="narrative-step step-3 absolute inset-0 flex flex-col justify-center transition-opacity duration-500 opacity-0" data-step="3">
+                            <span class="text-sky font-mono text-xs tracking-extra-wide uppercase mb-3">03 / Nube</span>
+                            <h3 class="font-sans text-2xl font-semibold text-fg mb-3">La nube organiza.</h3>
+                            <p class="text-muted text-base leading-relaxed">Sin perder contexto. Sin perder continuidad.</p>
+                        </div>
+                        <div class="narrative-step step-4 absolute inset-0 flex flex-col justify-center transition-opacity duration-500 opacity-0" data-step="4">
+                            <span class="text-sky font-mono text-xs tracking-extra-wide uppercase mb-3">04 / Decisión</span>
+                            <h3 class="font-sans text-2xl font-semibold text-fg mb-3">Decidí desde el teléfono.</h3>
+                            <p class="text-muted text-base leading-relaxed">Consultar, registrar y decidir.</p>
+                        </div>
+                    </div>
+
+                    <!-- Center SVG -->
+                    <div class="flex-1 lg:col-span-6 flex items-center justify-center min-h-0 py-4 lg:py-0">
+                        <svg id="narrativeSvg" class="w-full max-w-[260px] sm:max-w-[300px] md:max-w-[360px] lg:max-w-[400px] h-auto max-h-[75vh]" viewBox="0 0 400 800" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="cableGradient" x1="200" y1="120" x2="200" y2="680" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0" stop-color="#4A7FB5" stop-opacity="0.6"/>
+                                    <stop offset="0.5" stop-color="#4A7FB5" stop-opacity="0.3"/>
+                                    <stop offset="1" stop-color="#4A7FB5" stop-opacity="0.6"/>
+                                </linearGradient>
+                                <filter id="nodeGlow" x="-50%" y="-50%" width="200%" height="200%">
+                                    <feGaussianBlur stdDeviation="5" result="blur"/>
+                                    <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                                </filter>
+                                <linearGradient id="phoneFrameGradient" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0" stop-color="#262626"/>
+                                    <stop offset="1" stop-color="#0a0a0a"/>
+                                </linearGradient>
+                            </defs>
+
+                            <!-- Cable sólido -->
+                            <path id="dataCable" d="M 200 135 C 200 190, 110 230, 200 285 C 290 340, 290 370, 200 410 C 110 450, 110 490, 200 535 C 290 580, 290 610, 200 665" stroke="url(#cableGradient)" stroke-width="5" stroke-linecap="round" fill="none"/>
+
+                            <!-- Vaca vectorial rediseñada -->
+                            <g transform="translate(95, 35)">
+                                <!-- Grupa y lomo -->
+                                <path d="M 25 75 Q 15 65 22 52 Q 35 35 70 32 Q 105 30 130 40 Q 150 48 155 65 Q 158 78 150 90 L 148 118 Q 147 125 140 125 L 135 125 L 135 100 L 105 100 L 105 125 L 85 125 L 85 100 L 55 100 L 55 125 L 45 125 Q 38 125 38 118 L 38 105 Q 18 98 18 80 Q 18 72 25 75 Z" fill="#121923" stroke="#25303D" stroke-width="2.5"/>
+                                <!-- Pecho y cuello -->
+                                <path d="M 130 40 Q 155 35 170 48 Q 182 60 178 78 Q 175 92 160 98 Q 148 102 138 95 L 130 85" fill="#121923" stroke="#25303D" stroke-width="2.5"/>
+                                <!-- Cabeza -->
+                                <path d="M 160 55 Q 190 48 198 68 Q 203 85 192 96 Q 180 105 165 100 Q 155 96 152 82" fill="#121923" stroke="#25303D" stroke-width="2.5"/>
+                                <!-- Oreja -->
+                                <ellipse cx="185" cy="58" rx="11" ry="7" fill="#121923" stroke="#25303D" stroke-width="2" transform="rotate(-15 185 58)"/>
+                                <!-- Cuerna -->
+                                <path d="M 175 52 Q 178 40 188 38" stroke="#25303D" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                                <!-- Ojo -->
+                                <circle cx="178" cy="74" r="3.5" fill="#a1a1aa"/>
+                                <!-- Nariz -->
+                                <ellipse cx="195" cy="88" rx="4" ry="3" fill="#25303D"/>
+                                <!-- Tag amarillo -->
+                                <circle cx="188" cy="64" r="4.5" fill="#4A7FB5"/>
+                                <!-- Cola -->
+                                <path d="M 18 68 Q 2 72 8 90" stroke="#25303D" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                                <!-- Pezuñas -->
+                                <rect x="48" y="123" width="10" height="6" rx="2" fill="#25303D"/>
+                                <rect x="98" y="123" width="10" height="6" rx="2" fill="#25303D"/>
+                                <rect x="128" y="123" width="10" height="6" rx="2" fill="#25303D"/>
+                            </g>
+
+                            <!-- Nube mejorada -->
+                            <g class="cloud-glow" transform="translate(120, 355)">
+                                <path d="M 25 70 Q 0 70 0 45 Q 0 18 35 18 Q 48 0 90 0 Q 135 0 150 28 Q 180 28 180 58 Q 180 88 145 88 L 40 88 Q 12 88 25 70 Z" fill="#121923" stroke="#8EC9F1" stroke-width="2.5"/>
+                                <circle cx="55" cy="38" r="5" fill="#8EC9F1" opacity="0.5"/>
+                                <circle cx="95" cy="28" r="4" fill="#8EC9F1" opacity="0.35"/>
+                                <circle cx="125" cy="45" r="3" fill="#8EC9F1" opacity="0.45"/>
+                                <circle cx="75" cy="55" r="2.5" fill="#8EC9F1" opacity="0.3"/>
+                            </g>
+
+                            <!-- Teléfono mockup -->
+                            <g class="phone-shadow" transform="translate(145, 625)">
+                                <!-- Botón lateral power -->
+                                <rect x="132" y="35" width="4" height="28" rx="1.5" fill="#25303D"/>
+                                <!-- Botones volumen -->
+                                <rect x="-4" y="28" width="4" height="20" rx="1.5" fill="#25303D"/>
+                                <rect x="-4" y="55" width="4" height="20" rx="1.5" fill="#25303D"/>
+                                <!-- Frame -->
+                                <rect x="0" y="0" width="132" height="240" rx="22" fill="url(#phoneFrameGradient)" stroke="#404040" stroke-width="2"/>
+                                <!-- Notch -->
+                                <rect x="38" y="8" width="56" height="18" rx="9" fill="#050505"/>
+                                <!-- Screen -->
+                                <rect x="8" y="8" width="116" height="224" rx="16" fill="#050505"/>
+                                <!-- App header -->
+                                <rect x="8" y="8" width="116" height="34" rx="16" fill="#153A6B"/>
+                                <rect x="8" y="24" width="116" height="18" fill="#153A6B"/>
+                                <circle cx="24" cy="25" r="6" fill="#fafafa"/>
+                                <rect x="36" y="21" width="60" height="7" rx="3.5" fill="#fafafa" opacity="0.85"/>
+                                <rect x="100" y="21" width="16" height="7" rx="3.5" fill="#fafafa" opacity="0.5"/>
+                                <!-- Data rows -->
+                                <rect x="20" y="58" width="50" height="6" rx="3" fill="#262626"/>
+                                <rect x="80" y="58" width="32" height="6" rx="3" fill="#4A7FB5" opacity="0.6"/>
+                                <rect x="20" y="76" width="44" height="6" rx="3" fill="#262626"/>
+                                <rect x="74" y="76" width="38" height="6" rx="3" fill="#fafafa" opacity="0.7"/>
+                                <rect x="20" y="94" width="56" height="6" rx="3" fill="#262626"/>
+                                <rect x="86" y="94" width="26" height="6" rx="3" fill="#fafafa" opacity="0.7"/>
+                                <rect x="20" y="112" width="38" height="6" rx="3" fill="#262626"/>
+                                <rect x="68" y="112" width="44" height="6" rx="3" fill="#fafafa" opacity="0.7"/>
+                                <!-- Highlight card -->
+                                <rect x="18" y="138" width="96" height="48" rx="10" fill="#4A7FB5" opacity="0.1" stroke="#4A7FB5" stroke-width="1"/>
+                                <rect x="28" y="152" width="40" height="6" rx="3" fill="#4A7FB5" opacity="0.7"/>
+                                <rect x="28" y="166" width="60" height="6" rx="3" fill="#fafafa" opacity="0.8"/>
+                                <!-- Bottom nav -->
+                                <rect x="8" y="210" width="116" height="22" rx="0" fill="#0a0a0a"/>
+                                <circle cx="44" cy="221" r="4" fill="#4A7FB5"/>
+                                <circle cx="66" cy="221" r="4" fill="#333333"/>
+                                <circle cx="88" cy="221" r="4" fill="#333333"/>
+                                <!-- Home indicator -->
+                                <rect x="48" y="228" width="36" height="3" rx="1.5" fill="#404040"/>
+                            </g>
+
+                            <!-- Nodo de datos (dibujado después del teléfono para que vaya por detrás) -->
+                            <g id="dataNode" class="data-node" transform="translate(200, 135)">
+                                <circle r="16" fill="#050505" stroke="#4A7FB5" stroke-width="3.5"/>
+                                <circle r="7" fill="#4A7FB5"/>
+                                <circle r="3" fill="#fafafa"/>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <!-- Right: desktop detail cards + mobile single step -->
+                    <div class="lg:col-span-3 flex flex-col justify-center h-full w-full relative">
+                        <!-- Mobile: single active step -->
+                        <div class="lg:hidden w-full max-w-sm mx-auto relative h-40">
+                            <div class="narrative-step-mobile step-1 p-5 rounded-2xl bg-surface border border-border transition-all duration-500 absolute inset-x-0 top-0" data-step="1">
+                                <span class="text-sky font-mono text-xs tracking-extra-wide uppercase mb-2 block">01 / Campo</span>
+                                <h3 class="font-sans text-lg font-semibold text-fg mb-2">Todo empieza en el campo.</h3>
+                                <p class="text-muted text-sm leading-relaxed">La información nace junto al animal.</p>
+                            </div>
+                            <div class="narrative-step-mobile step-2 p-5 rounded-2xl bg-surface border border-border transition-all duration-500 absolute inset-x-0 top-0 opacity-0 translate-y-4" data-step="2">
+                                <span class="text-sky font-mono text-xs tracking-extra-wide uppercase mb-2 block">02 / Dato</span>
+                                <h3 class="font-sans text-lg font-semibold text-fg mb-2">Capturamos el dato.</h3>
+                                <p class="text-muted text-sm leading-relaxed">Peso, condición corporal, edad, sexo y más.</p>
+                            </div>
+                            <div class="narrative-step-mobile step-3 p-5 rounded-2xl bg-surface border border-border transition-all duration-500 absolute inset-x-0 top-0 opacity-0 translate-y-4" data-step="3">
+                                <span class="text-sky font-mono text-xs tracking-extra-wide uppercase mb-2 block">03 / Nube</span>
+                                <h3 class="font-sans text-lg font-semibold text-fg mb-2">La nube organiza.</h3>
+                                <p class="text-muted text-sm leading-relaxed">Sin perder contexto. Sin perder continuidad.</p>
+                            </div>
+                            <div class="narrative-step-mobile step-4 p-5 rounded-2xl bg-surface border border-border transition-all duration-500 absolute inset-x-0 top-0 opacity-0 translate-y-4" data-step="4">
+                                <span class="text-sky font-mono text-xs tracking-extra-wide uppercase mb-2 block">04 / Decisión</span>
+                                <h3 class="font-sans text-lg font-semibold text-fg mb-2">Decidí desde el teléfono.</h3>
+                                <p class="text-muted text-sm leading-relaxed">Consultar, registrar y decidir.</p>
+                            </div>
+                        </div>
+
+                        <!-- Desktop detail cards -->
+                        <div class="hidden lg:block narrative-detail detail-1 absolute right-0 top-1/2 -translate-y-1/2 w-full transition-all duration-500" data-step="1">
+                            <div class="p-5 rounded-xl bg-surface border border-border">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <i data-lucide="cow" class="w-5 h-5 text-accent"></i>
+                                    <span class="font-mono text-xs text-muted uppercase tracking-wider">Animal</span>
+                                </div>
+                                <p class="text-fg text-sm">Cada animal es el origen de una cadena de datos única.</p>
+                            </div>
+                        </div>
+                        <div class="hidden lg:block narrative-detail detail-2 absolute right-0 top-1/2 -translate-y-1/2 w-full transition-all duration-500 opacity-0 translate-x-4" data-step="2">
+                            <div class="p-5 rounded-xl bg-surface border border-border">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <i data-lucide="scan" class="w-5 h-5 text-accent"></i>
+                                    <span class="font-mono text-xs text-muted uppercase tracking-wider">Lectura</span>
+                                </div>
+                                <p class="text-fg text-sm">RFID, balanzas y registros manuales alimentan el sistema.</p>
+                            </div>
+                        </div>
+                        <div class="hidden lg:block narrative-detail detail-3 absolute right-0 top-1/2 -translate-y-1/2 w-full transition-all duration-500 opacity-0 translate-x-4" data-step="3">
+                            <div class="p-5 rounded-xl bg-surface border border-border">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <i data-lucide="cloud" class="w-5 h-5 text-accent"></i>
+                                    <span class="font-mono text-xs text-muted uppercase tracking-wider">Nube</span>
+                                </div>
+                                <p class="text-fg text-sm">Sincronización automática y respaldo en tiempo real.</p>
+                            </div>
+                        </div>
+                        <div class="hidden lg:block narrative-detail detail-4 absolute right-0 top-1/2 -translate-y-1/2 w-full transition-all duration-500 opacity-0 translate-x-4" data-step="4">
+                            <div class="p-5 rounded-xl bg-surface border border-border">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <i data-lucide="smartphone" class="w-5 h-5 text-accent"></i>
+                                    <span class="font-mono text-xs text-muted uppercase tracking-wider">App</span>
+                                </div>
+                                <p class="text-fg text-sm">La información llega lista para consultar y actuar.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Marquee -->
+    <section class="py-20 bg-surface border-y border-border overflow-hidden">
+        <div class="flex animate-marquee whitespace-nowrap">
+            <div class="flex gap-8 items-center px-4">
+                <span class="inline-flex items-center gap-3 text-fg/90 font-sans text-3xl md:text-5xl font-light">
+                    <i data-lucide="scan-line" class="w-8 h-8 text-accent"></i> Lectura en tiempo real
+                </span>
+                <span class="inline-flex items-center gap-3 text-fg/90 font-sans text-3xl md:text-5xl font-light">
+                    <i data-lucide="cloud" class="w-8 h-8 text-accent"></i> Datos centralizados
+                </span>
+                <span class="inline-flex items-center gap-3 text-fg/90 font-sans text-3xl md:text-5xl font-light">
+                    <i data-lucide="wifi-off" class="w-8 h-8 text-accent"></i> Funcionamiento offline
+                </span>
+                <span class="inline-flex items-center gap-3 text-fg/90 font-sans text-3xl md:text-5xl font-light">
+                    <i data-lucide="bar-chart-2" class="w-8 h-8 text-accent"></i> Métricas detalladas
+                </span>
+                <span class="inline-flex items-center gap-3 text-fg/90 font-sans text-3xl md:text-5xl font-light">
+                    <i data-lucide="bell" class="w-8 h-8 text-accent"></i> Alertas inteligentes
+                </span>
+            </div>
+            <div class="flex gap-8 items-center px-4" aria-hidden="true">
+                <span class="inline-flex items-center gap-3 text-fg/90 font-sans text-3xl md:text-5xl font-light">
+                    <i data-lucide="scan-line" class="w-8 h-8 text-accent"></i> Lectura en tiempo real
+                </span>
+                <span class="inline-flex items-center gap-3 text-fg/90 font-sans text-3xl md:text-5xl font-light">
+                    <i data-lucide="cloud" class="w-8 h-8 text-accent"></i> Datos centralizados
+                </span>
+                <span class="inline-flex items-center gap-3 text-fg/90 font-sans text-3xl md:text-5xl font-light">
+                    <i data-lucide="wifi-off" class="w-8 h-8 text-accent"></i> Funcionamiento offline
+                </span>
+                <span class="inline-flex items-center gap-3 text-fg/90 font-sans text-3xl md:text-5xl font-light">
+                    <i data-lucide="bar-chart-2" class="w-8 h-8 text-accent"></i> Métricas detalladas
+                </span>
+                <span class="inline-flex items-center gap-3 text-fg/90 font-sans text-3xl md:text-5xl font-light">
+                    <i data-lucide="bell" class="w-8 h-8 text-accent"></i> Alertas inteligentes
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-32 bg-bg text-fg">
+        <div class="w-full px-6 lg:px-12">
+            <div class="max-w-4xl mx-auto text-center fade-in-up">
+                <h2 class="font-sans text-4xl md:text-6xl font-light mb-6">¿Listo para ordenar tu establecimiento?</h2>
+                <p class="text-muted text-lg mb-12 max-w-2xl mx-auto">
+                    Empezá a centralizar la información de tu rodeo en un solo lugar.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <button class="px-8 py-4 bg-primary text-fg rounded-full font-semibold hover:bg-primary-hover transition-colors">
+                        Ver trazaNet.
+                    </button>
+                    <a href="propuestas.html" class="px-8 py-4 border border-border text-fg rounded-full font-semibold hover:bg-fg/5 transition-colors">
+                        Volver a Tecnologías
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-bg text-muted border-t border-border">
+        <div class="max-w-[1400px] mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
+            <a href="index.html" class="font-sans font-bold text-xl tracking-tight">
+                <span class="text-accent">+</span>
+                <span class="text-fg">Cría</span>
+                <span class="text-sky">UY</span>
+            </a>
+            <div class="flex flex-wrap justify-center gap-6">
+                <a href="privacidad.html" class="hover:text-fg transition-colors">Privacidad</a>
+                <a href="terminos-y-condiciones.html" class="hover:text-fg transition-colors">Términos y Condiciones</a>
+                <a href="#" class="hover:text-fg transition-colors">Instagram</a>
+                <a href="#" class="hover:text-fg transition-colors">LinkedIn</a>
+            </div>
+            <p class="text-xs">© 2026 +CríaUY. Montevideo, Uruguay.</p>
+        </div>
+    </footer>
+
+    <style>
+        @keyframes marquee-scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            animation: marquee-scroll 30s linear infinite;
+        }
+    </style>
+
+    <script>
+        lucide.createIcons();
+
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        document.querySelectorAll('.fade-in-up').forEach((el) => observer.observe(el));
+
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+        // Narrative scroll animation
+        const narrativeContainer = document.querySelector('.narrative-container');
+        const dataCable = document.getElementById('dataCable');
+        const dataNode = document.getElementById('dataNode');
+        const cloudGlow = document.querySelector('.cloud-glow');
+        const steps = document.querySelectorAll('.narrative-step');
+        const details = document.querySelectorAll('.narrative-detail');
+        const mobileSteps = document.querySelectorAll('.narrative-step-mobile');
+
+        const cableLength = dataCable.getTotalLength();
+
+        function updateNarrative() {
+            const rect = narrativeContainer.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            const containerHeight = narrativeContainer.offsetHeight;
+
+            let progress = (windowHeight - rect.top) / containerHeight;
+            progress = Math.max(0, Math.min(1, progress));
+
+            // Nodo viaja por el cable, con un pequeño offset para que desaparezca antes
+            const nodeProgress = Math.min(1, progress * 1.08);
+            const point = dataCable.getPointAtLength(nodeProgress * cableLength);
+            dataNode.setAttribute('transform', `translate(${point.x}, ${point.y})`);
+
+            // El nodo desaparece antes de llegar al teléfono
+            const nodeOpacity = progress > 0.88 ? Math.max(0, 1 - (progress - 0.88) / 0.08) : 1;
+            dataNode.setAttribute('opacity', nodeOpacity);
+
+            // Activar pasos según progreso
+            const activeStep = progress < 0.22 ? 1 : progress < 0.45 ? 2 : progress < 0.72 ? 3 : 4;
+
+            steps.forEach(step => {
+                const stepNum = parseInt(step.dataset.step);
+                step.style.opacity = stepNum === activeStep ? '1' : '0';
+            });
+
+            details.forEach(detail => {
+                const detailNum = parseInt(detail.dataset.step);
+                if (detailNum === activeStep) {
+                    detail.classList.remove('opacity-0', 'translate-x-4');
+                } else {
+                    detail.classList.add('opacity-0', 'translate-x-4');
+                }
+            });
+
+            mobileSteps.forEach(step => {
+                const stepNum = parseInt(step.dataset.step);
+                if (stepNum === activeStep) {
+                    step.classList.remove('opacity-0', 'translate-y-4');
+                } else {
+                    step.classList.add('opacity-0', 'translate-y-4');
+                }
+            });
+
+            // Pulso en la nube cuando el nodo pasa cerca
+            if (progress > 0.45 && progress < 0.65) {
+                cloudGlow.style.filter = 'drop-shadow(0 0 40px rgba(142, 201, 241, 0.5))';
+            } else {
+                cloudGlow.style.filter = 'drop-shadow(0 0 28px rgba(142, 201, 241, 0.3))';
+            }
+
+            requestAnimationFrame(updateNarrative);
+        }
+
+        requestAnimationFrame(updateNarrative);
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
+    </script>
+</body>
+
+</html>

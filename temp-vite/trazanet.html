@@ -7,39 +7,34 @@
     <title>trazaNet. | +CríaUY</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
-        rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
     <script>
         tailwind.config = {
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Space Grotesk', 'sans-serif'],
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        mono: ['IBM Plex Mono', 'monospace'],
                     },
                     colors: {
-                        brand: {
-                            50: '#f8fafc',
-                            100: '#f1f5f9',
-                            200: '#e2e8f0',
-                            300: '#cbd5e1',
-                            400: '#94a3b8',
-                            500: '#64748b',
-                            600: '#475569',
-                            700: '#334155',
-                            800: '#1e293b',
-                            900: '#0f172a',
-                        },
-                        traza: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            400: '#4ade80',
-                            500: '#22c55e',
-                            600: '#16a34a',
-                            700: '#15803d',
-                        }
+                        bg: '#0E1116',
+                        fg: '#F3F0E8',
+                        muted: '#858581',
+                        secondary: '#C4C1BA',
+                        surface: '#121923',
+                        'surface-muted': '#162230',
+                        border: '#25303D',
+                        accent: '#4A7FB5',
+                        'accent-hover': '#5B8FC4',
+                        'accent-dark': '#3A6B99',
+                        primary: '#153A6B',
+                        'primary-hover': '#1C4A85',
+                        sky: '#8EC9F1',
+                        'sky-soft': '#C4E5F8',
+                        deep: '#080C12',
                     },
                     letterSpacing: {
                         'extra-wide': '0.2em',
@@ -48,259 +43,940 @@
             }
         }
     </script>
+
+    <style>
+        .text-balance { text-wrap: balance; }
+
+        .fade-in-up {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .fade-in-up.visible { opacity: 1; transform: translateY(0); }
+
+        .grain {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: 50;
+            opacity: 0.035;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        .data-capsule {
+            position: absolute;
+            left: 0; top: 0;
+            transform: translate(-58%, -50%);
+            z-index: 25;
+            pointer-events: none;
+            transition: opacity 0.4s ease, transform 0.3s ease;
+        }
+
+        .capsule-card {
+            background: rgba(18, 25, 35, 0.96);
+            border: 1.5px solid #4A7FB5;
+            border-radius: 14px;
+            padding: 10px 14px;
+            box-shadow: 0 0 24px rgba(74, 127, 181, 0.35);
+            min-width: 128px;
+            max-width: 170px;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .capsule-structured {
+            background: rgba(18, 25, 35, 0.96);
+            border: 1.5px solid #8EC9F1;
+            border-radius: 10px;
+            padding: 10px 12px;
+            box-shadow: 0 0 20px rgba(142, 201, 241, 0.25);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .capsule-packet {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, #8EC9F1, #4A7FB5);
+            box-shadow: 0 0 22px rgba(142, 201, 241, 0.9), 0 0 40px rgba(74, 127, 181, 0.5);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            animation: packetPulse 1.2s ease-in-out infinite;
+        }
+
+        @keyframes packetPulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.15); opacity: 0.85; }
+        }
+
+        .cloud-glow {
+            filter: drop-shadow(0 0 28px rgba(142, 201, 241, 0.3));
+            transition: filter 0.4s ease;
+        }
+        .cloud-glow.active {
+            filter: drop-shadow(0 0 48px rgba(142, 201, 241, 0.6));
+        }
+
+        .phone-shadow {
+            filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.6));
+        }
+
+        .phone-overlay {
+            position: absolute;
+            z-index: 30;
+            opacity: 0;
+            transform: translateY(10px) scale(0.96);
+            transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        }
+        .phone-overlay.visible {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+
+        .control-pill {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 16px;
+            border-radius: 9999px;
+            border: 1px solid #25303D;
+            background: #121923;
+            color: rgba(243, 240, 232, 0.85);
+            font-size: 0.875rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        .control-pill:hover {
+            border-color: #4A7FB5;
+            color: #F3F0E8;
+        }
+        .control-pill.active {
+            background: #4A7FB5;
+            border-color: #4A7FB5;
+            color: #0E1116;
+        }
+
+        .control-slider {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: 5px;
+            background: #25303D;
+            border-radius: 3px;
+            outline: none;
+        }
+        .control-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #4A7FB5;
+            cursor: pointer;
+            border: 3px solid #F3F0E8;
+            box-shadow: 0 0 12px rgba(74, 127, 181, 0.5);
+            transition: transform 0.15s ease;
+        }
+        .control-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.1);
+        }
+        .control-slider::-moz-range-thumb {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            background: #4A7FB5;
+            cursor: pointer;
+            border: 3px solid #F3F0E8;
+            box-shadow: 0 0 12px rgba(74, 127, 181, 0.5);
+        }
+
+        .custom-input {
+            width: 100%;
+            background: #121923;
+            border: 1px solid #25303D;
+            border-radius: 10px;
+            padding: 10px 14px;
+            color: #F3F0E8;
+            font-size: 0.875rem;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+        .custom-input:focus {
+            border-color: #4A7FB5;
+        }
+        .custom-input::placeholder {
+            color: #858581;
+        }
+
+        .sync-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 9999px;
+            background: rgba(74, 127, 181, 0.15);
+            border: 1px solid rgba(74, 127, 181, 0.4);
+            color: #8EC9F1;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .sync-badge::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #4A7FB5;
+            animation: syncPulse 1.5s ease-in-out infinite;
+        }
+        @keyframes syncPulse {
+            0%, 100% { opacity: 1; transform: scale(1); }
+            50% { opacity: 0.5; transform: scale(0.8); }
+        }
+
+        .narrative-closure {
+            position: absolute;
+            inset: 0;
+            z-index: 40;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.6s ease;
+        }
+        .narrative-closure.visible {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .control-step,
+        .control-step-mobile {
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            .data-capsule, .capsule-card, .capsule-structured, .capsule-packet,
+            .phone-overlay, .control-step, .control-step-mobile, .narrative-closure {
+                transition: none;
+                animation: none;
+            }
+        }
+    </style>
 </head>
 
-<body class="bg-brand-50 text-brand-800 antialiased selection:bg-brand-200 selection:text-brand-900">
+<body class="bg-bg text-fg antialiased selection:bg-accent/30 selection:text-bg">
+
+    <div class="grain"></div>
 
     <!-- Navigation -->
-    <nav class="fixed top-0 w-full z-40 bg-white/80 backdrop-blur-md shadow-sm">
+    <nav id="navbar" class="fixed top-0 w-full z-40 bg-bg/80 backdrop-blur-md border-b border-border transition-colors duration-300">
         <div class="w-full px-6 lg:px-12 py-6 flex justify-between items-center">
-            <a href="index.html"
-                class="font-display font-bold text-xl tracking-tight text-brand-900 transition-opacity duration-300 hover:text-brand-600">
-                +CríaUY
+            <a href="index.html" class="font-sans font-bold text-xl tracking-tight hover:opacity-80 transition-opacity">
+                <span class="text-accent">+</span>
+                <span class="text-fg">Cría</span>
+                <span class="text-sky">UY</span>
             </a>
 
-            <div class="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide text-brand-800">
-                <a href="index.html" class="relative group transition-colors hover:text-brand-900">
+            <div class="hidden md:flex items-center gap-8 text-sm font-semibold tracking-wide text-fg/80">
+                <a href="index.html" class="relative group transition-colors hover:text-fg">
                     Inicio
-                    <span
-                        class="absolute -bottom-0.5 left-0 w-0 h-[1.5px] bg-brand-900 transition-all duration-300 ease-out group-hover:w-full"></span>
+                    <span class="absolute -bottom-0.5 left-0 w-0 h-[1.5px] bg-accent transition-all duration-300 ease-out group-hover:w-full"></span>
                 </a>
-                <a href="propuestas.html" class="relative group transition-colors hover:text-brand-900">
+                <a href="propuestas.html" class="relative group transition-colors hover:text-fg">
                     Tecnologías
-                    <span
-                        class="absolute -bottom-0.5 left-0 w-0 h-[1.5px] bg-brand-900 transition-all duration-300 ease-out group-hover:w-full"></span>
+                    <span class="absolute -bottom-0.5 left-0 w-0 h-[1.5px] bg-accent transition-all duration-300 ease-out group-hover:w-full"></span>
                 </a>
-                <a href="index.html#contacto" class="relative transition-colors text-brand-900 font-semibold">
+                <a href="index.html#contacto" class="relative transition-colors text-fg font-semibold">
                     Contacto
-                    <span class="absolute -bottom-0.5 left-0 w-full h-[1.5px] bg-brand-900"></span>
+                    <span class="absolute -bottom-0.5 left-0 w-full h-[1.5px] bg-accent"></span>
                 </a>
             </div>
 
-            <button class="md:hidden text-brand-900">
+            <button id="menuBtn" class="md:hidden text-fg">
                 <i data-lucide="menu" class="w-6 h-6"></i>
             </button>
         </div>
+
+        <div id="mobileMenu" class="hidden md:hidden bg-surface border-b border-border px-6 py-6">
+            <ul class="flex flex-col gap-4 text-lg font-semibold text-fg">
+                <li><a href="index.html" class="block py-2">Inicio</a></li>
+                <li><a href="propuestas.html" class="block py-2">Tecnologías</a></li>
+                <li><a href="index.html#contacto" class="block py-2">Contacto</a></li>
+            </ul>
+        </div>
     </nav>
 
-    <!-- Main Content -->
-    <section class="pt-32 pb-24 min-h-screen flex items-center justify-center overflow-x-hidden">
-        <div class="w-full px-6 lg:px-12">
-            <div class="max-w-7xl mx-auto">
-
-                <div class="grid lg:grid-cols-2 gap-16 items-center mb-24">
-                    <!-- Left Column: Content -->
-                    <div>
-                        <div class="mb-12">
-                            <a href="propuestas.html"
-                                class="inline-flex items-center gap-2 text-brand-500 hover:text-brand-900 transition-colors mb-6 text-sm font-medium">
-                                <i data-lucide="arrow-left" class="w-4 h-4"></i>
-                                Volver a Tecnologías
-                            </a>
-                            <h1 class="font-display text-5xl md:text-6xl font-bold text-brand-900 mb-6">trazaNet.</h1>
-                            <div class="h-1 w-24 bg-brand-300"></div>
-                        </div>
-
-                        <div class="prose prose-lg prose-slate text-brand-600 font-light leading-relaxed space-y-6">
-                            <p>
-                                <strong class="font-medium text-brand-900">trazaNet</strong> es una plataforma de
-                                gestión
-                                ganadera diseñada para centralizar y ordenar la información del rodeo.
-                                El sistema comienza en la lectura en campo, permitiendo registrar eventos y datos de
-                                manera
-                                simple, y los organiza en una estructura clara que facilita el control de la
-                                trazabilidad, el
-                                stock y la sanidad.
-                            </p>
-                            <p>
-                                Toda la información se concentra en un único entorno, lo que permite reducir errores,
-                                evitar
-                                registros dispersos y mantener una visión actualizada del establecimiento, tanto en el
-                                trabajo
-                                diario como en la planificación.
-                            </p>
-                            <p>
-                                La forma en que los datos son capturados y organizados prepara la base necesaria para su
-                                análisis, habilitando el uso de herramientas de inteligencia artificial orientadas a
-                                detectar
-                                patrones, generar alertas y apoyar la toma de decisiones.
-                            </p>
-                            <p class="font-medium text-brand-800">
-                                De esta manera, trazaNet no solo ordena la información operativa, sino que crea las
-                                condiciones
-                                para un análisis más profundo y automatizado de la gestión ganadera.
-                            </p>
-                        </div>
-                    </div>
-
-                    <!-- Right Column: Login Component -->
-                    <!-- Right Column: Empty for now (Mockup later) -->
-                    <div class="relative hidden lg:block">
-                        <!-- Placeholder for future mockup -->
-                    </div>
-                </div>
-
-                <!-- Infinite Features Carousel -->
-                <div class="mt-24 w-full overflow-hidden mask-gradient">
-                    <div class="flex animate-scroll hover:pause gap-8 w-max">
-                        <!-- Duplicate the list twice for seamless looping -->
-
-                        <!-- Set 1 -->
-                        <div class="flex gap-8 items-center">
-                            <!-- Feature 1 -->
-                            <div
-                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
-                                <i data-lucide="scan-line" class="w-5 h-5 text-brand-500"></i>
-                                <span class="font-display font-medium text-brand-900">Lectura en tiempo real</span>
-                            </div>
-                            <!-- Feature 2 -->
-                            <div
-                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
-                                <i data-lucide="cloud" class="w-5 h-5 text-brand-500"></i>
-                                <span class="font-display font-medium text-brand-900">Datos centralizados</span>
-                            </div>
-                            <!-- Feature 3 -->
-                            <div
-                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
-                                <i data-lucide="wifi-off" class="w-5 h-5 text-brand-500"></i>
-                                <span class="font-display font-medium text-brand-900">Funcionamiento Offline</span>
-                            </div>
-                            <!-- Feature 4 -->
-                            <div
-                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
-                                <i data-lucide="bar-chart-2" class="w-5 h-5 text-brand-500"></i>
-                                <span class="font-display font-medium text-brand-900">Métricas detalladas</span>
-                            </div>
-                            <!-- Feature 5 -->
-                            <div
-                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
-                                <i data-lucide="bell" class="w-5 h-5 text-brand-500"></i>
-                                <span class="font-display font-medium text-brand-900">Alertas inteligentes</span>
-                            </div>
-                            <!-- Feature 6 -->
-                            <div
-                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
-                                <i data-lucide="git-fork" class="w-5 h-5 text-brand-500"></i>
-                                <span class="font-display font-medium text-brand-900">Gestión de genealogía</span>
-                            </div>
-                            <!-- Feature 7 -->
-                            <div
-                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
-                                <i data-lucide="sparkles" class="w-5 h-5 text-brand-500"></i>
-                                <span class="font-display font-medium text-brand-900">Inteligencia Artificial</span>
-                            </div>
-                            <!-- Feature 8 -->
-                            <div
-                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
-                                <i data-lucide="file-output" class="w-5 h-5 text-brand-500"></i>
-                                <span class="font-display font-medium text-brand-900">Exportación directa</span>
-                            </div>
-                            <!-- Feature 9 -->
-                            <div
-                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
-                                <i data-lucide="headphones" class="w-5 h-5 text-brand-500"></i>
-                                <span class="font-display font-medium text-brand-900">Soporte Especializado</span>
-                            </div>
-                        </div>
-
-                        <!-- Set 2 (Duplicate for loop) -->
-                        <div class="flex gap-8 items-center" aria-hidden="true">
-                            <div
-                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
-                                <i data-lucide="scan-line" class="w-5 h-5 text-brand-500"></i>
-                                <span class="font-display font-medium text-brand-900">Lectura en tiempo real</span>
-                            </div>
-                            <div
-                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
-                                <i data-lucide="cloud" class="w-5 h-5 text-brand-500"></i>
-                                <span class="font-display font-medium text-brand-900">Datos centralizados</span>
-                            </div>
-                            <div
-                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
-                                <i data-lucide="wifi-off" class="w-5 h-5 text-brand-500"></i>
-                                <span class="font-display font-medium text-brand-900">Funcionamiento Offline</span>
-                            </div>
-                            <div
-                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
-                                <i data-lucide="bar-chart-2" class="w-5 h-5 text-brand-500"></i>
-                                <span class="font-display font-medium text-brand-900">Métricas detalladas</span>
-                            </div>
-                            <div
-                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
-                                <i data-lucide="bell" class="w-5 h-5 text-brand-500"></i>
-                                <span class="font-display font-medium text-brand-900">Alertas inteligentes</span>
-                            </div>
-                            <div
-                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
-                                <i data-lucide="git-fork" class="w-5 h-5 text-brand-500"></i>
-                                <span class="font-display font-medium text-brand-900">Gestión de genealogía</span>
-                            </div>
-                            <div
-                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
-                                <i data-lucide="sparkles" class="w-5 h-5 text-brand-500"></i>
-                                <span class="font-display font-medium text-brand-900">Inteligencia Artificial</span>
-                            </div>
-                            <div
-                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
-                                <i data-lucide="file-output" class="w-5 h-5 text-brand-500"></i>
-                                <span class="font-display font-medium text-brand-900">Exportación directa</span>
-                            </div>
-                            <div
-                                class="flex items-center gap-4 px-6 py-4 bg-white/50 backdrop-blur-sm rounded-full border border-brand-100 hover:shadow-md transition-all duration-300">
-                                <i data-lucide="headphones" class="w-5 h-5 text-brand-500"></i>
-                                <span class="font-display font-medium text-brand-900">Soporte Especializado</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <style>
-                    .animate-scroll {
-                        animation: scroll 40s linear infinite;
-                    }
-
-                    .pause:hover {
-                        animation-play-state: paused;
-                    }
-
-                    @keyframes scroll {
-                        from {
-                            transform: translateX(0);
-                        }
-
-                        to {
-                            transform: translateX(-50%);
-                        }
-                    }
-
-                    .mask-gradient {
-                        mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-                        -webkit-mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
-                    }
-                </style>
-
-                <div class="mt-16 flex flex-wrap gap-4 justify-center">
-                    <button
-                        class="px-8 py-4 bg-brand-900 text-white rounded-full font-medium hover:bg-brand-800 transition-colors shadow-lg shadow-brand-900/20">
-                        Ver trazaNet.
+    <!-- Hero Header -->
+    <section class="relative pt-40 pb-20 md:pt-48 md:pb-32 bg-bg overflow-hidden">
+        <div class="absolute inset-0 bg-[radial-gradient(circle_at_30%_30%,rgba(21,58,107,0.25)_0%,transparent_50%)]"></div>
+        <div class="w-full px-6 lg:px-12 relative z-10">
+            <div class="max-w-4xl mx-auto text-center fade-in-up">
+                <a href="propuestas.html" class="inline-flex items-center gap-2 text-muted hover:text-fg transition-colors mb-8 text-sm font-semibold">
+                    <i data-lucide="arrow-left" class="w-4 h-4"></i>
+                    Volver a Tecnologías
+                </a>
+                <p class="text-sky font-mono text-sm mb-6 tracking-extra-wide uppercase">Software</p>
+                <h1 class="font-sans text-6xl md:text-8xl font-semibold text-fg mb-6 tracking-tight">trazaNet.</h1>
+                <p class="text-muted text-xl md:text-2xl font-light max-w-2xl mx-auto mb-10">
+                    Vos generás el dato. TrazaNet hace el resto del recorrido.
+                </p>
+                <div class="flex flex-wrap gap-4 justify-center">
+                    <button class="px-8 py-4 bg-primary text-fg rounded-full font-semibold hover:bg-primary-hover transition-colors">
+                        Acceder web
                     </button>
-                    <a href="propuestas.html"
-                        class="px-8 py-4 bg-white text-brand-900 border border-brand-200 rounded-full font-medium hover:bg-brand-50 transition-colors shadow-sm text-center">
-                        Volver
+                    <a href="#narrativa" class="px-8 py-4 border border-border text-fg rounded-full font-semibold hover:bg-fg/5 transition-colors">
+                        Ver cómo funciona
                     </a>
                 </div>
             </div>
         </div>
     </section>
 
-    <footer class="py-12 bg-white border-t border-brand-100">
-        <div class="w-full px-6 lg:px-12 text-center text-sm text-brand-400">
-            <div>© 2026 +CríaUY. Montevideo, Uruguay.</div>
+    <!-- Interactive Narrative -->
+    <section id="narrativa" class="relative bg-bg">
+        <div class="narrative-container relative" style="height: 460vh;">
+            <div class="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden px-6 lg:px-12">
+                <div class="w-full max-w-6xl mx-auto h-full flex flex-col lg:grid lg:grid-cols-12 lg:gap-10 items-center">
+
+                    <!-- Left: desktop controls -->
+                    <div class="hidden lg:flex lg:col-span-3 flex-col justify-center h-full relative">
+                        <p class="absolute top-8 left-0 text-muted/70 text-xs font-mono tracking-wider uppercase">
+                            Podés modificar los datos o continuar con el ejemplo.
+                        </p>
+
+                        <!-- Step 1: Animal -->
+                        <div class="control-step step-1 absolute inset-0 flex flex-col justify-center transition-opacity duration-500" data-step="1">
+                            <span class="text-sky font-mono text-xs tracking-extra-wide uppercase mb-3">01 / El animal</span>
+                            <h3 class="font-sans text-2xl font-semibold text-fg mb-4">¿De quién es este animal?</h3>
+                            <div class="flex flex-wrap gap-2 mb-4" id="desktop-establecimiento">
+                                <button class="control-pill active" data-value="Los Tilos">Los Tilos</button>
+                                <button class="control-pill" data-value="Santa Clara">Santa Clara</button>
+                                <button class="control-pill" data-value="Mi establecimiento">Mi establecimiento</button>
+                            </div>
+                            <input type="text" id="desktop-est-input" class="custom-input" placeholder="O escribí el nombre del establecimiento..." value="Los Tilos">
+                            <div class="mt-6 p-4 rounded-xl bg-surface border border-border">
+                                <div class="flex items-center justify-between text-sm mb-2">
+                                    <span class="text-muted">Caravana</span>
+                                    <span class="font-mono text-fg">UY-23841</span>
+                                </div>
+                                <div class="flex items-center justify-between text-sm mb-2">
+                                    <span class="text-muted">Sexo</span>
+                                    <span class="text-fg">Hembra</span>
+                                </div>
+                                <div class="flex items-center justify-between text-sm">
+                                    <span class="text-muted">Edad</span>
+                                    <span class="text-fg">4 años</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Step 2: Peso -->
+                        <div class="control-step step-2 absolute inset-0 flex flex-col justify-center transition-opacity duration-500 opacity-0" data-step="2">
+                            <span class="text-sky font-mono text-xs tracking-extra-wide uppercase mb-3">02 / La lectura</span>
+                            <h3 class="font-sans text-2xl font-semibold text-fg mb-4">Registrá su peso</h3>
+                            <div class="mb-6">
+                                <input type="range" id="desktop-weight" class="control-slider" min="320" max="620" value="418">
+                                <div class="mt-4 flex items-baseline justify-between">
+                                    <span class="text-muted text-sm">320 kg</span>
+                                    <span class="text-3xl font-mono font-semibold text-fg"><span id="desktop-weight-value">418</span> <span class="text-lg text-muted">kg</span></span>
+                                    <span class="text-muted text-sm">620 kg</span>
+                                </div>
+                            </div>
+                            <p class="text-muted text-sm leading-relaxed">
+                                El lector captura el identificador y la balanza registra el peso en tiempo real.
+                            </p>
+                        </div>
+
+                        <!-- Step 3: Condición corporal -->
+                        <div class="control-step step-3 absolute inset-0 flex flex-col justify-center transition-opacity duration-500 opacity-0" data-step="3">
+                            <span class="text-sky font-mono text-xs tracking-extra-wide uppercase mb-3">03 / Un dato productivo</span>
+                            <h3 class="font-sans text-2xl font-semibold text-fg mb-4">¿Cuál es su condición corporal?</h3>
+                            <div class="flex flex-wrap gap-3 mb-5" id="desktop-cc">
+                                <button class="control-pill" data-value="2.5">2.5</button>
+                                <button class="control-pill" data-value="3.0">3.0</button>
+                                <button class="control-pill active" data-value="3.5">3.5</button>
+                                <button class="control-pill" data-value="4.0">4.0</button>
+                            </div>
+                            <p class="text-muted text-sm leading-relaxed">
+                                Un solo dato más para completar la ficha sin convertir la experiencia en una carga.
+                            </p>
+                        </div>
+
+                        <!-- Step 4: Viaje -->
+                        <div class="control-step step-4 absolute inset-0 flex flex-col justify-center transition-opacity duration-500 opacity-0" data-step="4">
+                            <span class="text-sky font-mono text-xs tracking-extra-wide uppercase mb-3">04 / Sincronización</span>
+                            <h3 class="font-sans text-2xl font-semibold text-fg mb-3">Del animal al teléfono.</h3>
+                            <p class="text-muted text-base leading-relaxed mb-5">
+                                La información se estructura, viaja por la nube y llega lista para decidir.
+                            </p>
+                            <div class="sync-badge" id="desktop-sync-badge" style="opacity: 0;">
+                                Lectura sincronizada
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Center: SVG -->
+                    <div class="flex-1 lg:col-span-6 flex items-center justify-center min-h-0 py-4 lg:py-0 relative">
+                        <svg id="narrativeSvg" class="w-full max-w-[260px] sm:max-w-[300px] md:max-w-[360px] lg:max-w-[400px] h-auto max-h-[78vh]" viewBox="0 0 400 820" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="cableGradient" x1="200" y1="120" x2="200" y2="680" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0" stop-color="#4A7FB5" stop-opacity="0.6"/>
+                                    <stop offset="0.5" stop-color="#4A7FB5" stop-opacity="0.3"/>
+                                    <stop offset="1" stop-color="#4A7FB5" stop-opacity="0.6"/>
+                                </linearGradient>
+                                <filter id="nodeGlow" x="-50%" y="-50%" width="200%" height="200%">
+                                    <feGaussianBlur stdDeviation="5" result="blur"/>
+                                    <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+                                </filter>
+                                <linearGradient id="phoneFrameGradient" x1="0" y1="0" x2="1" y2="1">
+                                    <stop offset="0" stop-color="#262626"/>
+                                    <stop offset="1" stop-color="#0a0a0a"/>
+                                </linearGradient>
+                            </defs>
+
+                            <!-- Cable sólido -->
+                            <path id="dataCable" d="M 200 135 C 200 190, 110 230, 200 285 C 290 340, 290 400, 200 455 C 110 500, 110 580, 200 665" stroke="url(#cableGradient)" stroke-width="5" stroke-linecap="round" fill="none"/>
+
+                            <!-- Vaca vectorial -->
+                            <g transform="translate(95, 35)">
+                                <path d="M 25 75 Q 15 65 22 52 Q 35 35 70 32 Q 105 30 130 40 Q 150 48 155 65 Q 158 78 150 90 L 148 118 Q 147 125 140 125 L 135 125 L 135 100 L 105 100 L 105 125 L 85 125 L 85 100 L 55 100 L 55 125 L 45 125 Q 38 125 38 118 L 38 105 Q 18 98 18 80 Q 18 72 25 75 Z" fill="#121923" stroke="#25303D" stroke-width="2.5"/>
+                                <path d="M 130 40 Q 155 35 170 48 Q 182 60 178 78 Q 175 92 160 98 Q 148 102 138 95 L 130 85" fill="#121923" stroke="#25303D" stroke-width="2.5"/>
+                                <path d="M 160 55 Q 190 48 198 68 Q 203 85 192 96 Q 180 105 165 100 Q 155 96 152 82" fill="#121923" stroke="#25303D" stroke-width="2.5"/>
+                                <ellipse cx="185" cy="58" rx="11" ry="7" fill="#121923" stroke="#25303D" stroke-width="2" transform="rotate(-15 185 58)"/>
+                                <path d="M 175 52 Q 178 40 188 38" stroke="#25303D" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                                <circle cx="178" cy="74" r="3.5" fill="#a1a1aa"/>
+                                <ellipse cx="195" cy="88" rx="4" ry="3" fill="#25303D"/>
+                                <circle cx="188" cy="64" r="4.5" fill="#4A7FB5"/>
+                                <path d="M 18 68 Q 2 72 8 90" stroke="#25303D" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                                <rect x="48" y="123" width="10" height="6" rx="2" fill="#25303D"/>
+                                <rect x="98" y="123" width="10" height="6" rx="2" fill="#25303D"/>
+                                <rect x="128" y="123" width="10" height="6" rx="2" fill="#25303D"/>
+                            </g>
+
+                            <!-- Lector -->
+                            <g transform="translate(155, 260)">
+                                <rect x="0" y="0" width="90" height="52" rx="10" fill="#121923" stroke="#25303D" stroke-width="2.5"/>
+                                <rect x="10" y="14" width="42" height="8" rx="2" fill="#4A7FB5" opacity="0.5"/>
+                                <circle cx="72" cy="22" r="7" fill="#4A7FB5"/>
+                                <circle cx="72" cy="22" r="3" fill="#F3F0E8"/>
+                                <text x="45" y="43" text-anchor="middle" class="fill-fg/60" style="font-size: 5.5px; font-family: 'IBM Plex Mono', monospace; letter-spacing: 0.12em;">LECTOR</text>
+                            </g>
+
+                            <!-- Nube -->
+                            <g id="cloudGroup" class="cloud-glow" transform="translate(120, 400)">
+                                <path d="M 25 70 Q 0 70 0 45 Q 0 18 35 18 Q 48 0 90 0 Q 135 0 150 28 Q 180 28 180 58 Q 180 88 145 88 L 40 88 Q 12 88 25 70 Z" fill="#121923" stroke="#8EC9F1" stroke-width="2.5"/>
+                                <circle cx="55" cy="38" r="5" fill="#8EC9F1" opacity="0.5"/>
+                                <circle cx="95" cy="28" r="4" fill="#8EC9F1" opacity="0.35"/>
+                                <circle cx="125" cy="45" r="3" fill="#8EC9F1" opacity="0.45"/>
+                                <circle cx="75" cy="55" r="2.5" fill="#8EC9F1" opacity="0.3"/>
+                            </g>
+
+                            <!-- Teléfono -->
+                            <g id="phoneGroup" class="phone-shadow" transform="translate(145, 640)">
+                                <rect x="132" y="35" width="4" height="28" rx="1.5" fill="#25303D"/>
+                                <rect x="-4" y="28" width="4" height="20" rx="1.5" fill="#25303D"/>
+                                <rect x="-4" y="55" width="4" height="20" rx="1.5" fill="#25303D"/>
+                                <rect x="0" y="0" width="132" height="240" rx="22" fill="url(#phoneFrameGradient)" stroke="#404040" stroke-width="2"/>
+                                <rect x="38" y="8" width="56" height="18" rx="9" fill="#050505"/>
+                                <rect x="8" y="8" width="116" height="224" rx="16" fill="#050505"/>
+                                <rect x="8" y="8" width="116" height="34" rx="16" fill="#153A6B"/>
+                                <rect x="8" y="24" width="116" height="18" fill="#153A6B"/>
+                                <circle cx="24" cy="25" r="6" fill="#fafafa"/>
+                                <rect x="36" y="21" width="60" height="7" rx="3.5" fill="#fafafa" opacity="0.85"/>
+                                <rect x="100" y="21" width="16" height="7" rx="3.5" fill="#fafafa" opacity="0.5"/>
+                                <rect x="8" y="210" width="116" height="22" rx="0" fill="#0a0a0a"/>
+                                <circle cx="44" cy="221" r="4" fill="#4A7FB5"/>
+                                <circle cx="66" cy="221" r="4" fill="#333333"/>
+                                <circle cx="88" cy="221" r="4" fill="#333333"/>
+                                <rect x="48" y="228" width="36" height="3" rx="1.5" fill="#404040"/>
+                            </g>
+                        </svg>
+
+                        <!-- Data capsule overlay -->
+                        <div id="dataCapsule" class="data-capsule" style="opacity: 0;">
+                            <div id="capsuleContent" class="capsule-card text-center">
+                                <div class="font-mono text-[10px] text-sky uppercase tracking-wider mb-1">UY-23841</div>
+                                <div class="text-sm font-semibold text-fg leading-tight"><span class="capsule-weight">418</span> kg · CC <span class="capsule-cc">3.5</span></div>
+                                <div class="text-[11px] text-muted mt-1 truncate"><span class="capsule-est">Los Tilos</span></div>
+                            </div>
+                        </div>
+
+                        <!-- Phone screen overlay -->
+                        <div id="phoneOverlay" class="phone-overlay rounded-[14px] overflow-hidden bg-bg border border-border/60 p-4 flex flex-col">
+                            <div class="flex items-center justify-between mb-4">
+                                <span class="text-[10px] font-mono text-muted uppercase tracking-wider">Ficha</span>
+                                <div class="sync-badge">Lectura sincronizada</div>
+                            </div>
+                            <div class="space-y-3 flex-1">
+                                <div class="flex justify-between items-center pb-2 border-b border-border/40">
+                                    <span class="text-xs text-muted">Caravana</span>
+                                    <span class="text-sm font-mono text-fg">UY-23841</span>
+                                </div>
+                                <div class="flex justify-between items-center pb-2 border-b border-border/40">
+                                    <span class="text-xs text-muted">Establecimiento</span>
+                                    <span class="text-sm text-fg phone-est">Los Tilos</span>
+                                </div>
+                                <div class="flex justify-between items-center pb-2 border-b border-border/40">
+                                    <span class="text-xs text-muted">Peso</span>
+                                    <span class="text-sm font-mono text-fg"><span class="phone-weight">418</span> kg</span>
+                                </div>
+                                <div class="flex justify-between items-center pb-2 border-b border-border/40">
+                                    <span class="text-xs text-muted">Condición corporal</span>
+                                    <span class="text-sm font-mono text-fg"><span class="phone-cc">3.5</span></span>
+                                </div>
+                                <div class="flex justify-between items-center pb-2 border-b border-border/40">
+                                    <span class="text-xs text-muted">Sexo</span>
+                                    <span class="text-sm text-fg">Hembra</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-xs text-muted">Edad</span>
+                                    <span class="text-sm text-fg">4 años</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Right: desktop hint + mobile controls -->
+                    <div class="lg:col-span-3 flex flex-col justify-center h-full w-full relative">
+                        <!-- Mobile controls -->
+                        <div class="lg:hidden w-full max-w-sm mx-auto relative h-52">
+                            <p class="absolute -top-8 left-0 right-0 text-center text-muted/70 text-[10px] font-mono tracking-wider uppercase">
+                                Podés modificar los datos o continuar con el ejemplo.
+                            </p>
+
+                            <div class="control-step-mobile step-1 p-5 rounded-2xl bg-surface border border-border transition-all duration-500 absolute inset-x-0 top-0" data-step="1">
+                                <span class="text-sky font-mono text-xs tracking-extra-wide uppercase mb-2 block">01 / El animal</span>
+                                <h3 class="font-sans text-lg font-semibold text-fg mb-3">¿De quién es este animal?</h3>
+                                <div class="flex flex-wrap gap-2 mb-3" id="mobile-establecimiento">
+                                    <button class="control-pill active" data-value="Los Tilos">Los Tilos</button>
+                                    <button class="control-pill" data-value="Santa Clara">Santa Clara</button>
+                                    <button class="control-pill" data-value="Mi establecimiento">Mi establecimiento</button>
+                                </div>
+                                <input type="text" id="mobile-est-input" class="custom-input" placeholder="O escribí el nombre..." value="Los Tilos">
+                            </div>
+
+                            <div class="control-step-mobile step-2 p-5 rounded-2xl bg-surface border border-border transition-all duration-500 absolute inset-x-0 top-0 opacity-0 translate-y-4" data-step="2">
+                                <span class="text-sky font-mono text-xs tracking-extra-wide uppercase mb-2 block">02 / La lectura</span>
+                                <h3 class="font-sans text-lg font-semibold text-fg mb-3">Registrá su peso</h3>
+                                <input type="range" id="mobile-weight" class="control-slider" min="320" max="620" value="418">
+                                <div class="mt-3 text-center text-2xl font-mono font-semibold text-fg"><span id="mobile-weight-value">418</span> <span class="text-sm text-muted">kg</span></div>
+                            </div>
+
+                            <div class="control-step-mobile step-3 p-5 rounded-2xl bg-surface border border-border transition-all duration-500 absolute inset-x-0 top-0 opacity-0 translate-y-4" data-step="3">
+                                <span class="text-sky font-mono text-xs tracking-extra-wide uppercase mb-2 block">03 / Dato productivo</span>
+                                <h3 class="font-sans text-lg font-semibold text-fg mb-3">Condición corporal</h3>
+                                <div class="flex flex-wrap gap-2 mb-3" id="mobile-cc">
+                                    <button class="control-pill" data-value="2.5">2.5</button>
+                                    <button class="control-pill" data-value="3.0">3.0</button>
+                                    <button class="control-pill active" data-value="3.5">3.5</button>
+                                    <button class="control-pill" data-value="4.0">4.0</button>
+                                </div>
+                            </div>
+
+                            <div class="control-step-mobile step-4 p-5 rounded-2xl bg-surface border border-border transition-all duration-500 absolute inset-x-0 top-0 opacity-0 translate-y-4" data-step="4">
+                                <span class="text-sky font-mono text-xs tracking-extra-wide uppercase mb-2 block">04 / Sincronización</span>
+                                <h3 class="font-sans text-lg font-semibold text-fg mb-2">Del animal al teléfono.</h3>
+                                <div class="sync-badge mt-3" id="mobile-sync-badge" style="opacity: 0;">Lectura sincronizada</div>
+                            </div>
+                        </div>
+
+                        <!-- Desktop: contextual detail -->
+                        <div class="hidden lg:block absolute right-0 top-1/2 -translate-y-1/2 w-full">
+                            <div class="p-5 rounded-xl bg-surface border border-border">
+                                <div class="flex items-center gap-3 mb-2">
+                                    <i data-lucide="route" class="w-5 h-5 text-accent"></i>
+                                    <span class="font-mono text-xs text-muted uppercase tracking-wider">Recorrido</span>
+                                </div>
+                                <p class="text-fg text-sm" id="journey-hint">
+                                    Seguí scrolleando para registrar los datos y ver cómo viajan hasta tu teléfono.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Narrative closure overlay -->
+            <div id="narrativeClosure" class="narrative-closure">
+                <div class="max-w-3xl mx-auto text-center px-6">
+                    <h2 class="font-sans text-4xl md:text-6xl font-semibold text-fg mb-6 tracking-tight text-balance">
+                        Del animal a tu teléfono, sin perder el hilo.
+                    </h2>
+                    <p class="text-muted text-lg md:text-xl max-w-2xl mx-auto mb-10">
+                        Eso es trazaNet: el dato que vos generás, organizado y listo para decidir.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                        <button class="px-8 py-4 bg-primary text-fg rounded-full font-semibold hover:bg-primary-hover transition-colors">
+                            Acceder a trazaNet
+                        </button>
+                        <a href="propuestas.html" class="px-8 py-4 border border-border text-fg rounded-full font-semibold hover:bg-fg/5 transition-colors">
+                            Ver más tecnologías
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Marquee -->
+    <section class="py-20 bg-surface border-y border-border overflow-hidden">
+        <div class="flex animate-marquee whitespace-nowrap">
+            <div class="flex gap-8 items-center px-4">
+                <span class="inline-flex items-center gap-3 text-fg/90 font-sans text-3xl md:text-5xl font-light">
+                    <i data-lucide="scan-line" class="w-8 h-8 text-accent"></i> Lectura en tiempo real
+                </span>
+                <span class="inline-flex items-center gap-3 text-fg/90 font-sans text-3xl md:text-5xl font-light">
+                    <i data-lucide="cloud" class="w-8 h-8 text-accent"></i> Datos centralizados
+                </span>
+                <span class="inline-flex items-center gap-3 text-fg/90 font-sans text-3xl md:text-5xl font-light">
+                    <i data-lucide="wifi-off" class="w-8 h-8 text-accent"></i> Funcionamiento offline
+                </span>
+                <span class="inline-flex items-center gap-3 text-fg/90 font-sans text-3xl md:text-5xl font-light">
+                    <i data-lucide="bar-chart-2" class="w-8 h-8 text-accent"></i> Métricas detalladas
+                </span>
+                <span class="inline-flex items-center gap-3 text-fg/90 font-sans text-3xl md:text-5xl font-light">
+                    <i data-lucide="bell" class="w-8 h-8 text-accent"></i> Alertas inteligentes
+                </span>
+            </div>
+            <div class="flex gap-8 items-center px-4" aria-hidden="true">
+                <span class="inline-flex items-center gap-3 text-fg/90 font-sans text-3xl md:text-5xl font-light">
+                    <i data-lucide="scan-line" class="w-8 h-8 text-accent"></i> Lectura en tiempo real
+                </span>
+                <span class="inline-flex items-center gap-3 text-fg/90 font-sans text-3xl md:text-5xl font-light">
+                    <i data-lucide="cloud" class="w-8 h-8 text-accent"></i> Datos centralizados
+                </span>
+                <span class="inline-flex items-center gap-3 text-fg/90 font-sans text-3xl md:text-5xl font-light">
+                    <i data-lucide="wifi-off" class="w-8 h-8 text-accent"></i> Funcionamiento offline
+                </span>
+                <span class="inline-flex items-center gap-3 text-fg/90 font-sans text-3xl md:text-5xl font-light">
+                    <i data-lucide="bar-chart-2" class="w-8 h-8 text-accent"></i> Métricas detalladas
+                </span>
+                <span class="inline-flex items-center gap-3 text-fg/90 font-sans text-3xl md:text-5xl font-light">
+                    <i data-lucide="bell" class="w-8 h-8 text-accent"></i> Alertas inteligentes
+                </span>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="py-32 bg-bg text-fg">
+        <div class="w-full px-6 lg:px-12">
+            <div class="max-w-4xl mx-auto text-center fade-in-up">
+                <h2 class="font-sans text-4xl md:text-6xl font-light mb-6">¿Listo para ordenar tu establecimiento?</h2>
+                <p class="text-muted text-lg mb-12 max-w-2xl mx-auto">
+                    Empezá a centralizar la información de tu rodeo en un solo lugar.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                    <button class="px-8 py-4 bg-primary text-fg rounded-full font-semibold hover:bg-primary-hover transition-colors">
+                        Ver trazaNet.
+                    </button>
+                    <a href="propuestas.html" class="px-8 py-4 border border-border text-fg rounded-full font-semibold hover:bg-fg/5 transition-colors">
+                        Volver a Tecnologías
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-8 bg-bg text-muted border-t border-border">
+        <div class="max-w-[1400px] mx-auto px-6 lg:px-12 flex flex-col md:flex-row items-center justify-between gap-4 text-sm">
+            <a href="index.html" class="font-sans font-bold text-xl tracking-tight">
+                <span class="text-accent">+</span>
+                <span class="text-fg">Cría</span>
+                <span class="text-sky">UY</span>
+            </a>
+            <div class="flex flex-wrap justify-center gap-6">
+                <a href="privacidad.html" class="hover:text-fg transition-colors">Privacidad</a>
+                <a href="terminos-y-condiciones.html" class="hover:text-fg transition-colors">Términos y Condiciones</a>
+                <a href="#" class="hover:text-fg transition-colors">Instagram</a>
+                <a href="#" class="hover:text-fg transition-colors">LinkedIn</a>
+            </div>
+            <p class="text-xs">© 2026 +CríaUY. Montevideo, Uruguay.</p>
         </div>
     </footer>
 
+    <style>
+        @keyframes marquee-scroll {
+            from { transform: translateX(0); }
+            to { transform: translateX(-50%); }
+        }
+        .animate-marquee {
+            animation: marquee-scroll 30s linear infinite;
+        }
+    </style>
+
     <script>
         lucide.createIcons();
+
+        const observerOptions = { root: null, rootMargin: '0px', threshold: 0.1 };
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+        document.querySelectorAll('.fade-in-up').forEach((el) => observer.observe(el));
+
+        const menuBtn = document.getElementById('menuBtn');
+        const mobileMenu = document.getElementById('mobileMenu');
+        menuBtn.addEventListener('click', () => mobileMenu.classList.toggle('hidden'));
+
+        // App state
+        const state = {
+            establecimiento: 'Los Tilos',
+            peso: 418,
+            cc: 3.5,
+            sexo: 'Hembra',
+            edad: '4 años',
+            caravana: 'UY-23841'
+        };
+
+        // Bind pills
+        function bindPills(containerId, inputId, field) {
+            const container = document.getElementById(containerId);
+            const input = inputId ? document.getElementById(inputId) : null;
+            const buttons = container.querySelectorAll('.control-pill');
+
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    buttons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    state[field] = btn.dataset.value;
+                    if (input) input.value = state[field];
+                    updateOutputs();
+                });
+            });
+
+            if (input) {
+                input.addEventListener('input', (e) => {
+                    const val = e.target.value.trim();
+                    state[field] = val || 'Mi establecimiento';
+                    buttons.forEach(b => b.classList.toggle('active', b.dataset.value === state[field]));
+                    updateOutputs();
+                });
+            }
+        }
+
+        bindPills('desktop-establecimiento', 'desktop-est-input', 'establecimiento');
+        bindPills('mobile-establecimiento', 'mobile-est-input', 'establecimiento');
+
+        // Bind CC
+        function bindCC(containerId) {
+            const container = document.getElementById(containerId);
+            const buttons = container.querySelectorAll('.control-pill');
+            buttons.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    buttons.forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    state.cc = parseFloat(btn.dataset.value);
+                    updateOutputs();
+                });
+            });
+        }
+
+        bindCC('desktop-cc');
+        bindCC('mobile-cc');
+
+        // Bind weight sliders
+        function bindWeight(sliderId, valueId) {
+            const slider = document.getElementById(sliderId);
+            const valueEl = document.getElementById(valueId);
+            slider.addEventListener('input', (e) => {
+                state.peso = parseInt(e.target.value);
+                valueEl.textContent = state.peso;
+                updateOutputs();
+            });
+        }
+
+        bindWeight('desktop-weight', 'desktop-weight-value');
+        bindWeight('mobile-weight', 'mobile-weight-value');
+
+        // Update all outputs
+        function updateOutputs() {
+            document.querySelectorAll('.capsule-est, .phone-est').forEach(el => el.textContent = state.establecimiento);
+            document.querySelectorAll('.capsule-weight, .phone-weight').forEach(el => el.textContent = state.peso);
+            document.querySelectorAll('.capsule-cc, .phone-cc').forEach(el => el.textContent = state.cc);
+        }
+
+        // Narrative scroll animation
+        const narrativeContainer = document.querySelector('.narrative-container');
+        const narrativeSvg = document.getElementById('narrativeSvg');
+        const dataCable = document.getElementById('dataCable');
+        const dataCapsule = document.getElementById('dataCapsule');
+        const capsuleContent = document.getElementById('capsuleContent');
+        const cloudGroup = document.getElementById('cloudGroup');
+        const phoneGroup = document.getElementById('phoneGroup');
+        const phoneOverlay = document.getElementById('phoneOverlay');
+        const narrativeClosure = document.getElementById('narrativeClosure');
+        const desktopSyncBadge = document.getElementById('desktop-sync-badge');
+        const mobileSyncBadge = document.getElementById('mobile-sync-badge');
+        const journeyHint = document.getElementById('journey-hint');
+        const controlSteps = document.querySelectorAll('.control-step');
+        const controlStepsMobile = document.querySelectorAll('.control-step-mobile');
+
+        const cableLength = dataCable.getTotalLength();
+        const svgPoint = narrativeSvg.createSVGPoint();
+
+        function getStage(progress) {
+            if (progress < 0.18) return 1;
+            if (progress < 0.38) return 2;
+            if (progress < 0.58) return 3;
+            return 4;
+        }
+
+        function updateNarrative() {
+            const rect = narrativeContainer.getBoundingClientRect();
+            const windowHeight = window.innerHeight;
+            const containerHeight = narrativeContainer.offsetHeight;
+
+            let progress = (windowHeight - rect.top) / containerHeight;
+            progress = Math.max(0, Math.min(1, progress));
+
+            const stage = getStage(progress);
+
+            // Show/hide controls
+            controlSteps.forEach(step => {
+                const stepNum = parseInt(step.dataset.step);
+                step.style.opacity = stepNum === stage ? '1' : '0';
+                step.style.pointerEvents = stepNum === stage ? 'auto' : 'none';
+            });
+            controlStepsMobile.forEach(step => {
+                const stepNum = parseInt(step.dataset.step);
+                if (stepNum === stage) {
+                    step.classList.remove('opacity-0', 'translate-y-4');
+                } else {
+                    step.classList.add('opacity-0', 'translate-y-4');
+                }
+            });
+
+            // Update journey hint
+            if (journeyHint) {
+                const hints = {
+                    1: 'Elegí el establecimiento. El resto de la ficha ya viaja preconfigurada.',
+                    2: 'Ajustá el peso con el slider. El número se actualiza junto al lector.',
+                    3: 'Seleccioná la condición corporal. Con estos tres datos alcanza.',
+                    4: 'Mirá cómo la cápsula viaja, se transforma y llega al teléfono.'
+                };
+                journeyHint.textContent = hints[stage];
+            }
+
+            // Data capsule animation
+            let nodeProgress = 0;
+            let capsuleOpacity = 1;
+            let capsuleScale = 1;
+            let capsuleState = 'hidden';
+
+            if (progress < 0.18) {
+                // Stage 1: capsule at animal
+                nodeProgress = 0;
+                capsuleState = 'raw';
+            } else if (progress < 0.38) {
+                // Stage 2: moving from animal to reader
+                nodeProgress = (progress - 0.18) / 0.20 * 0.30;
+                capsuleState = 'raw';
+            } else if (progress < 0.58) {
+                // Stage 3: moving from reader to cloud
+                nodeProgress = 0.30 + (progress - 0.38) / 0.20 * 0.35;
+                capsuleState = 'structured';
+            } else if (progress < 0.78) {
+                // Stage 4: moving from cloud to phone
+                nodeProgress = 0.65 + (progress - 0.58) / 0.20 * 0.35;
+                capsuleState = 'packet';
+            } else if (progress < 0.92) {
+                // Arriving at phone
+                nodeProgress = 1;
+                capsuleOpacity = Math.max(0, 1 - (progress - 0.78) / 0.14);
+                capsuleScale = Math.max(0.4, 1 - (progress - 0.78) / 0.14 * 0.6);
+                capsuleState = 'packet';
+            } else {
+                nodeProgress = 1;
+                capsuleOpacity = 0;
+                capsuleState = 'hidden';
+            }
+
+            // Capsule position
+            const point = dataCable.getPointAtLength(nodeProgress * cableLength);
+            svgPoint.x = point.x;
+            svgPoint.y = point.y;
+            const screenPoint = svgPoint.matrixTransform(narrativeSvg.getScreenCTM());
+            const containerRect = narrativeContainer.getBoundingClientRect();
+            dataCapsule.style.left = (screenPoint.x - containerRect.left) + 'px';
+            dataCapsule.style.top = (screenPoint.y - containerRect.top) + 'px';
+            dataCapsule.style.opacity = capsuleOpacity;
+            dataCapsule.style.transform = `translate(-50%, -50%) scale(${capsuleScale})`;
+
+            // Capsule content state
+            if (capsuleState === 'raw') {
+                capsuleContent.className = 'capsule-card text-center';
+                capsuleContent.innerHTML = `
+                    <div class="font-mono text-[10px] text-sky uppercase tracking-wider mb-1">${state.caravana}</div>
+                    <div class="text-sm font-semibold text-fg leading-tight">${state.peso} kg · CC ${state.cc}</div>
+                    <div class="text-[11px] text-muted mt-1 truncate">${state.establecimiento}</div>
+                `;
+            } else if (capsuleState === 'structured') {
+                capsuleContent.className = 'capsule-structured';
+                capsuleContent.innerHTML = `
+                    <div class="space-y-1.5">
+                        <div class="h-1.5 w-20 bg-accent/60 rounded"></div>
+                        <div class="h-1.5 w-28 bg-fg/40 rounded"></div>
+                        <div class="h-1.5 w-16 bg-sky/50 rounded"></div>
+                    </div>
+                    <div class="mt-2 font-mono text-[9px] text-sky">${state.caravana}</div>
+                `;
+            } else if (capsuleState === 'packet') {
+                capsuleContent.className = 'capsule-packet';
+                capsuleContent.innerHTML = '';
+            }
+
+            // Cloud glow when packet passes
+            if (progress > 0.45 && progress < 0.72) {
+                cloudGroup.classList.add('active');
+            } else {
+                cloudGroup.classList.remove('active');
+            }
+
+            // Phone overlay position and visibility
+            const phoneRect = phoneGroup.getBoundingClientRect();
+            const paddingX = phoneRect.width * 0.11;
+            const paddingY = phoneRect.height * 0.10;
+            phoneOverlay.style.left = (phoneRect.left - containerRect.left + paddingX) + 'px';
+            phoneOverlay.style.top = (phoneRect.top - containerRect.top + paddingY) + 'px';
+            phoneOverlay.style.width = (phoneRect.width - paddingX * 2) + 'px';
+            phoneOverlay.style.height = (phoneRect.height - paddingY * 2.4) + 'px';
+
+            if (progress > 0.88) {
+                phoneOverlay.classList.add('visible');
+            } else {
+                phoneOverlay.classList.remove('visible');
+            }
+
+            // Sync badges
+            const syncOpacity = progress > 0.90 ? 1 : 0;
+            desktopSyncBadge.style.opacity = syncOpacity;
+            mobileSyncBadge.style.opacity = syncOpacity;
+
+            // Closure
+            if (progress > 0.95) {
+                narrativeClosure.classList.add('visible');
+            } else {
+                narrativeClosure.classList.remove('visible');
+            }
+
+            requestAnimationFrame(updateNarrative);
+        }
+
+        requestAnimationFrame(updateNarrative);
+
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            });
+        });
     </script>
 </body>
 

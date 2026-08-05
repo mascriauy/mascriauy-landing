@@ -767,7 +767,56 @@ body {
 .ficha__valor--cota { color: var(--color-cota); }
 
 /* ==========================================================================
-   03 · EL SISTEMA — despiece
+   03 · LÍNEAS DE TRABAJO
+   Índice de la página. Las dos columnas son inventarios, no cards: cada
+   pieza cuelga de una hairline y su estado se alinea al filo derecho.
+   ========================================================================== */
+
+.lineas__cuerpo {
+  margin-top: clamp(3rem, 7vw, 5rem);
+  row-gap: 3rem;
+  align-items: start;
+}
+
+.linea__rotulo {
+  display: block;
+  color: var(--color-grafito);
+  padding-bottom: 1rem;
+  border-bottom: 1px solid var(--hairline);
+  margin-bottom: 1.5rem;
+}
+
+.linea__lista {
+  list-style: none;
+  padding: 0;
+  margin: 1.75rem 0 0;
+}
+
+.linea__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1.5rem;
+  padding-block: .875rem;
+  border-top: 1px solid var(--hairline);
+}
+
+.linea__nombre { font-size: 1.0625rem; }
+
+.linea__estado {
+  font-size: .75rem;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--color-grafito);
+  white-space: nowrap;
+  flex: none;
+}
+
+/* El único estado que ya existe en el campo se marca con el acento. */
+.linea__estado--activo { color: var(--color-cota); }
+
+/* ==========================================================================
+   04 · TRAZANET — despiece
    ========================================================================== */
 
 .despiece {
@@ -846,7 +895,7 @@ body {
 }
 
 /* ==========================================================================
-   04 · UN AÑO DE RODEO — eje temporal
+   05 · EL AÑO PRODUCTIVO — eje temporal
    ========================================================================== */
 
 .anio__pista {
@@ -936,7 +985,7 @@ body {
 }
 
 /* ==========================================================================
-   05 · A MEDIDA
+   07 · A MEDIDA
    ========================================================================== */
 
 .medida__cuerpo {
@@ -955,7 +1004,7 @@ body {
 .medida__accion { margin-top: 2rem; }
 
 /* ==========================================================================
-   06 · CONTACTO — el papel se da vuelta
+   08 · CONTACTO — el papel se da vuelta
    ========================================================================== */
 
 .contacto {

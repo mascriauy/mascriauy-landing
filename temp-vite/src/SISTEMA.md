@@ -12,6 +12,30 @@ La artesanía acá no es la textura kraft: es que la grilla esté bien trazada.
 
 ---
 
+## Estructura de la home
+
+`index.html` es la página de la empresa, no la de un producto. +CríaUY desarrolla
+tecnología para el agro en dos líneas, y trazaNet es el sistema de software —no
+un sinónimo de la marca—, así que el copy nunca los usa indistintamente.
+
+| # | Sección | Qué carga |
+|---|---|---|
+| 01 | `#hero` | La empresa y sus dos líneas |
+| 02 | `#origen` | De dónde salió, con la ficha de datos |
+| 03 | `#lineas` | Índice: software y hardware enfrentados, con estado por pieza |
+| 04 | `#trazanet` | Despiece de los 6 módulos del sistema |
+| 05 | `#anio` | El ciclo productivo, eje trazado al scroll |
+| 06 | `#hardware` | Despiece de los 3 desarrollos de máquina |
+| 07 | `#medida` | Desarrollo a medida |
+| 08 | `#contacto` | Cierre en tinta |
+
+Las secciones 04 y 06 comparten el componente `.despiece`: la línea de máquinas
+se lee con el mismo instrumento que la de software. En `#lineas`, el bloque
+`.linea__*` es un inventario —hairline por fila y estado alineado al filo
+derecho—, no una card.
+
+---
+
 ## Qué se aplicó y qué no
 
 Sólo `index.html` usa este sistema. `propuestas.html` y `trazanet.html` siguen
@@ -27,8 +51,8 @@ el `tailwind.config` inline y Lucide, y apuntar a `/src/main.ts`.
    cortes de guillotina, no objetos flotando. Si algo necesita separarse del
    fondo, se separa con una línea (`.filo-*`) o con `.papel-sombra`.
 2. **Cero íconos de librería y cero card con círculo-ícono arriba.** Todo
-   pictograma se dibuja a mano en SVG con `stroke-width="1"`. Ver los seis del
-   despiece en `index.html`.
+   pictograma se dibuja a mano en SVG con `stroke-width="1"`. Ver los nueve de
+   los dos despieces de `index.html` — el de trazaNet y el de hardware.
 3. **Cero gradiente de marca, glassmorphism o `backdrop-filter`.**
 
 Y dos reglas de movimiento, en `motion.ts`:

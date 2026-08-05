@@ -529,65 +529,163 @@ body {
 }
 
 /* ==========================================================================
-   01 · HERO
+   01 · HERO — la huella
    ========================================================================== */
 
-.hero {
+.hero-huella {
+  position: relative;
+}
+
+/* Con .js-motion la sección se estira y el panel queda fijo: ese tramo de
+   scroll no desplaza la página, abre la foto. Sin JS o con reduced-motion no
+   se agrega la clase, la sección mide una pantalla y las tres capas se leen
+   apiladas. */
+.js-motion .hero-huella { height: 185vh; }
+
+.hero-huella__fijo {
   position: relative;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
+  overflow: clip;
+  background: var(--color-papel);
+}
+
+.js-motion .hero-huella__fijo {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+}
+
+/* El titular se parte en dos y cada mitad se va a un extremo del panel. La
+   ranura de la foto abre justo entre ambas: el texto se lee siempre sobre
+   papel y nunca contra el pelaje de la vaca, que no daría AA en ningún tono
+   de la paleta. Cuando la foto crece y los alcanza, ya se retiraron. */
+.hero-huella__titular {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: 0;
+  padding-top: clamp(5.5rem, 13vh, 8.5rem);
+  padding-bottom: clamp(11rem, 27vh, 16rem);
+  padding-left: var(--g-margin-l);
+  padding-right: var(--g-margin-r);
+  pointer-events: none;
+}
+
+.hero-huella__palabra {
+  display: flex;
   justify-content: center;
-  padding-top: 7rem;
-  padding-bottom: 3rem;
+  text-align: center;
+  line-height: .88;
+}
+
+/* El acento único del sistema carga la segunda mitad: la huella es lo que
+   queda marcado. */
+.hero-huella__palabra--inf { color: var(--color-cota); }
+
+.hero-huella__ventana {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  margin: 0;
   overflow: clip;
 }
 
-.hero__grid { row-gap: clamp(2rem, 5vw, 4rem); }
-
-/* El título arranca en C2 y se va del margen derecho. Se lee entero, pero
-   avisa que hay más afuera del papel. */
-.hero__titulo {
-  margin-right: calc(var(--g-margin-r) * -1.6);
-  align-self: end;
+.hero-huella__foto {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 52% 42%;
 }
 
-.hero__bajada { align-self: start; }
+.hero-huella__anotacion {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
 
-.hero__parrafo {
+.hero-huella__anotacion .anotacion__guia { width: 28px; flex: none; }
+
+/* La bajada se apoya al pie del panel, sobre papel y no sobre la foto: la
+   ventana todavía está cerrada cuando se lee. */
+.hero-huella__intro {
+  position: relative;
+  z-index: 20;
+  margin-top: auto;
+  padding-bottom: 2.5rem;
+  align-items: end;
+  row-gap: 1.5rem;
+}
+
+.hero-huella__bajada p {
   margin-top: 1.5rem;
   max-width: 42ch;
   color: color-mix(in oklab, var(--color-tinta) 82%, transparent);
 }
 
-.hero__acciones {
+.hero-huella__scroll {
+  color: var(--color-grafito);
+  justify-self: end;
+  align-self: end;
+}
+
+/* Cierre: una capa de papel se interpone sobre la foto ya abierta. Papel
+   sólido al 92% y no backdrop-filter — el sistema no admite vidrios, y una
+   capa translúcida además no garantizaría el contraste del remate. */
+.hero-huella__cierre {
+  position: relative;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2.5rem;
+  padding: 4rem var(--g-margin-r) 4rem var(--g-margin-l);
+  text-align: center;
+  background: color-mix(in oklab, var(--color-papel) 88%, transparent);
+}
+
+.js-motion .hero-huella__cierre {
+  position: absolute;
+  inset: 0;
+}
+
+.hero-huella__remate { max-width: 18ch; }
+
+.hero-huella__acciones {
   display: flex;
   flex-wrap: wrap;
   gap: .75rem;
-  margin-top: 2rem;
+  justify-content: center;
 }
 
-/* El testigo ocupa las tres últimas columnas y baja hasta el pie del hero,
-   sangrando fuera del papel por abajo y por la derecha. Arranca debajo de la
-   nav para no dejar los links contra una foto oscura. */
-.hero__figura {
+/* La foto de la sección 07 sigue usando el reveal por clip. */
+.medida__figura .reveal-imagen {
+  position: relative;
+  overflow: clip;
+}
+
+.medida__anotacion {
   position: absolute;
-  top: 4.75rem;
-  right: 0;
-  bottom: 0;
-  width: calc(var(--g-col) * 3 + var(--g-margin-r));
-  margin: 0;
-  border-left: 1px solid var(--hairline);
+  left: 1rem;
+  bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
 }
 
-.hero__figura .reveal-imagen { height: 100%; }
-
-.hero__figura img {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: 50% 40%;
+.medida__anotacion .anotacion__guia {
+  width: 28px;
+  flex: none;
 }
 
 .medida__figura img {
@@ -607,77 +705,10 @@ body {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
 }
 
-.hero__figura .reveal-imagen,
-.medida__figura .reveal-imagen {
-  position: relative;
-  overflow: clip;
-}
-
-/* La anotación se para encima de la foto, como una nota de cuaderno. En el
-   testigo corre en vertical por el filo izquierdo: es una franja angosta y una
-   línea horizontal no entraría. */
-.hero__anotacion {
-  position: absolute;
-  left: .875rem;
-  bottom: 1.25rem;
-  display: flex;
-  align-items: center;
-  gap: .625rem;
-  writing-mode: vertical-rl;
-  transform: rotate(180deg);
-}
-
-.hero__anotacion .anotacion__guia {
-  width: 1px;
-  height: 32px;
-  flex: none;
-}
-
-.medida__anotacion {
-  position: absolute;
-  left: 1rem;
-  bottom: 1rem;
-  display: flex;
-  align-items: center;
-  gap: .5rem;
-}
-
-.medida__anotacion .anotacion__guia {
-  width: 28px;
-  flex: none;
-}
-
-.hero__pie {
-  margin-top: auto;
-  padding-top: 3rem;
-  align-items: end;
-}
-
-.hero__scroll {
-  grid-column: 1 / 5;
-  color: var(--color-grafito);
-}
-
 @media (max-width: 900px) {
-  .hero__titulo { margin-right: 0; }
-  .hero { padding-top: 6rem; }
-
-  /* En angosto el testigo vuelve al flujo, debajo de las acciones. */
-  .hero__figura {
-    position: static;
-    width: auto;
-    grid-column: 1 / 13;
-    margin-right: calc(var(--g-margin-r) * -1);
-  }
-  .hero__figura .reveal-imagen { height: auto; }
-  .hero__figura img { height: clamp(300px, 46vh, 420px); }
-  .hero__anotacion {
-    writing-mode: horizontal-tb;
-    transform: none;
-    left: 1rem;
-  }
-  .hero__anotacion .anotacion__guia { width: 28px; height: 1px; }
-  .hero__pie { display: none; }
+  .hero-huella__titular { padding-inline: var(--g-margin-l) var(--g-margin-r); }
+  .hero-huella__intro { padding-bottom: 2rem; }
+  .hero-huella__scroll { display: none; }
 }
 
 /* ==========================================================================

@@ -11,6 +11,7 @@ import { ScrollTrigger } from 'gsap/ScrollTrigger'
 import {
   armarEscena,
   dibujarReglas,
+  heroHuella,
   initCrosshair,
   initSmoothScroll,
   odometro,
@@ -98,8 +99,9 @@ function arrancar(): void {
   document.querySelectorAll('[data-parallax-foto]').forEach((el) => parallax(el, 12))
   parallax(document.querySelector('[data-rotulo]'), 18)
 
-  document.querySelectorAll('.seccion, .hero').forEach(dibujarReglas)
+  document.querySelectorAll('.seccion, .hero-huella').forEach(dibujarReglas)
 
+  heroHuella(document.querySelector('[data-huella]'))
   initEjeAnio()
 }
 

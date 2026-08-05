@@ -383,6 +383,71 @@ export function injectDuotono(): void {
 }
 
 /* ==========================================================================
+   10. HERO DE HUELLA — la ventana se abre, el titular se retira
+   ========================================================================== */
+
+/**
+ * El hero ocupa más alto que la pantalla y adentro lleva un panel fijo. Ese
+ * tramo de scroll no desplaza la página: abre la foto.
+ *
+ * La foto está siempre a pantalla completa y lo que se anima es el recorte —un
+ * `inset()` que arranca como ranura central y termina al ras del viewport—. No
+ * es un zoom: el encuadre no se agranda ni se deforma, se corre la guillotina.
+ * Por eso el titular puede estar partido arriba y abajo sin que la imagen lo
+ * tape hasta que ya se retiró.
+ *
+ * Sin `.js-motion` —sin JS o con reduced-motion— no se llama a nada de esto:
+ * el CSS deja la foto abierta y las tres capas apiladas y legibles.
+ */
+export function heroHuella(seccion: Element | null): void {
+  if (!(seccion instanceof HTMLElement) || reduceMotion()) return
+
+  const ventana = seccion.querySelector<HTMLElement>('[data-huella-ventana]')
+  const sup = seccion.querySelector<HTMLElement>('[data-huella-sup]')
+  const inf = seccion.querySelector<HTMLElement>('[data-huella-inf]')
+  const intro = seccion.querySelector<HTMLElement>('[data-huella-intro]')
+  const cierre = seccion.querySelector<HTMLElement>('[data-huella-cierre]')
+  if (!ventana || !sup || !inf || !cierre) return
+
+  // La ranura arranca entre los dos titulares, no detrás de ellos: por eso el
+  // corte inferior es más profundo que el superior —abajo hay que dejar libre
+  // la mitad de abajo del titular y la bajada—. En pantalla angosta se abre de
+  // costado, que con los márgenes del escritorio quedaría una hendija.
+  const angosto = window.matchMedia('(max-width: 768px)').matches
+  const cerrado = angosto ? 'inset(30% 8% 40% 8%)' : 'inset(30% 30% 40% 30%)'
+  const abierto = 'inset(0% 0% 0% 0%)'
+
+  // Sin round: el sistema no admite radios, y acá el corte recto es el gesto.
+  gsap.set(ventana, { clipPath: cerrado })
+  gsap.set(cierre, { opacity: 0 })
+  cierre.inert = true
+
+  const tl = gsap.timeline({
+    scrollTrigger: {
+      trigger: seccion,
+      start: 'top top',
+      end: 'bottom bottom',
+      scrub: 0.6,
+      onUpdate: ({ progress }) => {
+        // Lo que no se ve no se tabula: si no, el foco cae en enlaces
+        // invisibles de la capa que está apagada.
+        cierre.inert = progress < 0.74
+        if (intro) intro.inert = progress > 0.24
+      },
+    },
+  })
+
+  // Duración normalizada a 1 para que los tiempos se lean como fracción del
+  // recorrido, y un tramo vacío que garantiza ese total.
+  tl.to({}, { duration: 1 }, 0)
+  tl.fromTo(ventana, { clipPath: cerrado }, { clipPath: abierto, ease: 'none', duration: 0.48 }, 0)
+  tl.to(sup, { opacity: 0, ease: 'none', duration: 0.32 }, 0)
+  tl.to(inf, { opacity: 0, ease: 'none', duration: 0.32 }, 0.06)
+  if (intro) tl.to(intro, { opacity: 0, ease: 'none', duration: 0.22 }, 0)
+  tl.fromTo(cierre, { opacity: 0 }, { opacity: 1, ease: 'none', duration: 0.18 }, 0.78)
+}
+
+/* ==========================================================================
    ARRANQUE
    ========================================================================== */
 

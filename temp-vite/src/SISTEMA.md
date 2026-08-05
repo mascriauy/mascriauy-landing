@@ -20,7 +20,7 @@ un sinónimo de la marca—, así que el copy nunca los usa indistintamente.
 
 | # | Sección | Qué carga |
 |---|---|---|
-| 01 | `#hero` | La empresa y sus dos líneas |
+| 01 | `#hero` | La huella: titular partido, la foto se abre, cierre |
 | 02 | `#origen` | De dónde salió, con la ficha de datos |
 | 03 | `#lineas` | Índice: software y hardware enfrentados, con estado por pieza |
 | 04 | `#trazanet` | Despiece de los 6 módulos del sistema |
@@ -183,6 +183,7 @@ Primitivas de `motion.ts` — todas degradan solas con `prefers-reduced-motion`:
 | `dibujarReglas(cont)` | Traza las `.dibujar-regla` de 0→100%, 520ms, stagger 60ms |
 | `odometro(el)` | Dígitos rotando, 260ms, stagger 40ms. Sólo para números de sección |
 | `injectDuotono()` | Inyecta el filtro SVG |
+| `heroHuella(seccion)` | Hero de dos tiempos: el `inset()` de la ventana se abre con el scroll, los dos titulares se retiran y entra el cierre. Sólo se llama con `.js-motion` |
 | `armarEscena()` | Marca `.js-motion` en `<html>` e inyecta el duotono |
 
 Los estados iniciales ocultos cuelgan de `.js-motion`. **Sin JS, o si algo falla,

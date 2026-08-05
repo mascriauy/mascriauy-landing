@@ -46,48 +46,57 @@
     <main>
 
         <!-- ============================================================
-             01 · HERO
-             El título sangra fuera del margen derecho: se lee entero,
-             pero avisa que hay más. La foto sangra al borde del viewport.
+             01 · HERO — la huella
+             El titular se parte en dos y la foto se abre entre medio: lo
+             que se anima es el recorte, no la imagen. Al terminar de
+             abrirse, el papel vuelve a interponerse con el cierre.
              ============================================================ -->
-        <section class="hero" id="hero">
-            <div class="carta hero__grid">
+        <section class="hero-huella" id="hero" data-huella>
+            <div class="hero-huella__fijo">
 
-                <h1 class="t-display hero__titulo c-1-10" data-reveal-lineas data-reveal-inmediato>
-                    Tecnología que trabaja<br>en el campo.
+                <h1 class="hero-huella__titular">
+                    <span class="t-display hero-huella__palabra hero-huella__palabra--sup"
+                        data-huella-sup>Criar es</span>
+                    <span class="t-display hero-huella__palabra hero-huella__palabra--inf"
+                        data-huella-inf>dejar huella.</span>
                 </h1>
 
-                <div class="hero__bajada c-1-7">
-                    <div class="regla regla--ticks dibujar-regla" aria-hidden="true"></div>
-                    <p class="t-body hero__parrafo" data-reveal-lineas>
-                        +CríaUY es una desarrolladora de tecnología para el sector agropecuario. Dos
-                        líneas de trabajo —software de gestión y robótica de campo— apoyadas sobre una
-                        misma base: trazaNet, el sistema que centraliza los datos del establecimiento.
-                    </p>
-                    <div class="hero__acciones">
-                        <a href="#lineas" class="accion">Ver las líneas de trabajo</a>
-                        <a href="#contacto" class="accion accion--cota">Solicitar una demostración</a>
-                    </div>
-                </div>
-
-                <!-- Testigo: una franja vertical de campo cortada del papel, como
-                     el núcleo de una perforación. Sangra arriba, abajo y a la derecha. -->
-                <figure class="hero__figura semitono" data-parallax-foto>
-                    <div class="reveal-imagen" data-reveal-imagen>
-                        <img src="/campo.avif" alt="Ganado pastando en un campo llano" class="duotono" width="1200"
-                            height="800" fetchpriority="high" decoding="async">
-                        <div class="figura__grano" data-grano aria-hidden="true"></div>
-                    </div>
-                    <figcaption class="anotacion hero__anotacion">
+                <!-- La ventana está siempre a pantalla completa: lo que cambia
+                     es hasta dónde llega el corte. -->
+                <figure class="hero-huella__ventana semitono" data-huella-ventana>
+                    <img src="/hero-vaca.avif" alt="Vaca Angus en un campo uruguayo al atardecer"
+                        class="duotono hero-huella__foto" width="1400" height="1749" fetchpriority="high"
+                        decoding="async">
+                    <div class="figura__grano" data-grano aria-hidden="true"></div>
+                    <figcaption class="anotacion hero-huella__anotacion">
                         <span class="anotacion__guia" aria-hidden="true"></span>
                         rodeo — 1.240 cab. · últ. registro 06:14
                     </figcaption>
                 </figure>
 
-            </div>
+                <div class="hero-huella__intro carta" data-huella-intro>
+                    <div class="c-1-7 hero-huella__bajada">
+                        <div class="regla regla--ticks dibujar-regla" aria-hidden="true"></div>
+                        <p class="t-body">
+                            +CríaUY es una desarrolladora de tecnología para el sector agropecuario. Dos
+                            líneas de trabajo —software de gestión y robótica de campo— apoyadas sobre
+                            una misma base: trazaNet, el sistema que centraliza los datos del
+                            establecimiento.
+                        </p>
+                    </div>
+                    <span class="t-label hero-huella__scroll c-9-13" aria-hidden="true">Bajar ↓</span>
+                </div>
 
-            <div class="hero__pie carta" aria-hidden="true">
-                <span class="t-label hero__scroll">Bajar ↓</span>
+                <!-- Cierre: el papel se interpone y la escena se resuelve en una
+                     sola línea. Sin backdrop-filter — una capa de papel, no un vidrio. -->
+                <div class="hero-huella__cierre" data-huella-cierre>
+                    <h2 class="t-section hero-huella__remate">Tecnología que entiende el campo.</h2>
+                    <div class="hero-huella__acciones">
+                        <a href="#lineas" class="accion">Ver las líneas de trabajo</a>
+                        <a href="#contacto" class="accion accion--cota">Solicitar una demostración</a>
+                    </div>
+                </div>
+
             </div>
         </section>
 

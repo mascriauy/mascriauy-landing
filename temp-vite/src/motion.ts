@@ -346,14 +346,15 @@ export function odometro(el: Element | null): void {
    ========================================================================== */
 
 /**
- * Inyecta el filtro SVG que mapea las fotos a tinta → papel-sombra.
+ * Inyecta el filtro SVG que mapea las fotos al duotono de la variante.
  * feColorMatrix a escala de grises y después una transferencia lineal por canal
  * entre los dos extremos de la paleta.
  *
- * El extremo oscuro no arranca en la tinta pura (#0F1310) sino levantado: las
- * fotos de campo tienen mucha sombra cerrada y con el negro real se vuelven
- * manchas. El punto negro sube a ~#2A2E27 y el blanco baja apenas, que es
- * exactamente el rango de una impresión en duotono sobre papel.
+ * Acá el recorrido va de #191C21 a un celeste lavado (~#A6C2D9), el mismo
+ * acento del sistema. El punto oscuro queda por encima del fondo a propósito:
+ * llevándolo al negro de la página, una foto de vaca negra se funde con el
+ * papel y deja de leerse como imagen. El escalón contra el fondo es el que
+ * dibuja el borde, ya que acá no hay filo que lo haga.
  */
 export function injectDuotono(): void {
   if (document.getElementById('carta-filtros')) return
@@ -373,9 +374,9 @@ export function injectDuotono(): void {
         .2126 .7152 .0722 0 0
         0 0 0 1 0"/>
       <feComponentTransfer>
-        <feFuncR type="table" tableValues="0.165 0.906"/>
-        <feFuncG type="table" tableValues="0.180 0.878"/>
-        <feFuncB type="table" tableValues="0.153 0.812"/>
+        <feFuncR type="table" tableValues="0.098 0.651"/>
+        <feFuncG type="table" tableValues="0.110 0.761"/>
+        <feFuncB type="table" tableValues="0.129 0.851"/>
       </feComponentTransfer>
     </filter>
   `

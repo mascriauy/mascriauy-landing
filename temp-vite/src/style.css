@@ -1152,6 +1152,177 @@ body {
 .pie { --hairline: color-mix(in oklab, var(--color-tinta) 22%, transparent); }
 
 /* ==========================================================================
+   DOCUMENTOS — privacidad, términos, copyright y soporte
+
+   Misma grilla que la home: el número del artículo cuelga en el margen
+   izquierdo y el cuerpo se retrae al filo de la columna 2. Cada artículo nace
+   sobre su hairline, igual que las secciones.
+
+   La diferencia con la home es la medida: acá el renglón se lee entero y no se
+   barre, así que el texto corta en 68ch aunque la columna dé más. Un párrafo de
+   política de privacidad a doce columnas es ilegible por bien trazada que esté
+   la grilla.
+   ========================================================================== */
+
+/* La nav de estos documentos ya viene con su filo puesto (`data-fija="si"` en
+   el markup): no hay hero del cual despegarse, así que el aire de arriba lo
+   pone el padding y no un titular a pantalla completa. */
+.doc {
+  padding-top: clamp(5rem, 9vh, 7rem);
+  padding-bottom: clamp(4rem, 9vh, 7rem);
+}
+
+.doc__cabecera {
+  row-gap: 1.25rem;
+  align-items: start;
+  padding-bottom: clamp(3rem, 7vh, 5rem);
+}
+
+.doc__clase {
+  color: var(--color-cota);
+  margin-top: 1.75rem;
+}
+
+.doc__titulo {
+  margin-top: 1.75rem;
+  max-width: 16ch;
+}
+
+.doc__meta {
+  color: var(--color-grafito);
+  margin-top: .25rem;
+}
+
+/* Artículo: hairline arriba, número en el margen, cuerpo al filo de la 2. */
+.doc__seccion {
+  border-top: 1px solid var(--hairline);
+  padding-block: clamp(2.5rem, 5vh, 3.5rem);
+  row-gap: 1rem;
+  align-items: start;
+}
+
+.doc__num {
+  color: var(--color-cota);
+  align-self: start;
+}
+
+.doc__h2 {
+  font-size: clamp(1.375rem, 1.1rem + .9vw, 1.875rem);
+  line-height: 1.15;
+  margin-bottom: 1.25rem;
+}
+
+/* Subtítulo dentro de un artículo —las preguntas de soporte, los apartados
+   2.1 / 2.2 de privacidad—. No compite con el h2: cambia a la voz del
+   instrumento en vez de subir de tamaño. */
+.doc__h3 {
+  font-family: var(--font-mono);
+  font-size: .8125rem;
+  text-transform: uppercase;
+  letter-spacing: .1em;
+  color: var(--color-caravana);
+  margin-top: 2.25rem;
+  margin-bottom: .75rem;
+}
+
+.doc__bloque > *:first-child { margin-top: 0; }
+.doc__bloque p { max-width: 68ch; }
+.doc__bloque p + p { margin-top: 1.25rem; }
+.doc__bloque strong { font-variation-settings: "wght" 600; }
+
+/* Las enumeraciones se leen como inventario, con hairline por fila: el mismo
+   instrumento que la lista de piezas de la home. Sin viñetas — el punto redondo
+   es el único círculo que el sistema no dibuja. */
+.doc__lista {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 0;
+  max-width: 68ch;
+}
+
+.doc__lista li {
+  border-top: 1px solid var(--hairline);
+  padding-block: .875rem;
+}
+
+.doc__lista li:last-child { border-bottom: 1px solid var(--hairline); }
+
+/* Enlaces dentro del texto: los marca el acento y los subraya en tenue, porque
+   en medio de un párrafo el color solo no alcanza para leerse como enlace. Van
+   con `text-decoration` y no con el ::after de `.enlace`: un enlace embebido
+   puede cortar de renglón, y esa barra absoluta se queda en el primero. Se
+   excluye `.enlace` para no encimar los dos subrayados. */
+.doc__bloque a:not(.enlace),
+.doc__lista a:not(.enlace) {
+  color: var(--color-cota);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: .225em;
+  text-decoration-color: color-mix(in oklab, var(--color-cota) 40%, transparent);
+  transition: text-decoration-color var(--d-estado) var(--ease-contrapeso);
+}
+
+.doc__bloque a:not(.enlace):hover,
+.doc__bloque a:not(.enlace):focus-visible,
+.doc__lista a:not(.enlace):hover,
+.doc__lista a:not(.enlace):focus-visible {
+  text-decoration-color: currentColor;
+}
+
+/* Cierre del documento. Superficie levantada, no caja flotante: se separa con
+   el papel sombra y sus propios filos. */
+.doc__contacto {
+  background: var(--color-papel-sombra);
+  border-top: 1px solid var(--hairline);
+  border-bottom: 1px solid var(--hairline);
+  padding: clamp(1.75rem, 4vw, 2.5rem);
+  margin-top: 2rem;
+}
+
+.doc__contacto > *:first-child { margin-top: 0; }
+
+.doc__dato {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: .5rem 1.5rem;
+  padding-block: .75rem;
+  border-top: 1px solid var(--hairline);
+}
+
+.doc__dato:first-of-type { border-top: 0; }
+
+.doc__dato-clave {
+  color: var(--color-grafito);
+  flex: none;
+  min-width: 11ch;
+}
+
+.doc__dato-valor {
+  font-family: var(--font-display);
+  font-variation-settings: "wght" 400;
+  color: var(--color-tinta);
+}
+
+a.doc__dato-valor { color: var(--color-cota); }
+
+@media (max-width: 900px) {
+  /* Sin columnas el número deja de colgar del margen y pasa a encabezar el
+     artículo, arriba del título. */
+  .doc__clase,
+  .doc__titulo { margin-top: 1rem; }
+  .doc__num { margin-bottom: .25rem; }
+}
+
+@media (max-width: 600px) {
+  /* En pantalla angosta la fila clave/valor alterna sola entre alineada y
+     quebrada según el largo del valor, y la ficha queda despareja. Se apila
+     siempre: dos renglones parejos leen mejor que tres alineaciones distintas. */
+  .doc__dato { display: block; }
+  .doc__dato-clave { display: block; margin-bottom: .375rem; }
+}
+
+/* ==========================================================================
    PROHIBICIONES DE LA DIRECCIÓN
    1. border-radius > 2px y box-shadow con blur. Los bordes son cortes de
       guillotina, no objetos flotando.

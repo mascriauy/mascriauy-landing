@@ -1,535 +1,474 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Soluciones | +CríaUY</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://unpkg.com/lucide@latest"></script>
+    <meta name="description"
+        content="Catálogo de tecnologías de +CríaUY: trazaNet y la app para agrónomos en software; Proboscis, GeoMu y visión artificial en hardware. El estado de cada desarrollo.">
+    <meta name="theme-color" content="#0B0B0C">
+    <title>Tecnologías — +CríaUY</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@300;400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&family=Manrope:wght@200..800&family=JetBrains+Mono:wght@100..800&display=swap"
         rel="stylesheet">
 
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        display: ['Space Grotesk', 'sans-serif'],
-                    },
-                    colors: {
-                        brand: {
-                            50: '#f8fafc',
-                            100: '#f1f5f9',
-                            200: '#e2e8f0',
-                            300: '#cbd5e1',
-                            400: '#94a3b8',
-                            500: '#64748b',
-                            600: '#475569',
-                            700: '#334155',
-                            800: '#1e293b',
-                            900: '#0f172a',
-                        },
-                        traza: {
-                            50: '#f0fdf4',
-                            100: '#dcfce7',
-                            400: '#4ade80',
-                            500: '#22c55e',
-                            600: '#16a34a',
-                            700: '#15803d',
-                        }
-                    },
-                    letterSpacing: {
-                        'extra-wide': '0.2em',
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        .text-balance {
-            text-wrap: balance;
-        }
-
-        .fade-in-up {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1),
-                transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-
-        .fade-in-up.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .stagger-1 {
-            transition-delay: 0.1s;
-        }
-
-        .stagger-2 {
-            transition-delay: 0.2s;
-        }
-
-        .stagger-3 {
-            transition-delay: 0.3s;
-        }
-
-        .hero-gradient {
-            background: radial-gradient(circle at 70% 30%, rgba(59, 130, 246, 0.03) 0%, transparent 50%);
-        }
-
-        .grain {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 50;
-            opacity: 0.02;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-        }
-    </style>
+    <script type="module" src="/src/main.ts"></script>
 </head>
 
-<body class="bg-brand-50 text-brand-800 antialiased selection:bg-brand-200 selection:text-brand-900">
+<body>
 
-    <div class="grain"></div>
+    <div class="grano" aria-hidden="true"></div>
 
-    <!-- Navigation -->
-    <!-- Navigation -->
-    <nav id="navbar" class="fixed top-0 w-full z-40 bg-transparent transition-colors duration-300">
-        <div class="w-full px-6 lg:px-12 py-6 flex justify-between items-center">
-            <a href="index.html"
-                class="font-display font-bold text-xl tracking-tight text-white transition-opacity duration-300 hover:text-brand-200">
-                +CríaUY
-            </a>
+    <div class="margen-izq" aria-hidden="true">
+        <span class="t-label rotulo-vertical" data-rotulo>
+            CATÁLOGO · SOFTWARE Y HARDWARE · +CRÍAUY
+        </span>
+    </div>
 
-            <div class="hidden md:flex items-center gap-8 text-sm font-medium tracking-wide text-white/90">
-                <a href="index.html" class="relative group transition-colors hover:text-white">
-                    Inicio
-                    <span
-                        class="absolute -bottom-0.5 left-0 w-0 h-[1.5px] bg-white transition-all duration-300 ease-out group-hover:w-full"></span>
-                </a>
-                <a href="#" class="relative group transition-colors hover:text-white">
-                    Tecnologías
-                    <span
-                        class="absolute -bottom-0.5 left-0 w-full h-[1.5px] bg-white transition-all duration-300 ease-out"></span>
-                </a>
-                <a href="#contacto" class="relative transition-colors text-white font-semibold hover:text-white/90">
-                    Contacto
-                    <span class="absolute -bottom-0.5 left-0 w-full h-[1.5px] bg-white"></span>
-                </a>
+    <!-- La nav nace con su filo puesto: acá no hay hero a pantalla completa del
+         cual despegarse, así que no hay nada que observar. -->
+    <header class="nav" data-fija="si">
+        <a href="/" class="nav__marca t-rotulo">+CríaUY</a>
+        <nav class="nav__links" aria-label="Principal">
+            <a href="/" class="enlace t-label">Inicio</a>
+            <a href="#contacto" class="enlace t-label">Contacto</a>
+        </nav>
+    </header>
+
+    <main>
+
+        <!-- ============================================================
+             CABECERA DE LÁMINA
+             La home argumenta; esta página es el índice. Por eso la
+             cabecera termina en un cuadro de existencias y no en una
+             bajada sola: lo primero que se busca en un catálogo es
+             cuántas piezas hay y cuáles están andando.
+             ============================================================ -->
+        <header class="lamina">
+            <div class="carta">
+                <div class="regla regla--ticks c-1-13" aria-hidden="true"></div>
             </div>
 
-            <button class="md:hidden text-white">
-                <i data-lucide="menu" class="w-6 h-6"></i>
-            </button>
-        </div>
-    </nav>
-
-    <!-- Page Header -->
-    <section class="relative pt-48 pb-24 flex items-center bg-brand-900 overflow-hidden">
-        <div class="absolute inset-0 bg-gradient-to-t from-brand-900 via-brand-800 to-brand-900"></div>
-        <div class="absolute inset-0 opacity-20 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]"></div>
-
-        <div class="w-full px-6 lg:px-12 pt-10 relative z-10">
-            <div class="max-w-7xl mx-auto text-center fade-in-up">
-                <p class="text-brand-300 font-mono text-sm mb-6 tracking-extra-wide uppercase">
-                    Ecosistema Digital
-                </p>
-                <h1 id="typewriter-title"
-                    class="font-display text-5xl md:text-7xl lg:text-8xl font-light leading-tight tracking-tight text-white mb-4 min-h-[1.2em]">
-                    <!-- Content controlled by JS -->
-                </h1>
-                <p class="text-brand-300 text-xl md:text-2xl font-light fade-in-up stagger-1">
-                    nuestras soluciones a distintos problemas
-                </p>
+            <div class="carta lamina__cabecera">
+                <span class="t-label lamina__clase c-1-5">Catálogo</span>
+                <h1 class="t-display lamina__titulo c-2-11">Tecnologías.</h1>
             </div>
-        </div>
-    </section>
 
-    <!-- Tree Map Layout -->
-    <section class="min-h-screen bg-brand-50 py-12 md:py-24 relative overflow-hidden">
-        <div class="w-full px-4 md:px-6 lg:px-12 relative z-10">
-            <div class="max-w-7xl mx-auto">
-
-                <!-- Main Tree Container -->
-                <div class="relative border-l-2 border-brand-200 ml-2 md:ml-12 pl-6 md:pl-16 space-y-12 md:space-y-24">
-
-                    <!-- Branch: Software -->
-                    <div class="relative fade-in-up">
-                        <!-- Connector Dot & Line -->
-                        <div class="absolute -left-8 md:-left-16 top-[33px] w-8 md:w-16 h-0.5 bg-brand-200"></div>
-                        <div
-                            class="absolute -left-[41px] md:-left-[73px] top-6 w-5 h-5 rounded-full border-4 border-brand-50 bg-brand-600 z-10">
-                        </div>
-
-                        <!-- Branch Title -->
-                        <div class="mb-12">
-                            <span
-                                class="inline-block px-3 py-1 bg-brand-100 text-brand-700 text-xs font-mono rounded-full mb-4">
-                                01
-                            </span>
-                            <h2 class="font-display text-4xl font-light text-brand-900">Software</h2>
-                        </div>
-
-                        <!-- Sub-branch: trazaNet -->
-                        <div class="relative border-l-2 border-brand-200 ml-4 pl-8 md:pl-12 space-y-12">
-                            <!-- Connector Dot & Line -->
-                            <div class="absolute -left-4 top-[39px] w-4 h-0.5 bg-brand-200"></div>
-
-
-                            <!-- Content Wrapper -->
-                            <div
-                                class="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-brand-100 overflow-hidden transform hover:-translate-y-1">
-                                <div class="grid lg:grid-cols-2">
-                                    <!-- Left: Product Info -->
-                                    <div class="p-6 md:p-12 order-2 lg:order-1 flex flex-col justify-center">
-
-
-                                        <h3
-                                            class="font-display text-4xl md:text-5xl font-bold text-brand-900 mb-6 tracking-tight">
-                                            trazaNet.
-                                        </h3>
-
-                                        <p class="text-brand-600 text-lg leading-relaxed mb-8 font-light">
-                                            Sistema integral que centraliza la lectura y la gestión ganadera en un solo
-                                            lugar.
-                                        </p>
-
-                                        <ul class="space-y-4 mb-10">
-                                            <li class="flex items-start gap-3 text-brand-700">
-                                                <i data-lucide="check-circle-2"
-                                                    class="w-5 h-5 mt-0.5 text-brand-500"></i>
-                                                <span>Gestión completa de stock</span>
-                                            </li>
-                                            <li class="flex items-start gap-3 text-brand-700">
-                                                <i data-lucide="check-circle-2"
-                                                    class="w-5 h-5 mt-0.5 text-brand-500"></i>
-                                                <span>Calendario Sanitario</span>
-                                            </li>
-                                            <li class="flex items-start gap-3 text-brand-700">
-                                                <i data-lucide="check-circle-2"
-                                                    class="w-5 h-5 mt-0.5 text-brand-500"></i>
-                                                <span>Modo Offline para campo</span>
-                                            </li>
-                                        </ul>
-
-                                        <div class="flex flex-wrap gap-4">
-                                            <button
-                                                class="px-8 py-4 bg-brand-900 text-white rounded-full font-medium hover:bg-brand-800 transition-colors shadow-lg shadow-brand-900/20">
-                                                Acceder web
-                                            </button>
-                                            <a href="trazanet.html"
-                                                class="px-8 py-4 bg-white text-brand-900 border border-brand-200 rounded-full font-medium hover:bg-brand-50 transition-colors shadow-sm text-center">
-                                                Conocer más
-                                            </a>
-                                        </div>
-                                    </div>
-
-                                    <!-- Right: Image Cover -->
-                                    <div
-                                        class="relative order-1 lg:order-2 min-h-[250px] md:min-h-[400px] lg:min-h-full h-full w-full">
-                                        <img src="/istockphoto-1486961453-640x640.avif" alt="Ganado vacuno"
-                                            class="absolute inset-0 w-full h-full object-cover">
-                                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Branch: Hardware -->
-                    <div class="relative fade-in-up stagger-1">
-                        <!-- Connector Dot & Line -->
-                        <div class="absolute -left-8 md:-left-16 top-[33px] w-8 md:w-16 h-0.5 bg-brand-200"></div>
-                        <div
-                            class="absolute -left-[41px] md:-left-[73px] top-6 w-5 h-5 rounded-full border-4 border-brand-50 bg-brand-400 z-10">
-                        </div>
-
-                        <!-- Branch Title -->
-                        <div class="mb-12">
-                            <span
-                                class="inline-block px-3 py-1 bg-brand-100 text-brand-700 text-xs font-mono rounded-full mb-4">
-                                02
-                            </span>
-                            <h2 class="font-display text-4xl font-light text-brand-900">Hardware</h2>
-                        </div>
-
-                        <!-- Sub-branch: Proboscis -->
-                        <div class="relative border-l-2 border-brand-200 ml-4 pl-8 md:pl-12 space-y-12 pb-12">
-                            <!-- Connector Dot & Line -->
-                            <div class="absolute -left-4 top-[39px] w-4 h-0.5 bg-brand-200"></div>
-
-                            <!-- Content Wrapper -->
-                            <div
-                                class="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-brand-100 overflow-hidden transform hover:-translate-y-1">
-                                <div class="grid lg:grid-cols-2">
-                                    <!-- Left: Product Info -->
-                                    <div class="p-6 md:p-12 order-2 lg:order-1 flex flex-col justify-center">
-
-                                        <h3
-                                            class="font-display text-3xl md:text-4xl font-bold text-brand-900 mb-6 tracking-tight">
-                                            Proboscis.
-                                        </h3>
-
-                                        <p class="text-brand-600 text-lg leading-relaxed mb-8 font-light">
-                                            Robot autónomo para el combate de la cardilla. Innovación en desarrollo para
-                                            la limpieza eficiente de campos.
-                                        </p>
-
-                                        <div
-                                            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-amber-100 text-amber-700 text-xs font-mono mb-6">
-                                            <span class="w-2 h-2 rounded-full bg-amber-500 animate-pulse"></span>
-                                            En Desarrollo
-                                        </div>
-                                    </div>
-
-                                    <!-- Right: Image Cover (Placeholder) -->
-                                    <div
-                                        class="relative order-1 lg:order-2 min-h-[200px] md:min-h-[300px] lg:min-h-full h-full w-full bg-brand-900 p-8 flex items-center justify-center">
-                                        <i data-lucide="bot" class="w-24 h-24 text-white/20"></i>
-                                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Sub-branch: GeoMu -->
-                        <div class="relative border-l-2 border-brand-200 ml-4 pl-8 md:pl-12 space-y-12">
-                            <!-- Connector Dot & Line -->
-                            <div class="absolute -left-4 top-[39px] w-4 h-0.5 bg-brand-200"></div>
-
-                            <!-- Content Wrapper -->
-                            <div
-                                class="bg-white rounded-2xl shadow-xl hover:shadow-2xl transition-all duration-500 border border-brand-100 overflow-hidden transform hover:-translate-y-1">
-                                <div class="grid lg:grid-cols-2">
-                                    <!-- Left: Product Info -->
-                                    <div class="p-6 md:p-12 order-2 lg:order-1 flex flex-col justify-center">
-
-                                        <h3
-                                            class="font-display text-3xl md:text-4xl font-bold text-brand-900 mb-6 tracking-tight">
-                                            GeoMu.
-                                        </h3>
-
-                                        <p class="text-brand-600 text-lg leading-relaxed mb-8 font-light">
-                                            Sistema avanzado para la geolocalización del ganado. Monitoreo en tiempo
-                                            real de la ubicación de tus animales.
-                                        </p>
-
-                                        <div
-                                            class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-100 text-blue-700 text-xs font-mono mb-6">
-                                            <span class="w-2 h-2 rounded-full bg-blue-500"></span>
-                                            Próximamente
-                                        </div>
-                                    </div>
-
-                                    <!-- Right: Image Cover (Placeholder) -->
-                                    <div
-                                        class="relative order-1 lg:order-2 min-h-[200px] md:min-h-[300px] lg:min-h-full h-full w-full bg-brand-800 p-8 flex items-center justify-center">
-                                        <i data-lucide="map-pin" class="w-24 h-24 text-white/20"></i>
-                                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent">
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
+            <div class="carta lamina__cuerpo">
+                <div class="c-2-8 lamina__bajada">
+                    <p class="t-body" data-reveal-lineas data-reveal-inmediato>
+                        +CríaUY desarrolla en dos líneas: software de gestión y robótica de campo. Cada
+                        pieza resuelve un trabajo concreto del establecimiento y devuelve sus mediciones a
+                        trazaNet, que es la base común. Abajo está el estado real de cada una, incluida la
+                        que todavía no salió del tablero.
+                    </p>
                 </div>
 
-            </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contacto" class="py-32 bg-brand-900 text-white">
-        <div class="w-full px-6 lg:px-12">
-            <div class="max-w-4xl mx-auto text-center fade-in-up">
-                <h2 class="font-display text-4xl md:text-6xl font-light mb-6">Hablemos</h2>
-                <p class="text-brand-300 text-lg mb-12 max-w-2xl mx-auto">
-                    ¿Listo para digitalizar tu establecimiento? Estamos aquí para ayudarte en la implementación.
-                </p>
-
-                <div class="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16">
-                    <a href="mailto:hola@mascriauy.com"
-                        class="px-8 py-4 bg-white text-brand-900 rounded-full font-medium hover:bg-brand-100 transition-colors flex items-center gap-2">
-                        <i data-lucide="mail" class="w-4 h-4"></i>
-                        hola@mascriauy.com
-                    </a>
-                    <a href="#"
-                        class="px-8 py-4 border border-brand-700 text-white rounded-full font-medium hover:bg-brand-800 transition-colors">
-                        Agenda una demo
-                    </a>
-                </div>
-
-                <div
-                    class="pt-8 border-t border-brand-800 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-brand-400">
-                    <div class="font-display text-lg text-white">+CríaUY</div>
-                    <div class="flex gap-6">
-                        <a href="#" class="hover:text-white transition-colors">Instagram</a>
-                        <a href="#" class="hover:text-white transition-colors">LinkedIn</a>
-                        <a href="#" class="hover:text-white transition-colors">Twitter</a>
+                <aside class="c-9-13 ficha papel-sombra" aria-label="Existencias del catálogo">
+                    <div class="ficha__fila">
+                        <span class="t-label ficha__clave">Líneas</span>
+                        <span class="dato ficha__valor">02</span>
                     </div>
-                    <div>© 2026 +CríaUY. Montevideo, Uruguay.</div>
+                    <div class="ficha__fila">
+                        <span class="t-label ficha__clave">Piezas</span>
+                        <span class="dato ficha__valor">05</span>
+                    </div>
+                    <div class="ficha__fila">
+                        <span class="t-label ficha__clave">En producción</span>
+                        <span class="dato ficha__valor ficha__valor--cota">01</span>
+                    </div>
+                    <div class="ficha__fila">
+                        <span class="t-label ficha__clave">Base común</span>
+                        <span class="dato ficha__valor">trazaNet</span>
+                    </div>
+                </aside>
+            </div>
+        </header>
+
+        <!-- ============================================================
+             01 · SOFTWARE
+             ============================================================ -->
+        <section class="seccion" id="software">
+            <div class="carta">
+                <div class="regla regla--ticks dibujar-regla c-1-13" aria-hidden="true"></div>
+            </div>
+
+            <div class="carta seccion__cabecera">
+                <span class="t-label seccion__num c-1-5" data-odometro>01</span>
+                <h2 class="t-section c-2-9" data-reveal-lineas>
+                    El registro,<br>en un solo lugar.
+                </h2>
+                <p class="t-label seccion__nota c-9-13">Línea 01 · 02 piezas</p>
+            </div>
+
+            <div class="carta linea__intro">
+                <p class="t-body c-2-8" data-reveal-lineas>
+                    La línea de software arranca en trazaNet: el sistema donde el establecimiento lleva su
+                    registro y contra el que reporta todo lo demás que desarrollamos. No es un tablero de
+                    indicadores montado sobre otra base — es la base.
+                </p>
+            </div>
+
+            <article class="carta pieza" id="trazanet">
+                <div class="regla c-1-13" aria-hidden="true"></div>
+
+                <div class="c-1-5 pieza__marca">
+                    <span class="dato pieza__num">01/05</span>
+                    <span class="pieza__icono" aria-hidden="true">
+                        <!-- Registro: la planilla de campo, con su columna y sus renglones -->
+                        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1">
+                            <path d="M5 4h22v24H5z" />
+                            <path d="M5 11h22M5 18h22M12 4v24" />
+                        </svg>
+                    </span>
+                </div>
+
+                <div class="c-2-8 pieza__cuerpo">
+                    <h3 class="t-section pieza__nombre">trazaNet</h3>
+                    <p class="t-body pieza__desc" data-reveal-lineas>
+                        Gestión ganadera completa: caravanas, sanidad, entores, pariciones, pesajes y
+                        movimientos, en un registro único por establecimiento. Se usa donde se trabaja —en
+                        el corral y desde el teléfono—, y guarda todo localmente cuando no hay señal.
+                    </p>
+
+                    <ul class="linea__lista">
+                        <li class="linea__item">
+                            <span class="t-senal linea__nombre">Trabajo sin conexión</span>
+                            <span class="dato linea__estado">sincroniza al volver</span>
+                        </li>
+                        <li class="linea__item">
+                            <span class="t-senal linea__nombre">Lectura de caravanas</span>
+                            <span class="dato linea__estado">lector Bluetooth</span>
+                        </li>
+                        <li class="linea__item">
+                            <span class="t-senal linea__nombre">Trazabilidad oficial</span>
+                            <span class="dato linea__estado">DICOSE · SNIG</span>
+                        </li>
+                    </ul>
+
+                    <div class="pieza__acciones">
+                        <a href="trazanet.html" class="accion">Conocer trazaNet</a>
+                        <a href="#contacto" class="accion accion--cota">Solicitar una demostración</a>
+                    </div>
+                </div>
+
+                <aside class="c-9-13 ficha papel-sombra" aria-label="Ficha de trazaNet">
+                    <div class="ficha__fila">
+                        <span class="t-label ficha__clave">Línea</span>
+                        <span class="dato ficha__valor">Software</span>
+                    </div>
+                    <div class="ficha__fila">
+                        <span class="t-label ficha__clave">Estado</span>
+                        <span class="dato ficha__valor ficha__valor--cota">En producción</span>
+                    </div>
+                    <div class="ficha__fila">
+                        <span class="t-label ficha__clave">Plataforma</span>
+                        <span class="dato ficha__valor">iOS · Android</span>
+                    </div>
+                    <div class="ficha__fila">
+                        <span class="t-label ficha__clave">En uso desde</span>
+                        <span class="dato ficha__valor">2023</span>
+                    </div>
+                </aside>
+            </article>
+
+            <article class="carta pieza" id="app-agronomos">
+                <div class="regla c-1-13" aria-hidden="true"></div>
+
+                <div class="c-1-5 pieza__marca">
+                    <span class="dato pieza__num">02/05</span>
+                    <span class="pieza__icono" aria-hidden="true">
+                        <!-- Teléfono del técnico: el mismo registro, en la mano de otro -->
+                        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1">
+                            <path d="M10 3h12v26H10z" />
+                            <path d="M14 9h4M14 14h4M14 19h4" />
+                            <path d="M14 25h4" />
+                        </svg>
+                    </span>
+                </div>
+
+                <div class="c-2-8 pieza__cuerpo">
+                    <h3 class="t-section pieza__nombre">App para agrónomos</h3>
+                    <p class="t-body pieza__desc" data-reveal-lineas>
+                        Una vista para quien asesora varios establecimientos a la vez. Los mismos datos y la
+                        misma base, con los permisos y la agenda del técnico en lugar de los del productor:
+                        el asesor entra a lo que le habilitaron y a nada más.
+                    </p>
+                </div>
+
+                <aside class="c-9-13 ficha papel-sombra" aria-label="Ficha de la app para agrónomos">
+                    <div class="ficha__fila">
+                        <span class="t-label ficha__clave">Línea</span>
+                        <span class="dato ficha__valor">Software</span>
+                    </div>
+                    <div class="ficha__fila">
+                        <span class="t-label ficha__clave">Estado</span>
+                        <span class="dato ficha__valor">En planificación</span>
+                    </div>
+                    <div class="ficha__fila">
+                        <span class="t-label ficha__clave">Base</span>
+                        <span class="dato ficha__valor">trazaNet</span>
+                    </div>
+                </aside>
+            </article>
+        </section>
+
+        <!-- ============================================================
+             02 · HARDWARE
+             ============================================================ -->
+        <section class="seccion" id="hardware">
+            <div class="carta">
+                <div class="regla regla--ticks dibujar-regla c-1-13" aria-hidden="true"></div>
+            </div>
+
+            <div class="carta seccion__cabecera">
+                <span class="t-label seccion__num c-1-5" data-odometro>02</span>
+                <h2 class="t-section c-2-9" data-reveal-lineas>
+                    La máquina chica,<br>la tarea concreta.
+                </h2>
+                <p class="t-label seccion__nota c-9-13">Línea 02 · 03 piezas</p>
+            </div>
+
+            <div class="carta linea__intro">
+                <p class="t-body c-2-8" data-reveal-lineas>
+                    En hardware la premisa es la máquina chica: dispositivos autónomos de tarea acotada, en
+                    lugar de un equipo grande que hay que amortizar. Cada uno hace un trabajo del
+                    establecimiento y deja su medición en trazaNet.
+                </p>
+            </div>
+
+            <article class="carta pieza" id="proboscis">
+                <div class="regla c-1-13" aria-hidden="true"></div>
+
+                <div class="c-1-5 pieza__marca">
+                    <span class="dato pieza__num">03/05</span>
+                    <span class="pieza__icono" aria-hidden="true">
+                        <!-- Cardilla con la línea de corte por debajo -->
+                        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1">
+                            <path d="M16 26V14" />
+                            <path d="M12 10a4 4 0 0 1 8 0c0 3-4 4-4 4s-4-1-4-4Z" />
+                            <path d="M11 7 9 4M21 7l2-3M16 6V3" />
+                            <path d="M5 26h22" />
+                        </svg>
+                    </span>
+                </div>
+
+                <div class="c-2-8 pieza__cuerpo">
+                    <h3 class="t-section pieza__nombre">Proboscis</h3>
+                    <p class="t-body pieza__desc" data-reveal-lineas>
+                        Robot autónomo para el combate de la cardilla. Trabaja el campo sin pasadas
+                        manuales y sin aplicar sobre toda la superficie: reconoce la planta, la trata y
+                        sigue. El objetivo es la limpieza del potrero, no la pulverización del potrero.
+                    </p>
+                </div>
+
+                <aside class="c-9-13 ficha papel-sombra" aria-label="Ficha de Proboscis">
+                    <div class="ficha__fila">
+                        <span class="t-label ficha__clave">Línea</span>
+                        <span class="dato ficha__valor">Hardware</span>
+                    </div>
+                    <div class="ficha__fila">
+                        <span class="t-label ficha__clave">Estado</span>
+                        <span class="dato ficha__valor">En desarrollo</span>
+                    </div>
+                    <div class="ficha__fila">
+                        <span class="t-label ficha__clave">Tarea</span>
+                        <span class="dato ficha__valor">Limpieza de campo</span>
+                    </div>
+                    <div class="ficha__fila">
+                        <span class="t-label ficha__clave">Reporta a</span>
+                        <span class="dato ficha__valor">trazaNet</span>
+                    </div>
+                </aside>
+            </article>
+
+            <article class="carta pieza" id="geomu">
+                <div class="regla c-1-13" aria-hidden="true"></div>
+
+                <div class="c-1-5 pieza__marca">
+                    <span class="dato pieza__num">04/05</span>
+                    <span class="pieza__icono" aria-hidden="true">
+                        <!-- Antena con nodo y ondas de propagación -->
+                        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1">
+                            <path d="M16 29V16" />
+                            <circle cx="16" cy="13" r="3" />
+                            <path d="M9.5 9.5a9 9 0 0 1 13 0" />
+                            <path d="M5 5a15 15 0 0 1 22 0" />
+                        </svg>
+                    </span>
+                </div>
+
+                <div class="c-2-8 pieza__cuerpo">
+                    <h3 class="t-section pieza__nombre">GeoMu</h3>
+                    <p class="t-body pieza__desc" data-reveal-lineas>
+                        Geolocalización del ganado mediante una caravana con electrónica embebida y una red
+                        de antenas propia en el establecimiento. La ubicación de cada animal deja de ser
+                        una recorrida a caballo y pasa a ser un dato consultable.
+                    </p>
+                </div>
+
+                <aside class="c-9-13 ficha papel-sombra" aria-label="Ficha de GeoMu">
+                    <div class="ficha__fila">
+                        <span class="t-label ficha__clave">Línea</span>
+                        <span class="dato ficha__valor">Hardware</span>
+                    </div>
+                    <div class="ficha__fila">
+                        <span class="t-label ficha__clave">Estado</span>
+                        <span class="dato ficha__valor">Próximamente</span>
+                    </div>
+                    <div class="ficha__fila">
+                        <span class="t-label ficha__clave">Tarea</span>
+                        <span class="dato ficha__valor">Ubicación del ganado</span>
+                    </div>
+                    <div class="ficha__fila">
+                        <span class="t-label ficha__clave">Reporta a</span>
+                        <span class="dato ficha__valor">trazaNet</span>
+                    </div>
+                </aside>
+            </article>
+
+            <article class="carta pieza" id="vision">
+                <div class="regla c-1-13" aria-hidden="true"></div>
+
+                <div class="c-1-5 pieza__marca">
+                    <span class="dato pieza__num">05/05</span>
+                    <span class="pieza__icono" aria-hidden="true">
+                        <!-- Encuadre de medición con retícula central -->
+                        <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="1">
+                            <path d="M4 11V4h7M28 11V4h-7M4 21v7h7M28 21v7h-7" />
+                            <circle cx="16" cy="16" r="4" />
+                            <path d="M16 9v2M16 21v2M9 16h2M21 16h2" />
+                        </svg>
+                    </span>
+                </div>
+
+                <div class="c-2-8 pieza__cuerpo">
+                    <h3 class="t-section pieza__nombre">Visión artificial</h3>
+                    <p class="t-body pieza__desc" data-reveal-lineas>
+                        Medición de condición corporal y peso a partir de imagen: sin balanza y sin
+                        estimación a ojo. La lectura queda registrada contra el animal, con la misma
+                        trazabilidad que si hubiera pasado por la manga.
+                    </p>
+                </div>
+
+                <aside class="c-9-13 ficha papel-sombra" aria-label="Ficha de visión artificial">
+                    <div class="ficha__fila">
+                        <span class="t-label ficha__clave">Línea</span>
+                        <span class="dato ficha__valor">Hardware</span>
+                    </div>
+                    <div class="ficha__fila">
+                        <span class="t-label ficha__clave">Estado</span>
+                        <span class="dato ficha__valor">En diseño</span>
+                    </div>
+                    <div class="ficha__fila">
+                        <span class="t-label ficha__clave">Tarea</span>
+                        <span class="dato ficha__valor">Peso y condición</span>
+                    </div>
+                    <div class="ficha__fila">
+                        <span class="t-label ficha__clave">Reporta a</span>
+                        <span class="dato ficha__valor">trazaNet</span>
+                    </div>
+                </aside>
+            </article>
+        </section>
+
+        <!-- ============================================================
+             03 · A MEDIDA — lo que no está en el catálogo
+             Composición espejada respecto de la home: acá la foto sangra
+             por la derecha. Es la misma sección del sistema leída desde
+             el otro lado de la lámina.
+             ============================================================ -->
+        <section class="seccion medida" id="medida">
+            <div class="carta">
+                <div class="regla regla--ticks dibujar-regla c-1-13" aria-hidden="true"></div>
+            </div>
+
+            <div class="carta seccion__cabecera">
+                <span class="t-label seccion__num c-1-5" data-odometro>03</span>
+                <h2 class="t-section c-2-11" data-reveal-lineas>
+                    Si el problema no<br>está en el catálogo.
+                </h2>
+            </div>
+
+            <div class="carta medida__cuerpo">
+                <div class="c-2-7 medida__texto">
+                    <p class="t-body" data-reveal-lineas>
+                        Ninguna de estas cinco piezas empezó como una idea de producto: todas salieron de un
+                        problema medido en un campo. Cuando el problema es otro, el método es el mismo —se
+                        analiza en su contexto real de uso y se construye para ese caso, en vez de adaptar
+                        algo que ya existía.
+                    </p>
+                    <p class="t-body" data-reveal-lineas>
+                        trazaNet es el caso más completo de ese proceso: se originó en una necesidad interna,
+                        sin encargo externo, y está en uso desde 2023.
+                    </p>
+                    <a href="#contacto" class="accion medida__accion">Consultar por un desarrollo</a>
+                </div>
+
+                <figure class="c-8-13 sangra-der semitono medida__figura" data-parallax-foto>
+                    <div class="reveal-imagen" data-reveal-imagen>
+                        <img src="/istockphoto-1486961453-640x640.avif" alt="Ganado vacuno en un campo uruguayo"
+                            class="duotono" width="640" height="640" loading="lazy" decoding="async">
+                        <div class="figura__grano" data-grano aria-hidden="true"></div>
+                    </div>
+                    <figcaption class="anotacion medida__anotacion">
+                        <span class="anotacion__guia" aria-hidden="true"></span>
+                        campo — relevamiento propio
+                    </figcaption>
+                </figure>
+            </div>
+        </section>
+
+        <!-- ============================================================
+             04 · CONTACTO
+             ============================================================ -->
+        <section class="seccion contacto" id="contacto">
+            <div class="carta">
+                <div class="regla regla--ticks dibujar-regla c-1-13 regla--clara" aria-hidden="true"></div>
+            </div>
+
+            <div class="carta seccion__cabecera">
+                <span class="t-label seccion__num c-1-5" data-odometro>04</span>
+                <h2 class="t-display contacto__titulo c-2-13" data-reveal-lineas>Hablemos.</h2>
+            </div>
+
+            <div class="carta contacto__cuerpo">
+                <div class="c-2-7">
+                    <p class="t-body contacto__parrafo" data-reveal-lineas>
+                        Coordinamos una demostración de trazaNet sobre los datos reales del establecimiento,
+                        o una reunión para evaluar un desarrollo específico. Las consultas se responden de
+                        forma directa, sin formularios intermedios.
+                    </p>
+                </div>
+
+                <div class="c-8-13 contacto__datos">
+                    <a href="mailto:hola@mascriauy.com" class="contacto__mail t-senal">hola@mascriauy.com</a>
+                    <div class="regla regla--clara" aria-hidden="true"></div>
+                    <p class="t-label contacto__ubic">Montevideo, Uruguay · 34°54'S 56°11'W</p>
                 </div>
             </div>
+        </section>
+
+    </main>
+
+    <footer class="pie">
+        <div class="carta pie__grid">
+            <span class="t-rotulo pie__marca c-1-5">+CríaUY</span>
+            <nav class="pie__links c-5-13" aria-label="Legales y navegación">
+                <a href="/" class="enlace t-label">Inicio</a>
+                <a href="privacidad" class="enlace t-label">Privacidad</a>
+                <a href="terminos-y-condiciones" class="enlace t-label">Términos y Condiciones</a>
+                <a href="copyright" class="enlace t-label">Copyright</a>
+                <a href="soporte" class="enlace t-label">Soporte</a>
+            </nav>
+            <span class="t-label pie__copy c-1-13">© 2026 +CríaUY · Tecnología para el sector agropecuario ·
+                Montevideo, Uruguay</span>
         </div>
-    </section>
+    </footer>
 
-    <style>
-        /* Typewriter Cursor */
-        .cursor::after {
-            content: '|';
-            animation: blink 1s step-start infinite;
-        }
-
-        @keyframes blink {
-            50% {
-                opacity: 0;
-            }
-        }
-    </style>
-    <script>
-        // Initialize Lucide icons
-        lucide.createIcons();
-
-        // Intersection Observer for fade-in animations
-        const observerOptions = {
-            root: null,
-            rootMargin: '0px',
-            threshold: 0.1
-        };
-
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                    observer.unobserve(entry.target);
-                }
-            });
-        }, observerOptions);
-
-        document.querySelectorAll('.fade-in-up').forEach((el) => observer.observe(el));
-
-        // Smooth scroll for anchor links
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
-                    });
-                }
-            });
-        });
-
-        // Typewriter Effect
-        document.addEventListener('DOMContentLoaded', () => {
-            const titleElement = document.getElementById('typewriter-title');
-            if (!titleElement) return;
-
-            const text1 = "Tecnologías";
-            const text2 = "";
-
-            // Clear initial content
-            titleElement.innerHTML = '<span class="text-white"></span><span class="text-brand-400"></span>';
-
-            const span1 = titleElement.querySelectorAll('span')[0];
-            const span2 = titleElement.querySelectorAll('span')[1];
-
-            let i = 0;
-            let j = 0;
-
-            function typeLine1() {
-                if (i < text1.length) {
-                    span1.textContent += text1.charAt(i);
-                    span1.classList.add('cursor');
-                    i++;
-                    setTimeout(typeLine1, 80); // Typing speed
-                } else {
-                    // Keep cursor blinking at the end if desired
-                    // span1.classList.remove('cursor'); 
-                }
-            }
-
-
-
-            function typeLine2() {
-                if (j < text2.length) {
-                    span2.textContent += text2.charAt(j);
-                    span2.classList.add('cursor');
-                    j++;
-                    setTimeout(typeLine2, 80);
-                } else {
-                    // Keep cursor blinking at the end if desired, or remove
-                    // span2.classList.remove('cursor'); 
-                }
-            }
-
-            // Start typing
-            setTimeout(typeLine1, 500); // Initial delay
-        });
-
-        // Navbar Scroll Effect
-        const navbar = document.getElementById('navbar');
-        const navbarLinks = navbar.querySelectorAll('a');
-        const menuButton = navbar.querySelector('button');
-        const headerSection = document.querySelector('section'); // The first section (header)
-
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > headerSection.offsetHeight - 100) {
-                navbar.classList.add('bg-white/80', 'backdrop-blur-md', 'shadow-sm');
-                navbar.classList.remove('bg-transparent');
-
-                navbarLinks.forEach(link => {
-                    link.classList.remove('text-white', 'text-white/90');
-                    link.classList.add('text-brand-900');
-
-                    // Update spans (underline effect)
-                    const span = link.querySelector('span');
-                    if (span) {
-                        span.classList.remove('bg-white');
-                        span.classList.add('bg-brand-900');
-                    }
-                });
-
-                if (menuButton) {
-                    menuButton.classList.remove('text-white');
-                    menuButton.classList.add('text-brand-900');
-                }
-
-            } else {
-                navbar.classList.remove('bg-white/80', 'backdrop-blur-md', 'shadow-sm');
-                navbar.classList.add('bg-transparent');
-
-                navbarLinks.forEach(link => {
-                    link.classList.add('text-white');
-                    link.classList.remove('text-brand-900');
-
-                    const span = link.querySelector('span');
-                    if (span) {
-                        span.classList.add('bg-white');
-                        span.classList.remove('bg-brand-900');
-                    }
-                });
-
-                if (menuButton) {
-                    menuButton.classList.add('text-white');
-                    menuButton.classList.remove('text-brand-900');
-                }
-            }
-        });
-    </script>
 </body>
 
 </html>

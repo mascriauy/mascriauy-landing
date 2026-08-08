@@ -38,10 +38,25 @@ derecho—, no una card.
 
 ## Qué se aplicó y qué no
 
-Sólo `index.html` usa este sistema. `propuestas.html` y `trazanet.html` siguen
-con Tailwind por CDN y el diseño anterior; no se tocaron. Si se rediseñan, hay
-que migrarlas igual que a `index.html`: sacar el `<script src="cdn.tailwindcss.com">`,
-el `tailwind.config` inline y Lucide, y apuntar a `/src/main.ts`.
+| Página | Estado | Arranque |
+|---|---|---|
+| `index.html` | En el sistema | `/src/main.ts` |
+| `propuestas.html` — Tecnologías | En el sistema | `/src/main.ts` |
+| `privacidad` · `terminos-y-condiciones` · `copyright` · `soporte` | En el sistema | `/src/legal.ts` |
+| `trazanet.html` | **Pendiente** — Tailwind por CDN y el diseño anterior | — |
+
+Para migrar la que falta, lo mismo que se hizo con las otras: sacar el
+`<script src="cdn.tailwindcss.com">`, el `tailwind.config` inline y Lucide,
+apuntar a `/src/main.ts` y sumarla a `rollupOptions.input` del `vite.config.ts`.
+
+Las páginas de texto usan `legal.ts` en lugar de `main.ts`: sin hero ni cifras
+que animar, `main.ts` traería gsap + ScrollTrigger + SplitType —132 kB— para
+nada. `propuestas.html` sí usa `main.ts` y comparte el chunk con la home.
+
+Dos componentes son propios de Tecnologías, y están al final de `style.css`:
+`.lamina` (cabecera de página, sin número de sección) y `.pieza` (entrada de
+catálogo: número y pictograma colgando del margen, cuerpo al filo de la columna
+2 y ficha de datos al filo derecho).
 
 ---
 
